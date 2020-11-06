@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-//    implementation(project(BuildModules.CORE))
+    implementation(project(BuildModules.CORE))
 
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
