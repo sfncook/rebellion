@@ -1,4 +1,7 @@
 package com.rebllelionandroid.core
 
-class FooBar {
+import javax.inject.Inject
+
+class FooBar @Inject constructor() {
+    val value: String = "hello world"
 }
