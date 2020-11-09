@@ -1,5 +1,6 @@
 include(
     ":core",
-    ":app"
+    ":app",
+    ":features:about"
 )
 rootProject.name = "Rebllelion Android"
