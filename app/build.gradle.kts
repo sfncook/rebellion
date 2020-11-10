@@ -40,6 +40,7 @@ android {
 dependencies {
     implementation(project(BuildModules.CORE))
     implementation(project(":features:about"))
+    implementation(project(":features:sectorsList"))
 
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)

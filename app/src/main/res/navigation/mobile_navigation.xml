@@ -24,8 +24,8 @@
         tools:layout="@layout/fragment_notifications" />
 
     <fragment
-        android:id="@+id/navigation_about"
-        android:name="com.rebllelionandroid.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:id="@+id/navigation_sectorslist"
+        android:name="com.rebellionandroid.features.sectorslist.SectorsListFragment"
+        android:label="Sectors"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
