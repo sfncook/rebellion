@@ -1,19 +1,20 @@
 package com.rebllelionandroid
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rebllelionandroid.core.GameStateViewModel
-import com.rebllelionandroid.core.GameTimer
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    private var gameStateViewModel: GameStateViewModel = GameStateViewModel()
+    @Inject lateinit var gameStateViewModel: GameStateViewModel
+
+//    private var gameStateViewModel: GameStateViewModel = GameStateViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         println("MainActivity.onCreate")
@@ -28,18 +29,19 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+//        (applicationContext as MainApplication).appComponent.inject(this)
     }
 
     override fun onStart() {
         super.onStart()
         println("MainActivity.onStart")
-        gameStateViewModel.startTimer()
+//        gameStateViewModel.startTimer()
     }
 
     override fun onStop() {
         super.onStop()
         println("MainActivity.onStop")
-        gameStateViewModel.stopTimer()
+//        gameStateViewModel.stopTimer()
     }
 
     override fun onPostResume() {
