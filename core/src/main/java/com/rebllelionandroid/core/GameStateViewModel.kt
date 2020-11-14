@@ -11,7 +11,7 @@ class GameStateViewModel: ViewModel() {
     var i = 1
     lateinit var timerJob: Job
 
-    public fun startTimer() {
+    fun startTimer() {
         timerJob = viewModelScope.launch {
             while (true) {
                 println("my thread i:" + (i++))
@@ -20,7 +20,7 @@ class GameStateViewModel: ViewModel() {
         }
     }
 
-    public fun stopTimer() {
+    fun stopTimer() {
         if(this::timerJob.isInitialized) {
             timerJob.cancel()
         }
