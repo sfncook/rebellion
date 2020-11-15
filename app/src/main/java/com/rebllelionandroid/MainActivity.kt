@@ -9,15 +9,21 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
+import com.rebllelionandroid.core.di.DaggerGameStateComponent
+import com.rebllelionandroid.core.di.GameStateComponent
+import com.rebllelionandroid.core.di.modules.ContextModule
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var gameStateComponent: GameStateComponent
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        initAppDependencyInjection()
         super.onCreate(savedInstanceState)
         println("MainActivity.onCreate")
 
-        val mainApplication = applicationContext as MainApplication
-        val gameTimer = mainApplication.gameStateComponent.gameTimer()
+//        val mainApplication = applicationContext as MainApplication
+        val gameTimer = gameStateComponent.gameTimer()
         if(gameTimer.gameState.value == null) {
             val intent = Intent(this, NewGameActivity::class.java)
             startActivity(intent)
@@ -50,5 +56,12 @@ class MainActivity : AppCompatActivity() {
     override fun onPostResume() {
         super.onPostResume()
         println("MainActivity.onPostResume")
+    }
+
+    private fun initAppDependencyInjection() {
+        gameStateComponent = DaggerGameStateComponent
+            .builder()
+            .contextModule(ContextModule(applicationContext))
+            .build()
     }
 }

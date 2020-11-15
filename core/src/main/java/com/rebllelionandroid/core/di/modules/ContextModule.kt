@@ -12,7 +12,7 @@ import javax.inject.Singleton
  * @see Module
  */
 @Module
-class ContextModule(private val application: Application) {
+class ContextModule(private val context: Context) {
 
     /**
      * Create a provider method binding for [Context].
@@ -21,5 +21,5 @@ class ContextModule(private val application: Application) {
      * @see Provides
      */
     @Provides
-    fun provideContext(): Context = application
+    fun provideContext(): Context = context
 }
