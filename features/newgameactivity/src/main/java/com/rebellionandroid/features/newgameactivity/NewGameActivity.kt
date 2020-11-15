@@ -1,10 +1,9 @@
 package com.rebellionandroid.features.newgameactivity
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.rebellionandroid.features.gamestateupdater.GameStateUpdater
+import com.rebllelionandroid.core.GameStateUpdater
 import javax.inject.Inject
 
 class NewGameActivity : Activity() {

@@ -8,9 +8,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.rebellionandroid.features.gamestateupdater.GameStateUpdater
+import com.rebllelionandroid.core.GameStateUpdater
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
-import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.GameTimerViewModel
 import javax.inject.Inject
 

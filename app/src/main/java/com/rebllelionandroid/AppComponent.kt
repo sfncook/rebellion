@@ -1,7 +1,7 @@
 package com.rebllelionandroid
 
 import android.content.Context
-import com.rebellionandroid.features.gamestateupdater.GameStateUpdater
+import com.rebllelionandroid.core.GameStateUpdater
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.GameTimerViewModel
 import com.rebllelionandroid.core.di.modules.ContextModule
