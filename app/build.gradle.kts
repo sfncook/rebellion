@@ -40,7 +40,6 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":features:sectorsList"))
-    implementation(project(":features:gamestateupdater"))
     implementation(project(":features:newgameactivity"))
 
     implementation(Dependencies.KOTLIN)
