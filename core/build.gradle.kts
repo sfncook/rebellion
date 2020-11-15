@@ -20,7 +20,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
     implementation("androidx.room:room-runtime:2.2.5")
     implementation("androidx.room:room-ktx:2.2.5")
-    implementation("androidx.room:room-ktx:2.2.5")
+    api("androidx.room:room-runtime:2.2.5")
     kapt(Dependencies.DAGGER_COMPILER)
     kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
     kapt("androidx.room:room-compiler:2.2.0")

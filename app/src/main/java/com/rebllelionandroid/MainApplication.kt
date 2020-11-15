@@ -1,15 +1,21 @@
 package com.rebllelionandroid
 
 import android.app.Application
+import com.rebllelionandroid.core.di.modules.ContextModule
 
 class MainApplication: Application() {
 
-    val appComponent = DaggerAppComponent
-            .builder()
-            .build()
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
-        println("coreComponent")
+        initAppDependencyInjection()
+    }
+
+    private fun initAppDependencyInjection() {
+        appComponent = DaggerAppComponent
+                .builder()
+                .contextModule(ContextModule(this))
+                .build()
     }
 }
