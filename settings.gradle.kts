@@ -1,7 +1,6 @@
 include(
     ":core",
     ":app",
-    ":features:about",
     ":features:sectorsList",
     ":features:gamestateupdater",
     ":features:newgameactivity"

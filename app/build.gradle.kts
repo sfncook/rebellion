@@ -39,7 +39,6 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":features:about"))
     implementation(project(":features:sectorsList"))
     implementation(project(":features:gamestateupdater"))
     implementation(project(":features:newgameactivity"))
