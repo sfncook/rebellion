@@ -19,7 +19,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    @Inject lateinit var gameStateTimerViewModel: GameTimerViewModel
+    @Inject lateinit var gameTimerViewModel: GameTimerViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
 //        homeViewModel.text.observe(viewLifecycleOwner, Observer {
 //            textView.text = it
 //        })
-        gameStateTimerViewModel.gameState.observe(viewLifecycleOwner, {
+        gameTimerViewModel.gameState.observe(viewLifecycleOwner, {
             println("it:$it")
 //            textView.text = it.gameTime.toString()
         })

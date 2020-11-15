@@ -42,6 +42,7 @@ dependencies {
     implementation(project(":features:about"))
     implementation(project(":features:sectorsList"))
     implementation(project(":features:gamestateupdater"))
+    implementation(project(":features:newgameactivity"))
 
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)

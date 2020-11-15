@@ -22,6 +22,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         println("MainActivity.onCreate")
 
+        gameTimerViewModel.gameState.observe(this, {
+            println("it:$it")
+//            textView.text = it.gameTime.toString()
+        })
+
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
