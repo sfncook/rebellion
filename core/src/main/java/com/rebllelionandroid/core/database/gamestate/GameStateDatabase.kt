@@ -1,4 +1,4 @@
-package com.rebllelionandroid.core.database
+package com.rebllelionandroid.core.database.gamestate
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

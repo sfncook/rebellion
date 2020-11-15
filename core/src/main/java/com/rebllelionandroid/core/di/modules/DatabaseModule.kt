@@ -2,7 +2,7 @@ package com.rebllelionandroid.core.di.modules
 
 import android.content.Context
 import androidx.room.Room
-import com.rebllelionandroid.core.database.GameStateDatabase
+import com.rebllelionandroid.core.database.gamestate.GameStateDatabase
 import com.rebllelionandroid.core.database.gamestate.GameStateDao
 import com.rebllelionandroid.core.database.gamestate.GameStateRepository
 import dagger.Module
