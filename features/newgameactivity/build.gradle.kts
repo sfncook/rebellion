@@ -9,7 +9,8 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":core"))
+    implementation(project(":features:gamestateupdater"))
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
     implementation(Dependencies.APPCOMPAT)
