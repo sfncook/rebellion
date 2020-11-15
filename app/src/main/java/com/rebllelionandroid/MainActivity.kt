@@ -1,5 +1,6 @@
 package com.rebllelionandroid
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -8,6 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rebellionandroid.features.gamestateupdater.GameStateUpdater
+import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.GameTimerViewModel
 import javax.inject.Inject
@@ -23,8 +25,10 @@ class MainActivity : AppCompatActivity() {
         println("MainActivity.onCreate")
 
         gameTimerViewModel.gameState.observe(this, {
-            println("it:$it")
-//            textView.text = it.gameTime.toString()
+            if(it == null) {
+                val intent = Intent(this, NewGameActivity::class.java)
+                startActivity(intent)
+            }
         })
 
         setContentView(R.layout.activity_main)
