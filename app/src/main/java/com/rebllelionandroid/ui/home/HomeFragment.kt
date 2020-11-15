@@ -12,13 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.rebllelionandroid.MainApplication
 import com.rebllelionandroid.R
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.GameTimerViewModel
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    @Inject lateinit var gameStateViewModel: GameStateViewModel
+    @Inject lateinit var gameStateTimerViewModel: GameTimerViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -29,9 +30,14 @@ class HomeFragment : Fragment() {
                 ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+//        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+//            textView.text = it
+//        })
+        gameStateTimerViewModel.gameState.observe(viewLifecycleOwner, {
+            println("it:$it")
+//            textView.text = it.gameTime.toString()
         })
+
         return root
     }
 

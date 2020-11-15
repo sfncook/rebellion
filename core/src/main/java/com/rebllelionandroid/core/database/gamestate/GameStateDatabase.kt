@@ -2,13 +2,11 @@ package com.rebllelionandroid.core.database.gamestate
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.rebllelionandroid.core.database.gamestate.GameState
-import com.rebllelionandroid.core.database.gamestate.GameStateDao
 
 @Database(
     entities = [GameState::class],
     exportSchema = false,
-    version = 1
+    version = 3
 )
 abstract class GameStateDatabase : RoomDatabase() {
     abstract fun gameStateDao(): GameStateDao

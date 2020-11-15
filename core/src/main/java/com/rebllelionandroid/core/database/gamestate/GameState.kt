@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "game_state")
 data class GameState(
     @PrimaryKey val id: Long,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "imageUrl") val imageUrl: String
+    @ColumnInfo(name = "gameInProgress", defaultValue = "false") val gameInProgress: Boolean,
+    @ColumnInfo(name = "gameTime", defaultValue = "0") val gameTime: Int
 )

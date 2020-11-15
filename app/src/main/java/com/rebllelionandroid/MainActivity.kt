@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         (applicationContext as MainApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         println("MainActivity.onCreate")
+
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 

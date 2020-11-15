@@ -6,4 +6,7 @@ import javax.inject.Inject
 class GameStateUpdater @Inject constructor(
     val gameStateRepository: GameStateRepository
 ) {
+    fun onUpdate() {
+
+    }
 }
