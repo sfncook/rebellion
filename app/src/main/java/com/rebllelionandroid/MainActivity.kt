@@ -8,27 +8,20 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.rebllelionandroid.core.GameStateUpdater
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
-import com.rebllelionandroid.core.GameTimerViewModel
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-//    @Inject lateinit var gameTimerViewModel: GameTimerViewModel
-//    @Inject lateinit var gameStateUpdater: GameStateUpdater
-
     override fun onCreate(savedInstanceState: Bundle?) {
-//        (applicationContext as MainApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         println("MainActivity.onCreate")
 
-//        gameTimerViewModel.gameState.observe(this, {
-//            if(it == null) {
-//                val intent = Intent(this, NewGameActivity::class.java)
-//                startActivity(intent)
-//            }
-//        })
+        val mainApplication = applicationContext as MainApplication
+        val gameTimer = mainApplication.gameStateComponent.gameTimer()
+        if(gameTimer.gameState.value == null) {
+            val intent = Intent(this, NewGameActivity::class.java)
+            startActivity(intent)
+        }
 
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
