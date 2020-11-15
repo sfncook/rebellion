@@ -38,9 +38,10 @@ android {
 }
 
 dependencies {
-    implementation(project(BuildModules.CORE))
+    implementation(project(":core"))
     implementation(project(":features:about"))
     implementation(project(":features:sectorsList"))
+    implementation(project(":features:gamestateupdater"))
 
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)

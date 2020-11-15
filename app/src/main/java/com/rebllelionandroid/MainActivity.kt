@@ -7,6 +7,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.rebellionandroid.features.gamestateupdater.GameStateUpdater
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.GameTimerViewModel
 import javax.inject.Inject
@@ -14,6 +15,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject lateinit var gameTimerViewModel: GameTimerViewModel
+    @Inject lateinit var gameStateUpdater: GameStateUpdater
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as MainApplication).appComponent.inject(this)

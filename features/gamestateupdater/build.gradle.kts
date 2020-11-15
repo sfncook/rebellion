@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":core"))
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
     implementation(Dependencies.APPCOMPAT)

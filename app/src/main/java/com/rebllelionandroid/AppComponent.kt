@@ -1,6 +1,7 @@
 package com.rebllelionandroid
 
 import android.content.Context
+import com.rebellionandroid.features.gamestateupdater.GameStateUpdater
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.GameTimerViewModel
 import com.rebllelionandroid.core.di.modules.ContextModule
@@ -17,6 +18,7 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent {
+    fun gameStateUpdater(): GameStateUpdater
     fun gameTimer(): GameTimerViewModel
     fun gameState(): GameStateViewModel
     fun inject(mainActivity: MainActivity)
