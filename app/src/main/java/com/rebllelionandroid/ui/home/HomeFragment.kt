@@ -19,7 +19,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    @Inject lateinit var gameTimerViewModel: GameTimerViewModel
+//    @Inject lateinit var gameTimerViewModel: GameTimerViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -29,20 +29,20 @@ class HomeFragment : Fragment() {
         homeViewModel =
                 ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
+//        val textView: TextView = root.findViewById(R.id.text_home)
 //        homeViewModel.text.observe(viewLifecycleOwner, Observer {
 //            textView.text = it
 //        })
-        gameTimerViewModel.gameState.observe(viewLifecycleOwner, {
-            println("it:$it")
-//            textView.text = it.gameTime.toString()
-        })
+//        gameTimerViewModel.gameState.observe(viewLifecycleOwner, {
+//            println("it:$it")
+////            textView.text = it.gameTime.toString()
+//        })
 
         return root
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (context.applicationContext as MainApplication).appComponent.injectHome(this)
+//        (context.applicationContext as MainApplication).appComponent.injectHome(this)
     }
 }

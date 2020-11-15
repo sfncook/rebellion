@@ -20,7 +20,6 @@ class ContextModule(private val application: Application) {
      * @return Instance of context.
      * @see Provides
      */
-    @Singleton
     @Provides
     fun provideContext(): Context = application
 }

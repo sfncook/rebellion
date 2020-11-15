@@ -15,20 +15,20 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    @Inject lateinit var gameTimerViewModel: GameTimerViewModel
-    @Inject lateinit var gameStateUpdater: GameStateUpdater
+//    @Inject lateinit var gameTimerViewModel: GameTimerViewModel
+//    @Inject lateinit var gameStateUpdater: GameStateUpdater
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as MainApplication).appComponent.inject(this)
+//        (applicationContext as MainApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         println("MainActivity.onCreate")
 
-        gameTimerViewModel.gameState.observe(this, {
-            if(it == null) {
-                val intent = Intent(this, NewGameActivity::class.java)
-                startActivity(intent)
-            }
-        })
+//        gameTimerViewModel.gameState.observe(this, {
+//            if(it == null) {
+//                val intent = Intent(this, NewGameActivity::class.java)
+//                startActivity(intent)
+//            }
+//        })
 
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
@@ -45,13 +45,13 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         println("MainActivity.onStart")
-        gameTimerViewModel.startTimer()
+//        gameTimerViewModel.startTimer()
     }
 
     override fun onStop() {
         super.onStop()
         println("MainActivity.onStop")
-        gameTimerViewModel.stopTimer()
+//        gameTimerViewModel.stopTimer()
     }
 
     override fun onPostResume() {

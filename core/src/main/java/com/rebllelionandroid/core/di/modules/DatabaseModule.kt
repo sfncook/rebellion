@@ -16,7 +16,6 @@ import javax.inject.Singleton
 @Module
 class DatabaseModule {
 
-    @Singleton
     @Provides
     fun provideGameStatelDatabase(context: Context) =
         Room.databaseBuilder(
@@ -35,12 +34,10 @@ class DatabaseModule {
         }
     }
 
-    @Singleton
     @Provides
     fun provideGameStateDao(gameStateDatabase: GameStateDatabase) =
             gameStateDatabase.gameStateDao()
 
-    @Singleton
     @Provides
     fun provideGameStateRepository(
             gameStateDao: GameStateDao
