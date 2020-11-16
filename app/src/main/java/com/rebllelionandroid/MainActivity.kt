@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         println("MainActivity.onCreate")
 
 //        val mainApplication = applicationContext as MainApplication
-        val gameTimer = gameStateComponent.gameTimer()
-        if(gameTimer.gameState.value == null) {
+        val gameStateViewModel = gameStateComponent.gameStateViewModel()
+        if(gameStateViewModel.gameState.value == null) {
             val intent = Intent(this, NewGameActivity::class.java)
             startActivity(intent)
         }

@@ -3,7 +3,6 @@ package com.rebllelionandroid.core.di
 import android.content.Context
 import com.rebllelionandroid.core.GameStateUpdater
 import com.rebllelionandroid.core.GameStateViewModel
-import com.rebllelionandroid.core.GameTimerViewModel
 import com.rebllelionandroid.core.di.modules.ContextModule
 import com.rebllelionandroid.core.di.modules.DatabaseModule
 import dagger.Component
@@ -16,7 +15,6 @@ import dagger.Component
 )
 interface GameStateComponent {
     fun gameStateUpdater(): GameStateUpdater
-    fun gameTimer(): GameTimerViewModel
-    fun gameState(): GameStateViewModel
+    fun gameStateViewModel(): GameStateViewModel
     fun context(): Context
 }
