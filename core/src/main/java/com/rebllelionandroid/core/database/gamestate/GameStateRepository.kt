@@ -6,6 +6,9 @@ import javax.inject.Inject
 class GameStateRepository @Inject constructor(
     private val gameStateDao: GameStateDao
 ) {
+    fun getAllGameStates(): LiveData<List<GameState>> =
+            gameStateDao.getAllGameStates()
+
     fun getGameState(): LiveData<GameState> =
             gameStateDao.getGameState()
 

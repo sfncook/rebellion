@@ -11,6 +11,9 @@ import androidx.room.*
 @Dao
 interface GameStateDao {
 
+    @Query("SELECT * FROM game_state")
+    fun getAllGameStates(): LiveData<List<GameState>>
+
     @Query("SELECT * FROM game_state LIMIT 1")
     fun getGameState(): LiveData<GameState>
 
