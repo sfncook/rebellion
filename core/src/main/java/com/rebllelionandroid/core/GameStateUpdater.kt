@@ -1,19 +1,14 @@
 package com.rebllelionandroid.core
 
 import com.rebllelionandroid.core.database.gamestate.GameState
-import com.rebllelionandroid.core.database.gamestate.GameStateRepository
 import javax.inject.Inject
+import kotlin.random.Random
 
 class GameStateUpdater @Inject constructor(
-    val gameStateRepository: GameStateRepository
+    private val gameStateViewModel: GameStateViewModel
 ) {
-    fun createNewGame() {
-        gameStateRepository.createNewGameState(GameState())
-        val allGameStates = gameStateRepository.getAllGameStates()
-        println("")
-    }
-
-    fun onUpdate() {
-
-    }
+//    fun createNewGame() {
+//        val gameState = GameState(Random.nextLong(), false, 1)
+//        gameStateViewModel.createNewGameState(gameState)
+//    }
 }

@@ -22,17 +22,7 @@ class DatabaseModule {
                 context,
                 GameStateDatabase::class.java,
                 "gamestate-db"
-        ).addCallback(rdc).fallbackToDestructiveMigration().build()
-
-    var rdc: RoomDatabase.Callback = object : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            println("RoomDatabase.Callback.onCreate")
-        }
-
-        override fun onOpen(db: SupportSQLiteDatabase) {
-            println("RoomDatabase.Callback.onOpen")
-        }
-    }
+        ).build()
 
     @Provides
     fun provideGameStateDao(gameStateDatabase: GameStateDatabase) =

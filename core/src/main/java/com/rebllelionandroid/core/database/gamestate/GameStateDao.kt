@@ -17,7 +17,7 @@ interface GameStateDao {
     @Query("SELECT * FROM game_state LIMIT 1")
     fun getGameState(): LiveData<GameState>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createNewGameState(gameState: GameState)
 
     @Update

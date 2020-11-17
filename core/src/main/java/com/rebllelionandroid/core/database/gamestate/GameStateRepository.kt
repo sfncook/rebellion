@@ -1,5 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import javax.inject.Inject
 
@@ -9,8 +10,9 @@ class GameStateRepository @Inject constructor(
     fun getAllGameStates(): LiveData<List<GameState>> =
             gameStateDao.getAllGameStates()
 
-    fun getGameState(): LiveData<GameState> =
-            gameStateDao.getGameState()
+    fun getGameState(): LiveData<GameState> {
+        return gameStateDao.getGameState()
+    }
 
     fun createNewGameState(gameState: GameState) =
             gameStateDao.createNewGameState(gameState)
