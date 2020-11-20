@@ -15,7 +15,7 @@ import kotlin.random.Random
 class GameStateViewModel @Inject constructor(val gameStateRepository: GameStateRepository) : ViewModel() {
     lateinit var timerJob: Job
     val time: MutableLiveData<Int> = MutableLiveData(0)
-    val gameState = gameStateRepository.getGameState()
+    val gameStateLive = gameStateRepository.getGameStateLive()
 
     fun startTimer() {
         timerJob = viewModelScope.launch {
@@ -40,5 +40,9 @@ class GameStateViewModel @Inject constructor(val gameStateRepository: GameStateR
             gameStateRepository.createNewGameState(gameState)
             println("")
         }
+    }
+
+    fun getGameState(): GameState {
+        return gameStateRepository.getGameState()
     }
 }

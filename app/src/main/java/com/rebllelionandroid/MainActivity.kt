@@ -12,10 +12,14 @@ import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.GameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var gameStateComponent: GameStateComponent
+    private val mainScope = MainScope()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initAppDependencyInjection()
@@ -24,9 +28,11 @@ class MainActivity : AppCompatActivity() {
 
 //        val mainApplication = applicationContext as MainApplication
         val gameStateViewModel = gameStateComponent.gameStateViewModel()
-        if(gameStateViewModel.gameState.value == null) {
-            val intent = Intent(this, NewGameActivity::class.java)
-            startActivity(intent)
+        mainScope.launch(Dispatchers.IO) {
+            if(gameStateViewModel.getGameState() == null) {
+                val intent = Intent(applicationContext, NewGameActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         setContentView(R.layout.activity_main)
