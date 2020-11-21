@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [GameState::class],
+    entities = [GameState::class, Sector::class, Planet::class, Unit::class],
     exportSchema = false,
     version = 4
 )

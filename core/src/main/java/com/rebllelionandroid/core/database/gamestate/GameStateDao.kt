@@ -28,4 +28,14 @@ interface GameStateDao {
 
     @Update
     fun updateGameState(gameState: GameState)
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertNewSector(sector: Sector)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertNewPlanet(planet: Planet)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertNewUnit(unit: Unit)
 }

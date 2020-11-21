@@ -25,4 +25,14 @@ class GameStateRepository @Inject constructor(
 
     fun updateGameState(gameState: GameState) =
             gameStateDao.updateGameState(gameState)
+
+
+    fun insertNewSector(sector: Sector) =
+            gameStateDao.insertNewSector(sector)
+
+    fun insertNewPlanet(planet: Planet) =
+            gameStateDao.insertNewPlanet(planet)
+
+    fun insertNewUnit(unit: Unit) =
+            gameStateDao.insertNewUnit(unit)
 }

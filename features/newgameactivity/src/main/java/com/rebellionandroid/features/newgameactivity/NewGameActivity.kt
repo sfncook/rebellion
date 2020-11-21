@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 class NewGameActivity : AppCompatActivity() {
     @Inject lateinit var gameStateUpdater: GameStateUpdater
     @Inject lateinit var gameStateViewModel: GameStateViewModel
-//    val uiScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initAppDependencyInjection()
@@ -27,15 +26,6 @@ class NewGameActivity : AppCompatActivity() {
         val binding: ActivityNewGameBinding = DataBindingUtil.setContentView(this, R.layout.activity_new_game)
         binding.lifecycleOwner = this
         binding.viewModel = gameStateViewModel
-//        setContentView(R.layout.activity_new_game)
-
-//        val startBtn = findViewById<Button>(R.id.newgame_start_btn)
-//        startBtn.setOnClickListener {
-//            uiScope.launch {
-//                gameStateUpdater.createNewGame()
-//                finish()
-//            }
-//        }
     }
 
     private fun initAppDependencyInjection() {

@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.GameState
 import com.rebllelionandroid.core.database.gamestate.GameStateRepository
+import com.rebllelionandroid.core.database.gamestate.Planet
+import com.rebllelionandroid.core.database.gamestate.Sector
+import com.rebllelionandroid.core.database.gamestate.Unit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -39,6 +42,19 @@ class GameStateViewModel @Inject constructor(val gameStateRepository: GameStateR
         viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.createNewGameState(gameState)
             println("")
+            for(sectorId in 1..10) {
+                val sector = Sector(Random.nextLong(), "Sector${sectorId}", gameState.id)
+                gameStateRepository.insertNewSector(sector)
+                for(planetId in 1..10) {
+                    val planet = Planet(Random.nextLong(), "Planet${sectorId}.${planetId}", sector.id)
+                    gameStateRepository.insertNewPlanet(planet)
+
+                    for(unitId in 1..5) {
+                        val unit = Unit(Random.nextLong(), "Unit${sectorId}.${planetId}.${unitId}", planet.id)
+                        gameStateRepository.insertNewUnit(unit)
+                    }
+                }
+            }
         }
     }
 
