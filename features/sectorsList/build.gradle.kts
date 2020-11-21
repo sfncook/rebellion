@@ -6,10 +6,14 @@ plugins {
 
 android {
     compileSdkVersion(BuildAndroidConfig.COMPILE_SDK_VERSION)
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
-
+    implementation(project(":core"))
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
     implementation(Dependencies.APPCOMPAT)
