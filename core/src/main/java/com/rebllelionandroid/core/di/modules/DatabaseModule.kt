@@ -8,6 +8,8 @@ import com.rebllelionandroid.core.database.gamestate.GameStateDao
 import com.rebllelionandroid.core.database.gamestate.GameStateDatabase
 import com.rebllelionandroid.core.database.gamestate.GameStateRepository
 import com.rebllelionandroid.core.database.migrations.MIGRATION_1_2
+import com.rebllelionandroid.core.database.staticTypes.StaticTypesDao
+import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -35,4 +37,12 @@ class DatabaseModule {
             gameStateDao: GameStateDao
     ) = GameStateRepository(gameStateDao)
 
+    @Provides
+    fun provideStaticTypesDao(gameStateDatabase: GameStateDatabase) =
+            gameStateDatabase.staticTypesDao()
+
+    @Provides
+    fun provideStaticTypesRepository(
+            staticTypesDao: StaticTypesDao
+    ) = StaticTypesRepository(staticTypesDao)
 }

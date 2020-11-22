@@ -8,6 +8,7 @@ import com.rebllelionandroid.core.database.gamestate.GameStateRepository
 import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.Sector
 import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -15,7 +16,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
 
-class GameStateViewModel @Inject constructor(val gameStateRepository: GameStateRepository) : ViewModel() {
+class GameStateViewModel @Inject constructor(
+    private val gameStateRepository: GameStateRepository,
+    private val staticTypesRepository: StaticTypesRepository
+) : ViewModel() {
     lateinit var timerJob: Job
     val time: MutableLiveData<Int> = MutableLiveData(0)
     val gameStateLive = gameStateRepository.getGameStateLive()
@@ -40,7 +44,6 @@ class GameStateViewModel @Inject constructor(val gameStateRepository: GameStateR
     fun createNewGameState() {
         val gameState = GameState(Random.nextLong(), false, 1)
         gameStateRepository.createNewGameState(gameState)
-        println("")
         for(sectorId in 1..10) {
             val sector = Sector(Random.nextLong(), "Sector${sectorId}", gameState.id)
             gameStateRepository.insertNewSector(sector)
