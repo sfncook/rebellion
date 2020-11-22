@@ -1,7 +1,9 @@
 package com.rebllelionandroid.core.database.gamestate
 
 import androidx.lifecycle.LiveData
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class GameStateRepository @Inject constructor(
     private val gameStateDao: GameStateDao
@@ -40,7 +42,11 @@ class GameStateRepository @Inject constructor(
 
 
     fun getAllSectorsForCurrentGame(): List<Sector> {
-        val gameStateId = gameStateDao.getGameState().id
-        return gameStateDao.getAllSectorsForGameStateId(gameStateId)
+        val gameState = gameStateDao.getGameState()
+        if(gameState != null) {
+            return gameStateDao.getAllSectorsForGameStateId(gameState.id)
+        } else {
+            return ArrayList()
+        }
     }
 }

@@ -62,7 +62,5 @@ class GameStateViewModel @Inject constructor(val gameStateRepository: GameStateR
         return gameStateRepository.getGameState()
     }
 
-    fun getAllSectorsForCurrentGame(): List<Sector> {
-        return gameStateRepository.getAllSectorsForCurrentGame()
-    }
+    fun getAllSectorsForCurrentGame() = gameStateRepository.getAllSectorsForCurrentGame()
 }

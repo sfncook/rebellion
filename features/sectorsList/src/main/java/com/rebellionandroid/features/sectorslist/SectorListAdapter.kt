@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.database.gamestate.Sector
 import com.rebllelionandroid.features.sectorsList.R
 
-class SectorListHandler(private val viewModel: GameStateViewModel) :
-    RecyclerView.Adapter<SectorListHandler.ViewHolder>() {
+class SectorListAdapter(private val sectors: List<Sector>) :
+    RecyclerView.Adapter<SectorListAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
@@ -35,15 +36,11 @@ class SectorListHandler(private val viewModel: GameStateViewModel) :
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val sectors = viewModel.getAllSectorsForCurrentGame()
         viewHolder.sectorName.text = sectors[position].name
 //        viewHolder.manyPlanets.text = sectors[position]
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount(): Int {
-        val sectors = viewModel.getAllSectorsForCurrentGame()
-        return sectors.size
-    }
+    override fun getItemCount() =  sectors.size
 
 }
