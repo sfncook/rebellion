@@ -38,4 +38,9 @@ interface GameStateDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewUnit(unit: Unit)
+
+
+
+    @Query("SELECT * FROM sectors WHERE game_state_id = :gameStateId")
+    fun getAllSectorsForGameStateId(gameStateId: Long): List<Sector>
 }

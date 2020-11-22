@@ -27,6 +27,7 @@ class GameStateRepository @Inject constructor(
             gameStateDao.updateGameState(gameState)
 
 
+
     fun insertNewSector(sector: Sector) =
             gameStateDao.insertNewSector(sector)
 
@@ -35,4 +36,11 @@ class GameStateRepository @Inject constructor(
 
     fun insertNewUnit(unit: Unit) =
             gameStateDao.insertNewUnit(unit)
+
+
+
+    fun getAllSectorsForCurrentGame(): List<Sector> {
+        val gameStateId = gameStateDao.getGameState().id
+        return gameStateDao.getAllSectorsForGameStateId(gameStateId)
+    }
 }
