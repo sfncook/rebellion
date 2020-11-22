@@ -22,7 +22,9 @@ class DatabaseModule {
                 context,
                 GameStateDatabase::class.java,
                 "gamestate-db"
-        ).build()
+        )
+            .createFromAsset("rebellion.db")
+            .build()
 
     @Provides
     fun provideGameStateDao(gameStateDatabase: GameStateDatabase) =

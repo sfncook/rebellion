@@ -50,10 +50,11 @@ class SectorsListFragment : Fragment() {
         mainScope.launch(Dispatchers.IO) {
             viewAdapter = SectorListAdapter(viewModel.getAllSectorsForCurrentGame())
             recyclerView = viewBinding.root.findViewById(R.id.sectors_list)
-            recyclerView.adapter = viewAdapter
-            viewBinding.sectorsList.apply {
-                adapter = viewAdapter
-//            gridLayoutManager?.spanSizeLookup = viewAdapter.getSpanSizeLookup()
+            mainScope.launch(Dispatchers.Main) {
+                recyclerView.adapter = viewAdapter
+                viewBinding.sectorsList.apply {
+                    adapter = viewAdapter
+                }
             }
         }
     }
