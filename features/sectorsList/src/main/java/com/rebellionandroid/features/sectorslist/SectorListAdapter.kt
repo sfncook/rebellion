@@ -7,9 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.Sector
+import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.features.sectorsList.R
 
-class SectorListAdapter(private val sectors: List<Sector>) :
+class SectorListAdapter(private val sectors: List<SectorWithPlanets>) :
     RecyclerView.Adapter<SectorListAdapter.ViewHolder>() {
 
     /**
@@ -36,8 +37,8 @@ class SectorListAdapter(private val sectors: List<Sector>) :
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.sectorName.text = sectors[position].name
-//        viewHolder.manyPlanets.text = sectors[position]
+        viewHolder.sectorName.text = sectors[position].sector.name
+        viewHolder.manyPlanets.text = sectors[position].planets.size.toString()
     }
 
     // Return the size of your dataset (invoked by the layout manager)

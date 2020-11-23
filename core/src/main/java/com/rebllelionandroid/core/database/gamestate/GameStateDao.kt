@@ -24,8 +24,9 @@ interface GameStateDao {
     fun getGameState(): GameState
 
     @Transaction
-    @Query("SELECT * FROM game_state")
-    fun getGameStatesWithSectors(): List<GameStateWithSectors>
+    @Query("SELECT * FROM game_state WHERE id = :gameStateId")
+    fun getGameStateWithSectors(gameStateId: Long): GameStateWithSectors
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createNewGameState(gameState: GameState)
