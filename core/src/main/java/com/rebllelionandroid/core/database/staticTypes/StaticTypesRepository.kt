@@ -8,8 +8,8 @@ class StaticTypesRepository @Inject constructor(
     fun getAllSectorTypes(): List<SectorType> =
         staticTypesDao.getAllSectorTypes()
 
-    fun getAllPlanetTypes(): List<PlanetType> =
-        staticTypesDao.getAllPlanetTypes()
+    fun getAllPlanetTypesForSector(sectorId: Long): List<PlanetType> =
+        staticTypesDao.getAllPlanetTypesForSector(sectorId)
 
     fun getAllUnitTypes(): List<UnitType> =
         staticTypesDao.getAllUnitTypes()

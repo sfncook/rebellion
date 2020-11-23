@@ -44,24 +44,27 @@ class GameStateViewModel @Inject constructor(
     fun createNewGameState() {
         val gameState = GameState(Random.nextLong(), false, 1)
         gameStateRepository.createNewGameState(gameState)
+
+        val allPlanets = ArrayList<Planet>()
+
         val allSectorTypes = staticTypesRepository.getAllSectorTypes()
         for(sectorType in allSectorTypes) {
             val sector = Sector(Random.nextLong(), sectorType.name, gameState.id)
             gameStateRepository.insertNewSector(sector)
+            val allPlanetTypesForSector = staticTypesRepository.getAllPlanetTypesForSector(sector.id)
+            for(planetType in allPlanetTypesForSector) {
+                val planet = Planet(Random.nextLong(), planetType.name, sector.id)
+                gameStateRepository.insertNewPlanet(planet)
+                allPlanets.add(planet)
+            }
         }
-//        for(sectorId in 1..10) {
-//            val sector = Sector(Random.nextLong(), "Sector${sectorId}", gameState.id)
-//            gameStateRepository.insertNewSector(sector)
-//            for(planetId in 1..10) {
-//                val planet = Planet(Random.nextLong(), "Planet${sectorId}.${planetId}", sector.id)
-//                gameStateRepository.insertNewPlanet(planet)
-//
-//                for(unitId in 1..5) {
-//                    val unit = Unit(Random.nextLong(), "Unit${sectorId}.${planetId}.${unitId}", planet.id)
-//                    gameStateRepository.insertNewUnit(unit)
-//                }
-//            }
-//        }
+
+        val allUnitTypes = staticTypesRepository.getAllUnitTypes()
+        for(unitType in allUnitTypes) {
+            val planet = allPlanets.random()
+            val unit = Unit(Random.nextLong(), unitType.name, planet.id)
+            gameStateRepository.insertNewUnit(unit)
+        }
     }
 
     fun getGameState(): GameState {
