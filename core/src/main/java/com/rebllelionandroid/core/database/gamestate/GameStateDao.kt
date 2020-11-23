@@ -23,6 +23,10 @@ interface GameStateDao {
     @Query("SELECT * FROM game_state LIMIT 1")
     fun getGameState(): GameState
 
+    @Transaction
+    @Query("SELECT * FROM game_state")
+    fun getGameStatesWithSectors(): List<GameStateWithSectors>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createNewGameState(gameState: GameState)
 

@@ -1,7 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
 import androidx.lifecycle.LiveData
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -21,6 +20,11 @@ class GameStateRepository @Inject constructor(
     fun getGameState(): GameState {
         return gameStateDao.getGameState()
     }
+
+    fun getGameStatesWithSectors(): List<GameStateWithSectors> {
+        return gameStateDao.getGameStatesWithSectors()
+    }
+
 
     fun createNewGameState(gameState: GameState) =
             gameStateDao.createNewGameState(gameState)
@@ -49,4 +53,5 @@ class GameStateRepository @Inject constructor(
             return ArrayList()
         }
     }
+
 }

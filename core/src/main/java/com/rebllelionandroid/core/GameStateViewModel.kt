@@ -9,7 +9,6 @@ import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.Sector
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -68,6 +67,7 @@ class GameStateViewModel @Inject constructor(
     }
 
     fun getGameState(): GameState {
+        val usersWithPlaylists = gameStateRepository.getGameStatesWithSectors()
         return gameStateRepository.getGameState()
     }
 
