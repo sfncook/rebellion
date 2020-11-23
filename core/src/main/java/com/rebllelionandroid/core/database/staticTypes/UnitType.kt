@@ -12,5 +12,6 @@ data class UnitType(
         @NotNull @ColumnInfo(name = "name") val name: String,
         @NotNull @ColumnInfo(name = "is_ship") val isShip: Int,
         @NotNull @ColumnInfo(name = "is_personelle") val isPersonelle: Int,
-        @NotNull @ColumnInfo(name = "ship_capacity") val shipCapacity: Int
+        @NotNull @ColumnInfo(name = "ship_capacity") val shipCapacity: Int,
+        @NotNull val manyInitPerTeam: Int
 )
