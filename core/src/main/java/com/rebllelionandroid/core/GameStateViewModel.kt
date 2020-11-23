@@ -3,10 +3,7 @@ package com.rebllelionandroid.core
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rebllelionandroid.core.database.gamestate.GameState
-import com.rebllelionandroid.core.database.gamestate.GameStateRepository
-import com.rebllelionandroid.core.database.gamestate.Planet
-import com.rebllelionandroid.core.database.gamestate.Sector
+import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import kotlinx.coroutines.Job
@@ -69,8 +66,6 @@ class GameStateViewModel @Inject constructor(
     fun getGameState(): GameState {
         return gameStateRepository.getGameState()
     }
-
-    fun getAllSectorsForCurrentGame() = gameStateRepository.getAllSectorsForCurrentGame()
 
     fun getCurrentGameStateWithSectors() = gameStateRepository.getCurrentGameStateWithSectors()
 }
