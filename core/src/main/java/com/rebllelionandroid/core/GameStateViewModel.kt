@@ -46,8 +46,8 @@ class GameStateViewModel @Inject constructor(
         gameStateRepository.createNewGameState(gameState)
         val allSectorTypes = staticTypesRepository.getAllSectorTypes()
         for(sectorType in allSectorTypes) {
-//            val sector = Sector(Random.nextLong(), sectorType.name, gameState.id)
-//            gameStateRepository.insertNewSector(sector)
+            val sector = Sector(Random.nextLong(), sectorType.name, gameState.id)
+            gameStateRepository.insertNewSector(sector)
         }
 //        for(sectorId in 1..10) {
 //            val sector = Sector(Random.nextLong(), "Sector${sectorId}", gameState.id)
