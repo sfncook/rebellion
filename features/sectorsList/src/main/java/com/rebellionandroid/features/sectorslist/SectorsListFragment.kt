@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class SectorsListFragment : Fragment() {
 
-    lateinit var viewModel: GameStateViewModel
+    lateinit var gameStateViewModel: GameStateViewModel
 
     lateinit var viewBinding: FragmentSectorsListBinding
     lateinit var viewAdapter: SectorListAdapter
@@ -38,7 +38,7 @@ class SectorsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewBinding.viewModel = viewModel
+        viewBinding.viewModel = gameStateViewModel
     }
 
     private fun initAppDependencyInjection() {
@@ -46,14 +46,16 @@ class SectorsListFragment : Fragment() {
                 .builder()
                 .contextModule(ContextModule(requireContext()))
                 .build()
-        viewModel = gameStateComponent.gameStateViewModel()
+        gameStateViewModel = gameStateComponent.gameStateViewModel()
         mainScope.launch(Dispatchers.IO) {
-            viewAdapter = SectorListAdapter(viewModel.getCurrentGameStateWithSectors().sectors)
-            recyclerView = viewBinding.root.findViewById(R.id.sectors_list)
-            mainScope.launch(Dispatchers.Main) {
-                recyclerView.adapter = viewAdapter
-                viewBinding.sectorsList.apply {
-                    adapter = viewAdapter
+            if(gameStateViewModel.getGameState() != null) {
+                viewAdapter = SectorListAdapter(gameStateViewModel.getCurrentGameStateWithSectors().sectors)
+                recyclerView = viewBinding.root.findViewById(R.id.sectors_list)
+                mainScope.launch(Dispatchers.Main) {
+                    recyclerView.adapter = viewAdapter
+                    viewBinding.sectorsList.apply {
+                        adapter = viewAdapter
+                    }
                 }
             }
         }
