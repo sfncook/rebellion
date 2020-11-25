@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -44,7 +43,7 @@ class SectorListAdapter(
         val sector = sectors[position].sector
         val planets = sectors[position].planets
         viewHolder.sectorName.text = sector.name
-        viewHolder.planetsView.adapter = ArrayAdapter(context, R.layout.list_item_sector_item_planet, planets)
+        viewHolder.planetsView.adapter = SectorItemPlanetsListAdapter(context, R.layout.list_item_sector_item_planet, planets)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
