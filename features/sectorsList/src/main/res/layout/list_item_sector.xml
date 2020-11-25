@@ -1,4 +1,5 @@
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sector_card"
     android:layout_width="match_parent"
@@ -18,16 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
-            app:layout_constraintBottom_toTopOf="@+id/many_planets"
+            app:layout_constraintBottom_toTopOf="@+id/planets_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/many_planets"
+        <ListView
+            android:id="@+id/planets_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="123 Planets"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

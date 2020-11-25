@@ -49,7 +49,7 @@ class SectorsListFragment : Fragment() {
         gameStateViewModel = gameStateComponent.gameStateViewModel()
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getGameState() != null) {
-                viewAdapter = SectorListAdapter(gameStateViewModel.getCurrentGameStateWithSectors().sectors)
+                viewAdapter = SectorListAdapter(gameStateViewModel.getCurrentGameStateWithSectors().sectors, requireContext())
                 recyclerView = viewBinding.root.findViewById(R.id.sectors_list)
                 mainScope.launch(Dispatchers.Main) {
                     recyclerView.adapter = viewAdapter

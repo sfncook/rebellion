@@ -1,16 +1,20 @@
 package com.rebellionandroid.features.sectorslist
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.rebllelionandroid.core.GameStateViewModel
-import com.rebllelionandroid.core.database.gamestate.Sector
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.features.sectorsList.R
 
-class SectorListAdapter(private val sectors: List<SectorWithPlanets>) :
+class SectorListAdapter(
+        private val sectors: List<SectorWithPlanets>,
+        private val context: Context
+) :
     RecyclerView.Adapter<SectorListAdapter.ViewHolder>() {
 
     /**
@@ -19,7 +23,7 @@ class SectorListAdapter(private val sectors: List<SectorWithPlanets>) :
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val sectorName: TextView = view.findViewById(R.id.sector_name)
-        val manyPlanets: TextView = view.findViewById(R.id.many_planets)
+        val planetsView: ListView = view.findViewById(R.id.planets_list)
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -37,8 +41,10 @@ class SectorListAdapter(private val sectors: List<SectorWithPlanets>) :
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.sectorName.text = sectors[position].sector.name
-        viewHolder.manyPlanets.text = sectors[position].planets.size.toString()
+        val sector = sectors[position].sector
+        val planets = sectors[position].planets
+        viewHolder.sectorName.text = sector.name
+        viewHolder.planetsView.adapter = ArrayAdapter(context, R.layout.list_item_sector_item_planet, planets)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
