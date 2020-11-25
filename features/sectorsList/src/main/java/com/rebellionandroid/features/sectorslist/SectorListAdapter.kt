@@ -1,20 +1,16 @@
 package com.rebellionandroid.features.sectorslist
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.features.sectorsList.R
 
 class SectorListAdapter(
-        private val sectors: List<SectorWithPlanets>,
-        private val context: Context
-) :
-    RecyclerView.Adapter<SectorListAdapter.ViewHolder>() {
+        private val sectors: List<SectorWithPlanets>
+) : RecyclerView.Adapter<SectorListAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
@@ -22,7 +18,7 @@ class SectorListAdapter(
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val sectorName: TextView = view.findViewById(R.id.sector_name)
-        val planetsView: ListView = view.findViewById(R.id.planets_list)
+        val planetsList: RecyclerView  = view.findViewById(R.id.planets_list)
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -34,19 +30,22 @@ class SectorListAdapter(
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item_sector, viewGroup, false)
-
         return ViewHolder(view)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val sector = sectors[position].sector
-        val planets = sectors[position].planets
         viewHolder.sectorName.text = sector.name
-        viewHolder.planetsView.adapter = SectorItemPlanetsListAdapter(context, R.layout.list_item_sector_item_planet, planets)
+
+        val planets = sectors[position].planets
+        val viewAdapter = SectorItemPlanetsListAdapter(planets)
+        viewHolder.planetsList.adapter = viewAdapter
+        viewHolder.planetsList.apply {
+            adapter = viewAdapter
+        }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() =  sectors.size
 
 }

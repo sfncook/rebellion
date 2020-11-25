@@ -5,22 +5,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.features.sectorsList.R
 
-class SectorItemPlanetsListAdapter(context: Context, private var resource: Int, planets: List<PlanetWithUnits>) :
-        ArrayAdapter<PlanetWithUnits>(context, resource, planets) {
+class SectorItemPlanetsListAdapter(
+        private val planets: List<PlanetWithUnits>
+) : RecyclerView.Adapter<SectorItemPlanetsListAdapter.ViewHolder>() {
 
-    private var mInflater = LayoutInflater.from(context)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val planetName: TextView = view.findViewById(R.id.planet_name)
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: mInflater.inflate(resource, parent, false)
-
-        val planetNameText = view.findViewById<TextView>(R.id.planet_name)
-        val planetWithUnits = getItem(position)
-        planetNameText.text = planetWithUnits?.planet?.name ?: "XXX"
-
-        return view
+        init {
+            // Define click listener for the ViewHolder's View.
+        }
     }
+
+    // Create new views (invoked by the layout manager)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        // Create a new view, which defines the UI of the list item
+        val view = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.list_item_sector_item_planet, viewGroup, false)
+        return ViewHolder(view)
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        viewHolder.planetName.text = planets[position].planet.name
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    override fun getItemCount() =  planets.size
+
 }
