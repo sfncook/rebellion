@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,7 @@ class SectorItemPlanetsListAdapter(
 ) : RecyclerView.Adapter<SectorItemPlanetsListAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val planetName: TextView = view.findViewById(R.id.planet_name)
+        val planetLoyaltyImg: ImageView = view.findViewById(R.id.planet_loyalty_img)
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -34,7 +35,7 @@ class SectorItemPlanetsListAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.planetName.text = planets[position].planet.name
+        viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltya)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
