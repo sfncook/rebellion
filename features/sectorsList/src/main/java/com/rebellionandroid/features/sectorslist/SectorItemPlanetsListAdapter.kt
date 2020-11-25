@@ -35,7 +35,18 @@ class SectorItemPlanetsListAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltya)
+        val (planet, _) = planets[position]
+        if(planet.teamALoyalty >= 50 && planet.teamBLoyalty >= 50) {
+            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
+        } else if(planet.teamALoyalty <= 50 && planet.teamBLoyalty <= 50) {
+            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
+        } else if(planet.teamALoyalty >= 50 && planet.teamBLoyalty < 50) {
+            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltya)
+        } else if(planet.teamALoyalty < 50 && planet.teamBLoyalty >= 50) {
+            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyb)
+        } else {
+            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyneutral)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
