@@ -18,7 +18,7 @@ class SectorItemPlanetsListAdapter(
 ) : RecyclerView.Adapter<SectorItemPlanetsListAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val planetLoyaltyImg: ImageView = view.findViewById(R.id.planet_loyalty_img)
+        val planetLoyaltyImg: TextView = view.findViewById(R.id.planet_loyalty_img)
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -36,17 +36,18 @@ class SectorItemPlanetsListAdapter(
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val (planet, _) = planets[position]
-        if(planet.teamALoyalty >= 50 && planet.teamBLoyalty >= 50) {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
-        } else if(planet.teamALoyalty <= 50 && planet.teamBLoyalty <= 50) {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
-        } else if(planet.teamALoyalty >= 50 && planet.teamBLoyalty < 50) {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltya)
-        } else if(planet.teamALoyalty < 50 && planet.teamBLoyalty >= 50) {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyb)
-        } else {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyneutral)
-        }
+//        viewHolder.planetLoyaltyImg.text = planet.name.subSequence(0, 1)
+//        if(planet.teamALoyalty >= 50 && planet.teamBLoyalty >= 50) {
+//            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
+//        } else if(planet.teamALoyalty <= 50 && planet.teamBLoyalty <= 50) {
+//            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
+//        } else if(planet.teamALoyalty >= 50 && planet.teamBLoyalty < 50) {
+//            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltya)
+//        } else if(planet.teamALoyalty < 50 && planet.teamBLoyalty >= 50) {
+//            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyb)
+//        } else {
+//            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyneutral)
+//        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

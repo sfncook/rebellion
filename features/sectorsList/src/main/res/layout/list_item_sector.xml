@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sector_card"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
     app:cardBackgroundColor="#FFF2CF"
     app:cardCornerRadius="5dp"
@@ -12,28 +12,33 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_margin="3dp"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/planets_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:layout_margin="3dp"
+            app:spanCount="2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/sector_name" />
 
         <TextView
             android:id="@+id/sector_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
-            app:layout_constraintBottom_toTopOf="@+id/planets_list"
+            android:layout_margin="3dp"
+            app:layout_constraintTop_toBottomOf="@+id/planets_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/planets_list"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
-            app:spanCount="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sector_name" />
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
