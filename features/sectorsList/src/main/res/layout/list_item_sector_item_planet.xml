@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
     <ImageView
         android:id="@+id/planet_loyalty_img"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_margin="2dp"
         android:layout_gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"

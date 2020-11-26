@@ -29,10 +29,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         println("MainActivity.onCreate")
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        supportActionBar?.hide()
-        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+//        requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        supportActionBar?.hide()
+//        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         setContentView(R.layout.activity_main)
 
