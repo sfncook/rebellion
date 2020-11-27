@@ -6,6 +6,11 @@ import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.GameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import kotlinx.coroutines.MainScope
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 
 class PlanetDetailActivity : AppCompatActivity() {
 
@@ -27,16 +32,16 @@ class PlanetDetailActivity : AppCompatActivity() {
 //                startActivity(intent)
 //            }
 //        }
-//
-//        val navView: BottomNavigationView = findViewById(R.id.nav_view)
-//
-//        val navController = findNavController(R.id.nav_host_fragment)
-//        // Passing each menu ID as a set of Ids because each
-//        // menu should be considered as top level destinations.
-//        val appBarConfiguration = AppBarConfiguration(setOf(
-//                R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_sectorslist))
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-//        navView.setupWithNavController(navController)
+
+        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+        val navController = findNavController(R.id.nav_host_fragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(setOf(
+                R.id.navigation_planet_units, R.id.navigation_planet_factories))
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
     private fun initAppDependencyInjection() {

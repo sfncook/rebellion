@@ -1,10 +1,12 @@
 package com.rebellionandroid.features.sectordetail
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.features.planetdetail.PlanetDetailActivity
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.features.sectorsdetail.R
 
@@ -19,13 +21,13 @@ class PlanetsListAdapter(
         val planetName: TextView = view.findViewById(R.id.planet_name)
 
         init {
-//            view.setOnClickListener {
-//                val sectorWithPlanets = sectorsWithPlanets[adapterPosition]
-//                println("click sector ${sectorWithPlanets.sector.name}")
-//                val intent = Intent(it.context, SectorDetailActivity::class.java)
-//                intent.putExtra("SELECTED_SECTOR_ID", sectorWithPlanets.sector.id);
-//                it.context.startActivity(intent)
-//            }
+            view.setOnClickListener {
+                val planetWithUnits = planetsWithUnits[adapterPosition]
+                println("click planet ${planetWithUnits.planet.name}")
+                val intent = Intent(it.context, PlanetDetailActivity::class.java)
+                intent.putExtra("SELECTED_PLANET_ID", planetWithUnits.planet.id);
+                it.context.startActivity(intent)
+            }
         }
     }
 
