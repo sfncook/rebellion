@@ -25,13 +25,12 @@ class SectorDetailActivity: Activity() {
 
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getManyGameStates()>0) {
-                viewAdapter = PlanetsListAdapter(ArrayList())
+                val selectedSectorId = intent.getLongExtra("SELECTED_SECTOR_ID", 0)
+                val sectorWithPlanets = gameStateViewModel.getSectorWithPlanets(selectedSectorId)
+                viewAdapter = PlanetsListAdapter(sectorWithPlanets.planets)
                 recyclerView = findViewById(R.id.planets_list)
                 mainScope.launch(Dispatchers.Main) {
                     recyclerView.adapter = viewAdapter
-//                    viewBinding.sectorsList.apply {
-//                        adapter = viewAdapter
-//                    }
                 }
             }
         }
