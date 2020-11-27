@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class SectorsListActivity: Activity() {
     lateinit var gameStateViewModel: GameStateViewModel
 
-    lateinit var viewBinding: FragmentSectorsListBinding
+    lateinit var viewBinding: ActivitySectorsListBinding
     lateinit var viewAdapter: SectorListAdapter
     private val mainScope = MainScope()
     private lateinit var recyclerView: RecyclerView
@@ -26,8 +26,8 @@ class SectorsListActivity: Activity() {
         initAppDependencyInjection()
         super.onCreate(savedInstanceState)
 
-        val binding: ActivitySectorsListBinding = DataBindingUtil.setContentView(this, R.layout.activity_sectors_list)
-        binding.viewModel = gameStateViewModel
+        viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_sectors_list)
+        viewBinding.viewModel = gameStateViewModel
 
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getManyGameStates()>0) {
