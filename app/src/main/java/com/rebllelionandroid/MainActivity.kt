@@ -29,9 +29,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val gameStateViewModel = gameStateComponent.gameStateViewModel()
         mainScope.launch(Dispatchers.IO) {
-            val intent = Intent(applicationContext, NewGameActivity::class.java)
-            startActivity(intent)
+            if(gameStateViewModel.getManyGameStates() == 0) {
+                val intent = Intent(applicationContext, NewGameActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)

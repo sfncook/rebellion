@@ -38,8 +38,6 @@ class SectorItemPlanetsListAdapter(
         val (planet, _) = planets[position]
         if(planet.teamALoyalty >= 50 && planet.teamBLoyalty >= 50) {
             viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
-        } else if(planet.teamALoyalty <= 50 && planet.teamBLoyalty <= 50) {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
         } else if(planet.teamALoyalty >= 50 && planet.teamBLoyalty < 50) {
             viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltya)
         } else if(planet.teamALoyalty < 50 && planet.teamBLoyalty >= 50) {
