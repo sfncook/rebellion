@@ -2,6 +2,7 @@ package com.rebellionandroid.features.sectordetail
 
 import android.app.Activity
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
@@ -27,9 +28,12 @@ class SectorDetailActivity: Activity() {
             if(gameStateViewModel.getManyGameStates()>0) {
                 val selectedSectorId = intent.getLongExtra("SELECTED_SECTOR_ID", 0)
                 val sectorWithPlanets = gameStateViewModel.getSectorWithPlanets(selectedSectorId)
+                val sector = sectorWithPlanets.sector
+                val toolbar = findViewById<Toolbar>(R.id.sector_detail_toolbar)
                 viewAdapter = PlanetsListAdapter(sectorWithPlanets.planets)
                 recyclerView = findViewById(R.id.planets_list)
                 mainScope.launch(Dispatchers.Main) {
+                    toolbar.title = "Sector: ${sector.name}"
                     recyclerView.adapter = viewAdapter
                 }
             }
