@@ -15,6 +15,9 @@ import com.rebllelionandroid.core.database.staticTypes.UnitType
         Sector::class,
         Planet::class,
         Unit::class,
+        Ship::class,
+        Factory::class,
+        DefenseStructure::class,
         SectorType::class,
         PlanetType::class,
         UnitType::class

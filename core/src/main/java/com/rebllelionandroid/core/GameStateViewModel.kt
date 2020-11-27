@@ -63,12 +63,12 @@ class GameStateViewModel @Inject constructor(
             }
         }
 
-        val allUnitTypes = staticTypesRepository.getAllUnitTypes()
-        for(unitType in allUnitTypes) {
-            val planet = allPlanets.random()
-            val unit = Unit(Random.nextLong(), unitType.name, planet.id)
-            gameStateRepository.insertNewUnit(unit)
-        }
+//        val allUnitTypes = staticTypesRepository.getAllUnitTypes()
+//        for(unitType in allUnitTypes) {
+//            val planet = allPlanets.random()
+//            val unit = Unit(Random.nextLong(), unitType.name, planet.id)
+//            gameStateRepository.insertNewUnit(unit)
+//        }
     }
 
     fun getGameState(): GameState {
