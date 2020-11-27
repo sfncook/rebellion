@@ -27,21 +27,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         initAppDependencyInjection()
         super.onCreate(savedInstanceState)
-        println("MainActivity.onCreate")
-
-//        requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        supportActionBar?.hide()
-//        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
         setContentView(R.layout.activity_main)
 
-        val gameStateViewModel = gameStateComponent.gameStateViewModel()
         mainScope.launch(Dispatchers.IO) {
-            if(gameStateViewModel.getGameState() == null) {
-                val intent = Intent(applicationContext, NewGameActivity::class.java)
-                startActivity(intent)
-            }
+            val intent = Intent(applicationContext, NewGameActivity::class.java)
+            startActivity(intent)
         }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)

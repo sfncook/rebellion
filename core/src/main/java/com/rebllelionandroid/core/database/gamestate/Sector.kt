@@ -14,5 +14,5 @@ import androidx.room.PrimaryKey
 data class Sector(
         @PrimaryKey val id: Long,
         @ColumnInfo(name = "name") val name: String,
-        @ColumnInfo(name = "game_state_id") val gameStateId: Long
+        @ColumnInfo(name = "game_state_id", index = true) val gameStateId: Long
 )

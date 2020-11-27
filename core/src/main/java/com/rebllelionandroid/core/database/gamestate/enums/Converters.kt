@@ -27,4 +27,14 @@ class Converters {
     fun toFactoryType(value: String) = enumValueOf<FactoryType>(value)
     @TypeConverter
     fun fromFactoryType(value: FactoryType) = value.name
+
+    @TypeConverter
+    fun toFactoryBuildTargetType(value: String) = enumValueOf<FactoryBuildTargetType>(value)
+    @TypeConverter
+    fun fromFactoryBuildTargetType(value: FactoryBuildTargetType) = value.name
+
+    @TypeConverter
+    fun toDefenseStructureType(value: String) = enumValueOf<DefenseStructureType>(value)
+    @TypeConverter
+    fun fromDefenseStructureType(value: DefenseStructureType) = value.name
 }

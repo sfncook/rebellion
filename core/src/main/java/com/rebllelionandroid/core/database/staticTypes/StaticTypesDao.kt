@@ -10,7 +10,4 @@ interface StaticTypesDao {
 
     @Query("SELECT * FROM planet_types WHERE sector_id = :sectorTypeId")
     fun getAllPlanetTypesForSector(sectorTypeId: Long): List<PlanetType>
-
-    @Query("SELECT * FROM unit_types")
-    fun getAllUnitTypes(): List<UnitType>
 }

@@ -7,7 +7,6 @@ import com.rebllelionandroid.core.database.gamestate.enums.Converters
 import com.rebllelionandroid.core.database.staticTypes.PlanetType
 import com.rebllelionandroid.core.database.staticTypes.SectorType
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesDao
-import com.rebllelionandroid.core.database.staticTypes.UnitType
 
 @Database(
     entities = [
@@ -19,8 +18,7 @@ import com.rebllelionandroid.core.database.staticTypes.UnitType
         Factory::class,
         DefenseStructure::class,
         SectorType::class,
-        PlanetType::class,
-        UnitType::class
+        PlanetType::class
     ],
     exportSchema = false,
     version = 4

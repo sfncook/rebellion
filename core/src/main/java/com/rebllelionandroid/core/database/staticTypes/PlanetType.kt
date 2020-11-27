@@ -14,5 +14,5 @@ import org.jetbrains.annotations.NotNull
 data class PlanetType(
         @PrimaryKey val id: Long,
         @NotNull @ColumnInfo(name = "name") val name: String,
-        @NotNull @ColumnInfo(name = "sector_id") val sectorId: Long
+        @NotNull @ColumnInfo(name = "sector_id", index = true) val sectorId: Long
 )

@@ -13,19 +13,19 @@ import com.rebllelionandroid.core.database.gamestate.enums.UnitType
         foreignKeys = [
                 ForeignKey(entity = Planet::class,
                         parentColumns = arrayOf("id"),
-                        childColumns = arrayOf("locationPlanet"),
+                        childColumns = arrayOf("planet_id"),
                         onDelete = ForeignKey.CASCADE),
                 ForeignKey(entity = Ship::class,
                         parentColumns = arrayOf("id"),
-                        childColumns = arrayOf("locationShip"),
+                        childColumns = arrayOf("ship_id"),
                         onDelete = ForeignKey.CASCADE)
         ]
 )
 data class Unit(
         @PrimaryKey val id: Long,
         val unitType: UnitType,
-        val locationPlanet: Long,
-        val locationShip: Long,
+        @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long,
+        @ColumnInfo(name = "ship_id", index = true) val locationShip: Long,
         val mission: Mission,
         val dayMissionComplete: Long,
         val missionTargetType: MissionTargetType,

@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
 data class Planet(
         @PrimaryKey val id: Long,
         @ColumnInfo(name = "name") val name: String,
-        @ColumnInfo(name = "sector_id") val sectorId: Long,
+        @ColumnInfo(name = "sector_id", index = true) val sectorId: Long,
         val teamALoyalty: Int,
         val teamBLoyalty: Int,
         val isExplored: Boolean,
