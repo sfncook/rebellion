@@ -2,6 +2,8 @@ package com.rebellionandroid.features.sectorslist
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.GameStateViewModel
@@ -41,6 +43,15 @@ class SectorsListActivity: Activity() {
                 }
             }
         }
+
+        findViewById<ImageView>(R.id.hq_team_a).setColorFilter(
+                ContextCompat.getColor(this, R.color.team_a),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+        );
+        findViewById<ImageView>(R.id.hq_team_b).setColorFilter(
+                ContextCompat.getColor(this, R.color.team_b),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+        );
     }
 
     private fun initAppDependencyInjection() {
