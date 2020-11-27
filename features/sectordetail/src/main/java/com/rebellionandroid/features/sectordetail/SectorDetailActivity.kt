@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
+import com.rebllelionandroid.features.sectorsdetail.R
 import kotlinx.coroutines.MainScope
 
 class SectorDetailActivity: Activity() {

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rebellionandroid.features.sectordetail">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rebllelionandroid.features.sectorsdetail">
+
+    <application>
+        <activity android:name="com.rebellionandroid.features.sectordetail.SectorDetailActivity"/>
+    </application>
 
 </manifest>
+

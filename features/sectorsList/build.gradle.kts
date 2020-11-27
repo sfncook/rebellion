@@ -14,6 +14,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":features:sectordetail"))
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
     implementation(Dependencies.APPCOMPAT)
