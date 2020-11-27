@@ -3,6 +3,7 @@ include(
     ":app",
     ":features:sectorsList",
     ":features:newgameactivity",
-    ":features:sectordetail"
+    ":features:sectordetail",
+    ":features:planetDetail"
 )
 rootProject.name = "Rebllelion Android"

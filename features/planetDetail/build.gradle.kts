@@ -14,7 +14,6 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":features:planetDetail"))
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
     implementation(Dependencies.APPCOMPAT)
