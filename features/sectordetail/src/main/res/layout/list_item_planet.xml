@@ -6,7 +6,7 @@
     android:layout_margin="3dp"
     >
     <TextView
-        android:id="@+id/sector_name"
+        android:id="@+id/planet_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name"

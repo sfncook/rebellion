@@ -7,12 +7,14 @@ import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import com.rebllelionandroid.features.sectorsdetail.R
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class SectorDetailActivity: Activity() {
     lateinit var gameStateViewModel: GameStateViewModel
 
-//    lateinit var viewAdapter: SectorListAdapter
+    lateinit var viewAdapter: PlanetsListAdapter
     private val mainScope = MainScope()
     private lateinit var recyclerView: RecyclerView
 
@@ -21,18 +23,18 @@ class SectorDetailActivity: Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sector_detail)
 
-//        mainScope.launch(Dispatchers.IO) {
-//            if(gameStateViewModel.getManyGameStates()>0) {
-//                viewAdapter = SectorListAdapter(gameStateViewModel.getCurrentGameStateWithSectors().sectors)
-//                recyclerView = findViewById(R.id.sectors_list)
-//                mainScope.launch(Dispatchers.Main) {
-//                    recyclerView.adapter = viewAdapter
+        mainScope.launch(Dispatchers.IO) {
+            if(gameStateViewModel.getManyGameStates()>0) {
+                viewAdapter = PlanetsListAdapter(ArrayList())
+                recyclerView = findViewById(R.id.planets_list)
+                mainScope.launch(Dispatchers.Main) {
+                    recyclerView.adapter = viewAdapter
 //                    viewBinding.sectorsList.apply {
 //                        adapter = viewAdapter
 //                    }
-//                }
-//            }
-//        }
+                }
+            }
+        }
     }
 
     private fun initAppDependencyInjection() {
