@@ -32,15 +32,6 @@ class SectorsListActivity: Activity() {
 
         viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_sectors_list)
         viewBinding.viewModel = gameStateViewModel
-
-        findViewById<ImageView>(R.id.hq_team_a).setColorFilter(
-                ContextCompat.getColor(this, R.color.team_a),
-                android.graphics.PorterDuff.Mode.MULTIPLY
-        );
-        findViewById<ImageView>(R.id.hq_team_b).setColorFilter(
-                ContextCompat.getColor(this, R.color.team_b),
-                android.graphics.PorterDuff.Mode.MULTIPLY
-        );
     }
 
     override fun onResume() {

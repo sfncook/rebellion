@@ -55,13 +55,13 @@ class GameStateViewModel @Inject constructor(
                 var loyaltyMinTeamB = 0
                 var loyaltyMaxTeamB = 20
                 if(sectorType.initTeamLoyalty == TeamLoyalty.TeamA) {
-                    loyaltyMinTeamA = 40
-                    loyaltyMaxTeamA = 70
+                    loyaltyMinTeamA = 10
+                    loyaltyMaxTeamA = 50
                     loyaltyMaxTeamB = 10
                 } else  if(sectorType.initTeamLoyalty == TeamLoyalty.TeamB) {
                     loyaltyMaxTeamA = 10
-                    loyaltyMinTeamB = 40
-                    loyaltyMaxTeamB = 70
+                    loyaltyMinTeamB = 10
+                    loyaltyMaxTeamB = 50
                 }
                 val planet = Planet(
                     id = Random.nextLong(),

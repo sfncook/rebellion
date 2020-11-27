@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
@@ -36,15 +37,32 @@ class SectorItemPlanetsListAdapter(
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val (planet, _) = planets[position]
-        if(planet.teamALoyalty >= 50 && planet.teamBLoyalty >= 50) {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyboth)
-        } else if(planet.teamALoyalty >= 50 && planet.teamBLoyalty < 50) {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltya)
-        } else if(planet.teamALoyalty < 50 && planet.teamBLoyalty >= 50) {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyb)
+        val loyaltyDiff = planet.teamALoyalty - planet.teamBLoyalty
+        var imgId: Int
+        var colorId: Int
+        if( 40 < loyaltyDiff) {
+            imgId = R.drawable.loyalty_lg
+            colorId = R.color.loyalty_team_a
+        } else if( 10 < loyaltyDiff) {
+            imgId = R.drawable.loyalty_sm
+            colorId = R.color.loyalty_team_a
+        } else if( -40 > loyaltyDiff) {
+            imgId = R.drawable.loyalty_lg
+            colorId = R.color.loyalty_team_b
+        } else if( -10 > loyaltyDiff) {
+            imgId = R.drawable.loyalty_sm
+            colorId = R.color.loyalty_team_b
         } else {
-            viewHolder.planetLoyaltyImg.setImageResource(R.drawable.planetloyaltyneutral)
+            imgId = R.drawable.loyalty_lg
+            colorId = R.color.loyalty_neutral
         }
+        viewHolder.planetLoyaltyImg.setImageResource(imgId)
+        viewHolder.planetLoyaltyImg.setColorFilter(
+            ContextCompat.getColor(
+                viewHolder.itemView.context,
+                colorId
+            ), android.graphics.PorterDuff.Mode.MULTIPLY
+        )
     }
 
     // Return the size of your dataset (invoked by the layout manager)
