@@ -1,11 +1,13 @@
 package com.rebellionandroid.features.sectorslist
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
@@ -31,6 +33,19 @@ class SectorsListActivity: Activity() {
         viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_sectors_list)
         viewBinding.viewModel = gameStateViewModel
 
+        findViewById<ImageView>(R.id.hq_team_a).setColorFilter(
+                ContextCompat.getColor(this, R.color.team_a),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+        );
+        findViewById<ImageView>(R.id.hq_team_b).setColorFilter(
+                ContextCompat.getColor(this, R.color.team_b),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+        );
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getManyGameStates()>0) {
                 viewAdapter = SectorListAdapter(gameStateViewModel.getCurrentGameStateWithSectors().sectors)
@@ -41,17 +56,11 @@ class SectorsListActivity: Activity() {
                         adapter = viewAdapter
                     }
                 }
+            } else {
+                val intent = Intent(applicationContext, NewGameActivity::class.java)
+                startActivity(intent)
             }
         }
-
-        findViewById<ImageView>(R.id.hq_team_a).setColorFilter(
-                ContextCompat.getColor(this, R.color.team_a),
-                android.graphics.PorterDuff.Mode.MULTIPLY
-        );
-        findViewById<ImageView>(R.id.hq_team_b).setColorFilter(
-                ContextCompat.getColor(this, R.color.team_b),
-                android.graphics.PorterDuff.Mode.MULTIPLY
-        );
     }
 
     private fun initAppDependencyInjection() {

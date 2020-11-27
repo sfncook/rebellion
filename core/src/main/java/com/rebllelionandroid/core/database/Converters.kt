@@ -1,6 +1,8 @@
-package com.rebllelionandroid.core.database.gamestate.enums
+package com.rebllelionandroid.core.database
 
 import androidx.room.TypeConverter
+import com.rebllelionandroid.core.database.gamestate.enums.*
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class Converters {
     @TypeConverter
@@ -37,4 +39,9 @@ class Converters {
     fun toDefenseStructureType(value: String) = enumValueOf<DefenseStructureType>(value)
     @TypeConverter
     fun fromDefenseStructureType(value: DefenseStructureType) = value.name
+
+    @TypeConverter
+    fun toTeamLoyalty(value: String) = enumValueOf<TeamLoyalty>(value)
+    @TypeConverter
+    fun fromTeamLoyalty(value: TeamLoyalty) = value.name
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -49,12 +50,25 @@ class GameStateViewModel @Inject constructor(
             gameStateRepository.insertNewSector(sector)
             val allPlanetTypesForSector = staticTypesRepository.getAllPlanetTypesForSector(sectorType.id)
             for(planetType in allPlanetTypesForSector) {
+                var loyaltyMinTeamA = 0
+                var loyaltyMaxTeamA = 20
+                var loyaltyMinTeamB = 0
+                var loyaltyMaxTeamB = 20
+                if(sectorType.initTeamLoyalty == TeamLoyalty.TeamA) {
+                    loyaltyMinTeamA = 40
+                    loyaltyMaxTeamA = 70
+                    loyaltyMaxTeamB = 10
+                } else  if(sectorType.initTeamLoyalty == TeamLoyalty.TeamB) {
+                    loyaltyMaxTeamA = 10
+                    loyaltyMinTeamB = 40
+                    loyaltyMaxTeamB = 70
+                }
                 val planet = Planet(
                     id = Random.nextLong(),
                     name = planetType.name,
                     sectorId = sector.id,
-                    teamALoyalty = Random.nextInt(100),
-                    teamBLoyalty = Random.nextInt(100),
+                    teamALoyalty = Random.nextInt(loyaltyMinTeamA, loyaltyMaxTeamA),
+                    teamBLoyalty = Random.nextInt(loyaltyMinTeamB, loyaltyMaxTeamB),
                     isExplored = false,
                     energyCap = Random.nextInt(10)
                 )
