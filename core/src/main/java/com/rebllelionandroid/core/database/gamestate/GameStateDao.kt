@@ -27,6 +27,9 @@ interface GameStateDao {
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameStateWithSectors(gameStateId: Long): GameStateWithSectors
 
+    @Query("SELECT COUNT(id) FROM game_state")
+    fun getManyGameStates(): Int
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createNewGameState(gameState: GameState)

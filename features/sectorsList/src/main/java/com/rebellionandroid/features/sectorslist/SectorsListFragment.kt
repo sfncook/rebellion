@@ -34,12 +34,14 @@ class SectorsListFragment : Fragment() {
         viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sectors_list, container, false)
 
         mainScope.launch(Dispatchers.IO) {
-            viewAdapter = SectorListAdapter(gameStateViewModel.getCurrentGameStateWithSectors().sectors)
-            recyclerView = viewBinding.root.findViewById(R.id.sectors_list)
-            mainScope.launch(Dispatchers.Main) {
-                recyclerView.adapter = viewAdapter
-                viewBinding.sectorsList.apply {
-                    adapter = viewAdapter
+            if(gameStateViewModel.getManyGameStates()>0) {
+                viewAdapter = SectorListAdapter(gameStateViewModel.getCurrentGameStateWithSectors().sectors)
+                recyclerView = viewBinding.root.findViewById(R.id.sectors_list)
+                mainScope.launch(Dispatchers.Main) {
+                    recyclerView.adapter = viewAdapter
+                    viewBinding.sectorsList.apply {
+                        adapter = viewAdapter
+                    }
                 }
             }
         }
