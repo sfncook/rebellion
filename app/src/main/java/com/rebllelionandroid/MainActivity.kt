@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
+import com.rebellionandroid.features.sectorslist.SectorsListActivity
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.GameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
@@ -33,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getManyGameStates() == 0) {
                 val intent = Intent(applicationContext, NewGameActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(applicationContext, SectorsListActivity::class.java)
                 startActivity(intent)
             }
         }
