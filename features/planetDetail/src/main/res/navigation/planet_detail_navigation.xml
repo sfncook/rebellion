@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_planet_units"
         android:name="com.rebellionandroid.features.planetdetail.PlanetUnitsFragment"
-        android:label="Sectors"
+        android:label="Units"
         tools:layout="@layout/fragment_planet_units" />
     <fragment
         android:id="@+id/navigation_planet_factories"
