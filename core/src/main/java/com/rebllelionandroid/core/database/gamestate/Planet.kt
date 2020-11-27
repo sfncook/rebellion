@@ -16,5 +16,7 @@ data class Planet(
         @ColumnInfo(name = "name") val name: String,
         @ColumnInfo(name = "sector_id") val sectorId: Long,
         val teamALoyalty: Int,
-        val teamBLoyalty: Int
+        val teamBLoyalty: Int,
+        val isExplored: Boolean,
+        val energyCap: Int
 )

@@ -49,7 +49,15 @@ class GameStateViewModel @Inject constructor(
             gameStateRepository.insertNewSector(sector)
             val allPlanetTypesForSector = staticTypesRepository.getAllPlanetTypesForSector(sectorType.id)
             for(planetType in allPlanetTypesForSector) {
-                val planet = Planet(Random.nextLong(), planetType.name, sector.id, Random.nextInt(100), Random.nextInt(100))
+                val planet = Planet(
+                    id = Random.nextLong(),
+                    name = planetType.name,
+                    sectorId = sector.id,
+                    teamALoyalty = Random.nextInt(100),
+                    teamBLoyalty = Random.nextInt(100),
+                    isExplored = false,
+                    energyCap = Random.nextInt(10)
+                )
                 gameStateRepository.insertNewPlanet(planet)
                 allPlanets.add(planet)
             }
