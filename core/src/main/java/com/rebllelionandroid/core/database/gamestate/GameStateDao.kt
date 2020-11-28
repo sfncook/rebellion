@@ -23,12 +23,6 @@ interface GameStateDao {
     @Query("SELECT * FROM game_state LIMIT 1")
     fun getGameState(): GameState
 
-    @Query("UPDATE game_state SET gameTime = :gameTime WHERE id = :id")
-    fun updateGameTime(id: Long, gameTime: Int): Int
-
-    @Query("UPDATE game_state SET gameInProgress = :gameInProgress WHERE id = :id")
-    fun setGameInProgress(id: Long, gameInProgress: Int): Int
-
     @Transaction
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameStateWithSectors(gameStateId: Long): GameStateWithSectors
@@ -43,13 +37,14 @@ interface GameStateDao {
     @Query("SELECT COUNT(id) FROM game_state")
     fun getManyGameStates(): Int
 
+    @Query("SELECT * FROM sectors WHERE game_state_id = :gameStateId")
+    fun getAllSectorsForGameStateId(gameStateId: Long): List<Sector>
 
+
+
+    // Inserts
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createNewGameState(gameState: GameState)
-
-    @Update
-    fun updateGameState(gameState: GameState)
-
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNewSector(sector: Sector)
@@ -71,6 +66,16 @@ interface GameStateDao {
 
 
 
-    @Query("SELECT * FROM sectors WHERE game_state_id = :gameStateId")
-    fun getAllSectorsForGameStateId(gameStateId: Long): List<Sector>
+
+    // Updates
+    @Query("UPDATE game_state SET gameTime = :gameTime WHERE id = :id")
+    fun updateGameTime(id: Long, gameTime: Int): Int
+
+    @Query("UPDATE game_state SET gameInProgress = :gameInProgress WHERE id = :id")
+    fun setGameInProgress(id: Long, gameInProgress: Int): Int
+
+    @Query("UPDATE planets SET teamALoyalty = :loyalty WHERE id = :planetId")
+    fun updatePlanetLoyalty(planetId:Long, loyalty: Int): Int
+
+
 }
