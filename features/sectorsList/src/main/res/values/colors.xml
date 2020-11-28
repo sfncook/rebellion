@@ -8,7 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="loyalty_neutral">#8E8E8E</color>
-    <color name="loyalty_team_a">#2AB61B</color>
+    <color name="loyalty_unexplored">#757575</color>
+    <color name="loyalty_neutral">#52FAFF</color>
+    <color name="loyalty_team_a">#11AA01</color>
     <color name="loyalty_team_b">#FF0000</color>
 </resources>

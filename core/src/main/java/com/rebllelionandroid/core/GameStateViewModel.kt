@@ -39,7 +39,7 @@ class GameStateViewModel @Inject constructor(
     }
 
     fun createNewGameState() {
-        val gameState = GameState(Random.nextLong(), false, 1)
+        val gameState = GameState(Random.nextLong(), false, 1, TeamLoyalty.TeamA)
         gameStateRepository.createNewGameState(gameState)
 
         val allPlanets = ArrayList<Planet>()
@@ -69,7 +69,7 @@ class GameStateViewModel @Inject constructor(
                     sectorId = sector.id,
                     teamALoyalty = Random.nextInt(loyaltyMinTeamA, loyaltyMaxTeamA),
                     teamBLoyalty = Random.nextInt(loyaltyMinTeamB, loyaltyMaxTeamB),
-                    isExplored = false,
+                    isExplored = sectorType.initTeamLoyalty == gameState.myTeam,
                     energyCap = Random.nextInt(10)
                 )
                 gameStateRepository.insertNewPlanet(planet)
