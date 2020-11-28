@@ -26,7 +26,17 @@ class MainActivity : AppCompatActivity() {
         initAppDependencyInjection()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
 
+    private fun initAppDependencyInjection() {
+        gameStateComponent = DaggerGameStateComponent
+            .builder()
+            .contextModule(ContextModule(applicationContext))
+            .build()
+    }
+
+    override fun onResume() {
+        super.onResume()
         val gameStateViewModel = gameStateComponent.gameStateViewModel()
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getManyGameStates() == 0) {
@@ -37,39 +47,5 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
-
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_sectorslist))
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        println("MainActivity.onStart")
-//        gameTimerViewModel.startTimer()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        println("MainActivity.onStop")
-//        gameTimerViewModel.stopTimer()
-    }
-
-    override fun onPostResume() {
-        super.onPostResume()
-        println("MainActivity.onPostResume")
-    }
-
-    private fun initAppDependencyInjection() {
-        gameStateComponent = DaggerGameStateComponent
-            .builder()
-            .contextModule(ContextModule(applicationContext))
-            .build()
     }
 }
