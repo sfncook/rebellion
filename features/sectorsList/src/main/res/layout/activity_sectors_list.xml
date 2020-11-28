@@ -31,7 +31,15 @@
             app:layout_constraintTop_toBottomOf="@+id/sectors_list_toolbar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/sectors_list_gamecontrols"
             />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/sectors_list_gamecontrols"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:name="com.rebellionandroid.components.gamecontrols.GameControlsFragment" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
