@@ -9,5 +9,23 @@ data class PlanetWithUnits(
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
-        val units: List<Unit>
+        val units: List<Unit>,
+
+        @Relation(
+                parentColumn = "id",
+                entityColumn = "planet_id"
+        )
+        val ships: List<Ship>,
+
+        @Relation(
+                parentColumn = "id",
+                entityColumn = "planet_id"
+        )
+        val defenseStructures: List<DefenseStructure>,
+
+        @Relation(
+                parentColumn = "id",
+                entityColumn = "planet_id"
+        )
+        val factories: List<Factory>
 )
