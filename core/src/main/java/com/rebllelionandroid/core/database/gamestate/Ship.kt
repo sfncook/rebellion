@@ -14,7 +14,6 @@ import com.rebllelionandroid.core.database.gamestate.enums.ShipType
                 onDelete = ForeignKey.CASCADE)])
 data class Ship(
         @PrimaryKey val id: Long,
-        val name: String,
         @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long,
         val shipType: ShipType,
         val isTraveling: Boolean,

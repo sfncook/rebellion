@@ -7,9 +7,7 @@ class GameStateRepository @Inject constructor(
     private val gameStateDao: GameStateDao
 ) {
 
-    fun getGameStateLive(): LiveData<GameState> {
-        return gameStateDao.getGameStateLive()
-    }
+    fun getGameStateLive() = gameStateDao.getGameStateLive()
 
     fun getCurrentGameStateWithSectors(): GameStateWithSectors {
         val gameState = gameStateDao.getGameState()
@@ -20,21 +18,15 @@ class GameStateRepository @Inject constructor(
     fun getManyGameStates() = gameStateDao.getManyGameStates()
 
 
-    fun createNewGameState(gameState: GameState) =
-            gameStateDao.createNewGameState(gameState)
-
-    fun updateGameState(gameState: GameState) =
-            gameStateDao.updateGameState(gameState)
+    fun updateGameState(gameState: GameState) = gameStateDao.updateGameState(gameState)
 
 
-
-    fun insertNewSector(sector: Sector) =
-            gameStateDao.insertNewSector(sector)
-
-    fun insertNewPlanet(planet: Planet) =
-            gameStateDao.insertNewPlanet(planet)
-
-    fun insertNewUnit(unit: Unit) =
-            gameStateDao.insertNewUnit(unit)
+    fun createNewGameState(gameState: GameState) = gameStateDao.createNewGameState(gameState)
+    fun insertNewSector(sector: Sector) = gameStateDao.insertNewSector(sector)
+    fun insertNewPlanet(planet: Planet) = gameStateDao.insertNewPlanet(planet)
+    fun insertNewDefenseStructure(defenseStructure: DefenseStructure) = gameStateDao.insertNewDefenseStructure(defenseStructure)
+    fun insertNewFactory(factory: Factory) = gameStateDao.insertNewFactory(factory)
+    fun insertNewShip(ship: Ship) = gameStateDao.insertNewShip(ship)
+    fun insertNewUnit(unit: Unit) = gameStateDao.insertNewUnit(unit)
 
 }

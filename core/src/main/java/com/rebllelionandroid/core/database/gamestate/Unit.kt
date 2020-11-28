@@ -1,5 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
+import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -24,10 +25,10 @@ import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 data class Unit(
         @PrimaryKey val id: Long,
         val unitType: UnitType,
-        @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long,
-        @ColumnInfo(name = "ship_id", index = true) val locationShip: Long,
-        val mission: Mission,
+        @Nullable @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long?,
+        @Nullable @ColumnInfo(name = "ship_id", index = true) val locationShip: Long?,
+        @Nullable val mission: Mission?,
         val dayMissionComplete: Long,
-        val missionTargetType: MissionTargetType,
-        val missionTargetId: Long
+        @Nullable val missionTargetType: MissionTargetType?,
+        @Nullable val missionTargetId: Long?
 )

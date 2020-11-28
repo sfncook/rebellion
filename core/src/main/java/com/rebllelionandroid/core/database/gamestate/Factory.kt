@@ -1,5 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
+import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -20,7 +21,7 @@ data class Factory(
         @PrimaryKey val id: Long,
         val factoryType: FactoryType,
         @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long,
-        val buildTargetType: FactoryBuildTargetType,
+        val buildTargetType: FactoryBuildTargetType?,
         val dayBuildComplete: Long,
         val isTravelling: Boolean, // Travelling for delivery
         val dayArrival: Long

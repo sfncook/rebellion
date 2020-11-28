@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.*
-import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.Job
@@ -43,6 +43,8 @@ class GameStateViewModel @Inject constructor(
         gameStateRepository.createNewGameState(gameState)
 
         val allPlanets = ArrayList<Planet>()
+        val planetsTeamA = ArrayList<Planet>()
+        val planetsTeamB = ArrayList<Planet>()
 
         val allSectorTypes = staticTypesRepository.getAllSectorTypes()
         for(sectorType in allSectorTypes) {
@@ -74,15 +76,76 @@ class GameStateViewModel @Inject constructor(
                 )
                 gameStateRepository.insertNewPlanet(planet)
                 allPlanets.add(planet)
+                if(sectorType.initTeamLoyalty == TeamLoyalty.TeamA) {
+                    planetsTeamA.add(planet)
+                } else if(sectorType.initTeamLoyalty == TeamLoyalty.TeamB) {
+                    planetsTeamB.add(planet)
+                }
             }
         }
 
-//        val allUnitTypes = staticTypesRepository.getAllUnitTypes()
-//        for(unitType in allUnitTypes) {
-//            val planet = allPlanets.random()
-//            val unit = Unit(Random.nextLong(), unitType.name, planet.id)
-//            gameStateRepository.insertNewUnit(unit)
-//        }
+        // Create units
+        // Orbital battery
+        val orbitalBattery = DefenseStructure(
+                id = Random.nextLong(),
+                defenseStructureType = DefenseStructureType.OrbitalBattery,
+                locationPlanetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id,
+                isTravelling = false,
+                dayArrival = 0
+        )
+        gameStateRepository.insertNewDefenseStructure(orbitalBattery)
+
+        // Planetary shield
+        val planetaryShield = DefenseStructure(
+                id = Random.nextLong(),
+                defenseStructureType = DefenseStructureType.PlanetaryShield,
+                locationPlanetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id,
+                isTravelling = false,
+                dayArrival = 0
+        )
+        gameStateRepository.insertNewDefenseStructure(planetaryShield)
+
+        val manyInitFactories = 3
+        for(u in 1..manyInitFactories) {
+            val planetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id
+            val factory = Factory(
+                    id = Random.nextLong(),
+                    factoryType = FactoryType.ConstructionYard,
+                    planetId,
+                    buildTargetType = null,
+                    dayBuildComplete = 0,
+                    isTravelling = false,
+                    dayArrival = 0
+            )
+            gameStateRepository.insertNewFactory(factory)
+        }
+
+        val manyInitShips = 5
+        for(u in 1..manyInitShips) {
+            val ship = Ship(
+                    id = Random.nextLong(),
+                    locationPlanetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id,
+                    shipType = ShipType.Biremes,
+                    isTraveling = false,
+                    dayArrival = 0
+            )
+            gameStateRepository.insertNewShip(ship)
+        }
+
+        val manyInitUnits = 5
+        for(u in 1..manyInitUnits) {
+            val unit = Unit(
+                    id = Random.nextLong(),
+                    unitType = UnitType.Garrison,
+                    locationPlanetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id,
+                    locationShip = null,
+                    mission = null,
+                    dayMissionComplete = 0,
+                    missionTargetType = null,
+                    missionTargetId = null
+            )
+            gameStateRepository.insertNewUnit(unit)
+        }
     }
 
     fun getCurrentGameStateWithSectors() = gameStateRepository.getCurrentGameStateWithSectors()

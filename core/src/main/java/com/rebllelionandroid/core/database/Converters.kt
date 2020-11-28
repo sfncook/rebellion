@@ -6,42 +6,42 @@ import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class Converters {
     @TypeConverter
-    fun toShipType(value: String) = enumValueOf<ShipType>(value)
+    fun toShipType(value: String?) = value?.let { enumValueOf<ShipType>(it) }
     @TypeConverter
-    fun fromShipType(value: ShipType) = value.name
+    fun fromShipType(value: ShipType?) = value?.name
 
     @TypeConverter
-    fun toUnitType(value: String) = enumValueOf<UnitType>(value)
+    fun toUnitType(value: String?) = value?.let { enumValueOf<UnitType>(it) }
     @TypeConverter
-    fun fromUnitType(value: UnitType) = value.name
+    fun fromUnitType(value: UnitType?) = value?.name
 
     @TypeConverter
-    fun toMission(value: String) = enumValueOf<Mission>(value)
+    fun toMission(value: String?) = value?.let { enumValueOf<Mission>(it) }
     @TypeConverter
-    fun fromMission(value: Mission) = value.name
+    fun fromMission(value: Mission?) = value?.name
 
     @TypeConverter
-    fun toMissionTargetType(value: String) = enumValueOf<MissionTargetType>(value)
+    fun toMissionTargetType(value: String?) = value?.let { enumValueOf<MissionTargetType>(it) }
     @TypeConverter
-    fun fromMissionTargetType(value: MissionTargetType) = value.name
+    fun fromMissionTargetType(value: MissionTargetType?) = value?.name
 
     @TypeConverter
-    fun toFactoryType(value: String) = enumValueOf<FactoryType>(value)
+    fun toFactoryType(value: String?) = value?.let { enumValueOf<FactoryType>(it) }
     @TypeConverter
-    fun fromFactoryType(value: FactoryType) = value.name
+    fun fromFactoryType(value: FactoryType?) = value?.name
 
     @TypeConverter
-    fun toFactoryBuildTargetType(value: String) = enumValueOf<FactoryBuildTargetType>(value)
+    fun toFactoryBuildTargetType(value: String?) = value?.let { enumValueOf<FactoryBuildTargetType>(it) }
     @TypeConverter
-    fun fromFactoryBuildTargetType(value: FactoryBuildTargetType) = value.name
+    fun fromFactoryBuildTargetType(value: FactoryBuildTargetType?) = value?.name
 
     @TypeConverter
-    fun toDefenseStructureType(value: String) = enumValueOf<DefenseStructureType>(value)
+    fun toDefenseStructureType(value: String?) = value?.let { enumValueOf<DefenseStructureType>(it) }
     @TypeConverter
-    fun fromDefenseStructureType(value: DefenseStructureType) = value.name
+    fun fromDefenseStructureType(value: DefenseStructureType?) = value?.name
 
     @TypeConverter
-    fun toTeamLoyalty(value: String) = enumValueOf<TeamLoyalty>(value)
+    fun toTeamLoyalty(value: String?) = value?.let { enumValueOf<TeamLoyalty>(it) }
     @TypeConverter
-    fun fromTeamLoyalty(value: TeamLoyalty) = value.name
+    fun fromTeamLoyalty(value: TeamLoyalty?) = value?.name
 }
