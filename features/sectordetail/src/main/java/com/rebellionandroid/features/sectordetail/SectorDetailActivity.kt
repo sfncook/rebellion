@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import com.rebllelionandroid.features.sectorsdetail.R
@@ -30,7 +31,7 @@ class SectorDetailActivity: Activity() {
                 val sectorWithPlanets = gameStateViewModel.getSectorWithPlanets(selectedSectorId)
                 val sector = sectorWithPlanets.sector
                 val toolbar = findViewById<Toolbar>(R.id.sector_detail_toolbar)
-                viewAdapter = PlanetsListAdapter(sectorWithPlanets.planets)
+                viewAdapter = PlanetsListAdapter(Utilities.sortPlanets(sectorWithPlanets.planets))
                 recyclerView = findViewById(R.id.planets_list)
                 mainScope.launch(Dispatchers.Main) {
                     toolbar.title = "Sector: ${sector.name}"
