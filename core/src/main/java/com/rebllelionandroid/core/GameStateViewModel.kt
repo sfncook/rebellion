@@ -26,8 +26,9 @@ class GameStateViewModel @Inject constructor(
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(1)
             while (true) {
-                val timeVal = gameStateLive.value?.gameTime?.plus(1)
-                timeVal?.let { gameStateRepository.updateGameTime(it) }
+                val gameState = gameStateRepository.getGameState()
+                val timeVal = gameState.gameTime.plus(1)
+                timeVal.let { gameStateRepository.updateGameTime(it) }
                 println("my thread i:$timeVal")
                 delay(2000)
             }
@@ -36,10 +37,10 @@ class GameStateViewModel @Inject constructor(
 
     fun stopTimer() {
         if(this::timerJob.isInitialized) {
-            viewModelScope.launch(Dispatchers.IO) {
-                gameStateRepository.setGameInProgress(0)
-            }
             timerJob.cancel()
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            gameStateRepository.setGameInProgress(0)
         }
     }
 

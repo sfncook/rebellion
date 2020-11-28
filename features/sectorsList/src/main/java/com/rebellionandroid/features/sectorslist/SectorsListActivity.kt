@@ -30,6 +30,9 @@ class SectorsListActivity: BaseActivity() {
         initAppDependencyInjection()
         super.onCreate(savedInstanceState)
 
+        // Stop timer on app start
+        gameStateViewModel.stopTimer()
+
         viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_sectors_list)
         viewBinding.viewModel = gameStateViewModel
     }

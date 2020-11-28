@@ -13,6 +13,10 @@ class GameStateRepository @Inject constructor(
         val gameState = gameStateDao.getGameState()
         return gameStateDao.getGameStateWithSectors(gameState.id)
     }
+    fun getGameState(): GameState {
+        val gameState = gameStateDao.getGameState()
+        return gameStateDao.getGameState(gameState.id)
+    }
     fun updateGameTime(gameTime: Int): Int {
         val gameState = gameStateDao.getGameState()
         return gameStateDao.updateGameTime(gameState.id, gameTime)
