@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.features.sectordetail.SectorDetailActivity
+import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.features.sectorsList.R
-
 
 class SectorListAdapter(
     private val sectors: List<SectorWithPlanets>
@@ -43,7 +43,7 @@ class SectorListAdapter(
         viewHolder.sectorName.text = sector.name
 
         val planets = sectors[position].planets
-        val viewAdapter = SectorItemPlanetsListAdapter(planets)
+        val viewAdapter = SectorItemPlanetsListAdapter(Utilities.sortPlanets(planets))
         viewHolder.planetsList.adapter = viewAdapter
         viewHolder.planetsList.apply {
             adapter = viewAdapter

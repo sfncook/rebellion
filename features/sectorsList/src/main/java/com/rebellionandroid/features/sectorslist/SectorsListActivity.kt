@@ -17,6 +17,8 @@ import com.rebllelionandroid.features.sectorsList.databinding.FragmentSectorsLis
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SectorsListActivity: Activity() {
     lateinit var gameStateViewModel: GameStateViewModel
@@ -39,7 +41,11 @@ class SectorsListActivity: Activity() {
 
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getManyGameStates()>0) {
-                viewAdapter = SectorListAdapter(gameStateViewModel.getCurrentGameStateWithSectors().sectors)
+                val sectors = gameStateViewModel.getCurrentGameStateWithSectors().sectors
+                val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
+                    s1.sector.name.compareTo(s2.sector.name)
+                })
+                viewAdapter = SectorListAdapter(ArrayList(sortedSectors))
                 recyclerView = viewBinding.root.findViewById(R.id.sectors_list)
                 mainScope.launch(Dispatchers.Main) {
                     recyclerView.adapter = viewAdapter
