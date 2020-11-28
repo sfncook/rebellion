@@ -1,6 +1,7 @@
 package com.rebellionandroid.components.gamecontrols
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +32,16 @@ class GameControlsFragment: Fragment() {
 //        return inflater.inflate(R.layout.fragment_game_controls, container, false)
         val viewBinding: FragmentGameControlsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_controls, container, false)
         viewBinding.lifecycleOwner = viewLifecycleOwner
+
+        viewBinding.root.findViewById<com.google.android.material.button.MaterialButton>(R.id.ctl_play_pause).setOnClickListener {
+            gameStateViewModel.startTimer()
+        }
+
         return viewBinding.root
+    }
+
+    fun onClickPlay(view: View) {
+        println("click play")
     }
 
 }

@@ -13,9 +13,13 @@ class GameStateRepository @Inject constructor(
         val gameState = gameStateDao.getGameState()
         return gameStateDao.getGameStateWithSectors(gameState.id)
     }
-    fun updateGameTime(gameTime: Int?): Int {
+    fun updateGameTime(gameTime: Int): Int {
         val gameState = gameStateDao.getGameState()
         return gameStateDao.updateGameTime(gameState.id, gameTime)
+    }
+    fun setGameInProgress(gameInProgress: Int): Int {
+        val gameState = gameStateDao.getGameState()
+        return gameStateDao.setGameInProgress(gameState.id, gameInProgress)
     }
     fun getSectorWithPlanets(sectorId: Long) = gameStateDao.getSectorWithPlanets(sectorId)
 

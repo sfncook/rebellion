@@ -7,6 +7,7 @@ import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,14 +19,15 @@ class GameStateViewModel @Inject constructor(
     private val staticTypesRepository: StaticTypesRepository
 ) : ViewModel() {
     lateinit var timerJob: Job
-    val time: MutableLiveData<Int> = MutableLiveData(0)
     val gameStateLive = gameStateRepository.getGameStateLive()
 
     fun startTimer() {
-        timerJob = viewModelScope.launch {
+        println("startTimer")
+        timerJob = viewModelScope.launch(Dispatchers.IO) {
+            gameStateRepository.setGameInProgress(1)
             while (true) {
                 val timeVal = gameStateLive.value?.gameTime?.plus(1)
-                gameStateRepository.updateGameTime(timeVal)
+                timeVal?.let { gameStateRepository.updateGameTime(it) }
                 println("my thread i:$timeVal")
                 delay(2000)
             }
@@ -34,6 +36,9 @@ class GameStateViewModel @Inject constructor(
 
     fun stopTimer() {
         if(this::timerJob.isInitialized) {
+            viewModelScope.launch(Dispatchers.IO) {
+                gameStateRepository.setGameInProgress(0)
+            }
             timerJob.cancel()
         }
     }

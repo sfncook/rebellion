@@ -24,7 +24,10 @@ interface GameStateDao {
     fun getGameState(): GameState
 
     @Query("UPDATE game_state SET gameTime = :gameTime WHERE id = :id")
-    fun updateGameTime(id: Long, gameTime: Int?): Int
+    fun updateGameTime(id: Long, gameTime: Int): Int
+
+    @Query("UPDATE game_state SET gameInProgress = :gameInProgress WHERE id = :id")
+    fun setGameInProgress(id: Long, gameInProgress: Int): Int
 
     @Transaction
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
