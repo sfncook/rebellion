@@ -3,6 +3,8 @@ package com.rebellionandroid.features.sectordetail
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,6 +25,10 @@ class PlanetsListAdapter(
     ) {
         val planetName: TextView = view.findViewById(R.id.planet_name)
         val planetLoyaltyImg: ImageView = view.findViewById(R.id.planet_loyalty)
+        val planetHasShipImg: ImageView = view.findViewById(R.id.planet_has_ship)
+        val planetHasUnitsImg: ImageView = view.findViewById(R.id.planet_has_units)
+        val planetHasDefenseImg: ImageView = view.findViewById(R.id.planet_has_defense)
+        val planetHasFactoriesImg: ImageView = view.findViewById(R.id.planet_has_factories)
 
         init {
             view.setOnClickListener {
@@ -42,8 +48,14 @@ class PlanetsListAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val planet = planetsWithUnits[position].planet
+        val planetWithUnit = planetsWithUnits[position]
+        val planet = planetWithUnit.planet
         viewHolder.planetName.text = planet.name
+
+        viewHolder.planetHasShipImg.visibility = if(planetWithUnit.ships.isEmpty()) GONE else VISIBLE
+        viewHolder.planetHasUnitsImg.visibility = if(planetWithUnit.units.isEmpty()) GONE else VISIBLE
+        viewHolder.planetHasDefenseImg.visibility = if(planetWithUnit.defenseStructures.isEmpty()) GONE else VISIBLE
+        viewHolder.planetHasFactoriesImg.visibility = if(planetWithUnit.factories.isEmpty()) GONE else VISIBLE
 
         val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
         viewHolder.planetLoyaltyImg.setImageResource(imgId)
