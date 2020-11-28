@@ -1,10 +1,13 @@
 package com.rebllelionandroid.core
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.*
-import com.rebllelionandroid.core.database.gamestate.enums.*
+import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.enums.DefenseStructureType
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
+import com.rebllelionandroid.core.database.gamestate.enums.ShipType
+import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +25,6 @@ class GameStateViewModel @Inject constructor(
     val gameStateLive = gameStateRepository.getGameStateLive()
 
     fun startTimer() {
-        println("startTimer")
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(1)
             while (true) {

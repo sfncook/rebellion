@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NewGameActivity : AppCompatActivity() {
-    @Inject lateinit var gameStateUpdater: GameStateUpdater
     @Inject lateinit var gameStateViewModel: GameStateViewModel
     private val mainScope = MainScope()
 
@@ -35,7 +34,6 @@ class NewGameActivity : AppCompatActivity() {
             .builder()
             .contextModule(ContextModule(applicationContext))
             .build()
-        gameStateUpdater = gameStateComponent.gameStateUpdater()
         gameStateViewModel = gameStateComponent.gameStateViewModel()
     }
 }

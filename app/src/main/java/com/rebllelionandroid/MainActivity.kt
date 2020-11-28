@@ -10,22 +10,27 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebellionandroid.features.sectorslist.SectorsListActivity
+import com.rebllelionandroid.core.BaseActivity
+import com.rebllelionandroid.core.GameStateUpdater
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.GameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
-    lateinit var gameStateComponent: GameStateComponent
     private val mainScope = MainScope()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initAppDependencyInjection()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Stop timer on app start
+        gameStateViewModel.stopTimer()
     }
 
     private fun initAppDependencyInjection() {
@@ -33,11 +38,11 @@ class MainActivity : AppCompatActivity() {
             .builder()
             .contextModule(ContextModule(applicationContext))
             .build()
+        gameStateViewModel = gameStateComponent.gameStateViewModel()
     }
 
     override fun onResume() {
         super.onResume()
-        val gameStateViewModel = gameStateComponent.gameStateViewModel()
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getManyGameStates() == 0) {
                 val intent = Intent(applicationContext, NewGameActivity::class.java)
