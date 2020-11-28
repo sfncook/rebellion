@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import com.rebllelionandroid.features.sectorsList.R
@@ -17,8 +18,8 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SectorsListActivity: AppCompatActivity() {
-    lateinit var gameStateViewModel: GameStateViewModel
+class SectorsListActivity: BaseActivity() {
+
 
     lateinit var viewBinding: ActivitySectorsListBinding
     lateinit var viewAdapter: SectorListAdapter
@@ -58,7 +59,7 @@ class SectorsListActivity: AppCompatActivity() {
     }
 
     private fun initAppDependencyInjection() {
-        val gameStateComponent = DaggerGameStateComponent
+        gameStateComponent = DaggerGameStateComponent
             .builder()
             .contextModule(ContextModule(applicationContext))
             .build()
