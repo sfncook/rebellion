@@ -161,4 +161,10 @@ class GameStateViewModel @Inject constructor(
     fun getManyGameStates() = gameStateRepository.getManyGameStates()
 
     fun getSectorWithPlanets(sectorId: Long) = gameStateRepository.getSectorWithPlanets(sectorId)
+
+
+
+    fun updateGameState() {
+
+    }
 }
