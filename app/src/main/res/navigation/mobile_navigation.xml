@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_sectorslist"
-        android:name="com.rebellionandroid.features.sectorslist.SectorsListFragment"
+        android:name="com.rebllelionandroid.ui.dashboard.DashboardFragment"
         android:label="Sectors"
         tools:layout="@layout/fragment_notifications" />
     <fragment

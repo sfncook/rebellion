@@ -3,8 +3,6 @@ package com.rebellionandroid.features.sectorslist
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
@@ -13,7 +11,6 @@ import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import com.rebllelionandroid.features.sectorsList.R
 import com.rebllelionandroid.features.sectorsList.databinding.ActivitySectorsListBinding
-import com.rebllelionandroid.features.sectorsList.databinding.FragmentSectorsListBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
