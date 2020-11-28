@@ -23,6 +23,9 @@ interface GameStateDao {
     @Query("SELECT * FROM game_state LIMIT 1")
     fun getGameState(): GameState
 
+    @Query("UPDATE game_state SET gameTime = :gameTime WHERE id = :id")
+    fun updateGameTime(id: Long, gameTime: Int?): Int
+
     @Transaction
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameStateWithSectors(gameStateId: Long): GameStateWithSectors

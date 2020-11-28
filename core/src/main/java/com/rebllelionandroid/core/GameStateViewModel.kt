@@ -24,8 +24,8 @@ class GameStateViewModel @Inject constructor(
     fun startTimer() {
         timerJob = viewModelScope.launch {
             while (true) {
-                val timeVal = time.value?.plus(1)
-                time.value = timeVal
+                val timeVal = gameStateLive.value?.gameTime?.plus(1)
+                gameStateRepository.updateGameTime(timeVal)
                 println("my thread i:$timeVal")
                 delay(2000)
             }
