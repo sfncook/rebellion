@@ -2,23 +2,14 @@ package com.rebllelionandroid
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebellionandroid.features.sectorslist.SectorsListActivity
 import com.rebllelionandroid.core.BaseActivity
-import com.rebllelionandroid.core.GameStateUpdater
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
-import com.rebllelionandroid.core.di.GameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
 

@@ -2,13 +2,10 @@ package com.rebellionandroid.features.sectorslist
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
-import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.BaseActivity
-import com.rebllelionandroid.core.GameStateUpdater
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import com.rebllelionandroid.features.sectorsList.R
@@ -20,7 +17,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class SectorsListActivity: BaseActivity() {
-    private lateinit var gameStateUpdater: GameStateUpdater
     lateinit var viewBinding: ActivitySectorsListBinding
     lateinit var viewAdapter: SectorListAdapter
     private val mainScope = MainScope()
@@ -32,7 +28,6 @@ class SectorsListActivity: BaseActivity() {
 
         viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_sectors_list)
         viewBinding.viewModel = gameStateViewModel
-        gameStateUpdater = gameStateComponent.gameStateUpdater()
     }
 
     override fun onResume() {

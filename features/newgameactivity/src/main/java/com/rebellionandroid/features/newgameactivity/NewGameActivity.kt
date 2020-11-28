@@ -3,7 +3,6 @@ package com.rebellionandroid.features.newgameactivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.rebllelionandroid.core.GameStateUpdater
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
