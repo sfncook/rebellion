@@ -27,6 +27,10 @@ interface GameStateDao {
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameStateWithSectors(gameStateId: Long): GameStateWithSectors
 
+    @Transaction
+    @Query("SELECT * FROM game_state WHERE id = :gameStateId")
+    fun getGameStateWithSectorsLive(gameStateId: Long): LiveData<GameStateWithSectors>
+
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameState(gameStateId: Long): GameState
 

@@ -12,11 +12,9 @@ import com.google.android.material.button.MaterialButton
 import com.rebellionandroid.components.gamecontrols.databinding.FragmentGameControlsBinding
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
-import javax.inject.Inject
 
 class GameControlsFragment: Fragment() {
 
-    @Inject
     lateinit var gameStateViewModel: GameStateViewModel
 
     lateinit var playPauseBtn: MaterialButton
@@ -27,9 +25,7 @@ class GameControlsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //https://developer.android.com/training/dependency-injection/dagger-multi-module
-        val gameStateComponent = (activity as BaseActivity).gameStateComponent
-        DaggerGameControlsComponent.factory().create(gameStateComponent).inject(this)
+        gameStateViewModel = (activity as BaseActivity).gameStateViewModel
 
         val viewBinding: FragmentGameControlsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_controls, container, false)
         viewBinding.lifecycleOwner = viewLifecycleOwner
@@ -46,12 +42,7 @@ class GameControlsFragment: Fragment() {
         }
 
         gameStateViewModel.gameStateLive.observe(viewLifecycleOwner, Observer {
-            println("GameControlsFragment gameStateLive observe notification")
             gameTimeText.text = it.gameTime.toString()
-        })
-
-        gameStateViewModel.gameStateLive.observe(viewLifecycleOwner, {
-            println("GameControlsFragment.onCreate gameStateViewModel.gameStateLive.observe")
         })
 
         return viewBinding.root

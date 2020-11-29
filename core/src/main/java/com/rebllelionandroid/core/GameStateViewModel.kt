@@ -158,6 +158,7 @@ class GameStateViewModel @Inject constructor(
     }
 
     fun getCurrentGameStateWithSectors() = gameStateRepository.getCurrentGameStateWithSectors()
+    fun getGameStateWithSectorsLive() = gameStateRepository.getGameStateWithSectorsLive()
 
     fun getManyGameStates() = gameStateRepository.getManyGameStates()
 
@@ -165,23 +166,23 @@ class GameStateViewModel @Inject constructor(
 
 
 
-    fun updateGameState() {
-        val gameStateWithSectors = getCurrentGameStateWithSectors()
-        val sectorsWithPlanets = gameStateWithSectors.sectors
-        for(sectorWithPlanets in sectorsWithPlanets) {
-            print("Sector: ")
-            for(planetWithUnits in sectorWithPlanets.planets)  {
-                val planet = planetWithUnits.planet
-                var teamALoyalty = planetWithUnits.planet.teamALoyalty
-                if(teamALoyalty>90) {
-                    teamALoyalty = 0
-                } else {
-                    teamALoyalty+=10
-                }
-                print("${teamALoyalty} ")
-                gameStateRepository.updatePlanetLoyalty(planet.id, teamALoyalty)
-            }
-            println()
-        }
+    private fun updateGameState() {
+//        val gameStateWithSectors = getCurrentGameStateWithSectors()
+//        val sectorsWithPlanets = gameStateWithSectors.sectors
+//        for(sectorWithPlanets in sectorsWithPlanets) {
+//            print("Sector: ")
+//            for(planetWithUnits in sectorWithPlanets.planets)  {
+//                val planet = planetWithUnits.planet
+//                var teamALoyalty = planetWithUnits.planet.teamALoyalty
+//                if(teamALoyalty>90) {
+//                    teamALoyalty = 0
+//                } else {
+//                    teamALoyalty+=10
+//                }
+//                print("${teamALoyalty} ")
+//                gameStateRepository.updatePlanetLoyalty(planet.id, teamALoyalty)
+//            }
+//            println()
+//        }
     }
 }

@@ -3,10 +3,11 @@ package com.rebellionandroid.features.sectorslist
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.rebellionandroid.components.gamecontrols.DaggerGameControlsComponent
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebllelionandroid.core.BaseActivity
+import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
 import com.rebllelionandroid.features.sectorsList.R
@@ -22,6 +23,7 @@ class SectorsListActivity: BaseActivity() {
     lateinit var viewAdapter: SectorListAdapter
     private val mainScope = MainScope()
     private lateinit var recyclerView: RecyclerView
+    lateinit var gameStateWithSectorsLive: LiveData<GameStateWithSectors>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initAppDependencyInjection()
@@ -29,13 +31,17 @@ class SectorsListActivity: BaseActivity() {
 
         viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_sectors_list)
         viewBinding.viewModel = gameStateViewModel
+
+        mainScope.launch(Dispatchers.IO) {
+            gameStateWithSectorsLive = gameStateViewModel.getGameStateWithSectorsLive()
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
 
-        gameStateViewModel.gameStateLive.observe(this, {
-            println("gameStateViewModel.gameStateLive.observe")
+        gameStateWithSectorsLive.observe(this , {
             updateSectorsList()
         })
         updateSectorsList()
@@ -64,11 +70,10 @@ class SectorsListActivity: BaseActivity() {
     }
 
     private fun initAppDependencyInjection() {
-        val gameStateComponent = DaggerSectorsListComponent.factory().create(gameStateComponent).inject(this)
-//        gameStateComponent = DaggerSectorsListComponent
-//            .builder()
-//            .contextModule(ContextModule(applicationContext))
-//            .build()
-//        gameStateViewModel = gameStateComponent.gameStateViewModel()
+        gameStateComponent = DaggerGameStateComponent
+            .builder()
+            .contextModule(ContextModule(applicationContext))
+            .build()
+        gameStateViewModel = gameStateComponent.gameStateViewModel()
     }
 }

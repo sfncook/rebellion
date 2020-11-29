@@ -1,5 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
+import androidx.lifecycle.LiveData
 import javax.inject.Inject
 
 class GameStateRepository @Inject constructor(
@@ -11,6 +12,10 @@ class GameStateRepository @Inject constructor(
     fun getCurrentGameStateWithSectors(): GameStateWithSectors {
         val gameState = gameStateDao.getGameState()
         return gameStateDao.getGameStateWithSectors(gameState.id)
+    }
+    fun getGameStateWithSectorsLive(): LiveData<GameStateWithSectors> {
+        val gameState = gameStateDao.getGameState()
+        return gameStateDao.getGameStateWithSectorsLive(gameState.id)
     }
     fun getGameState(): GameState {
         val gameState = gameStateDao.getGameState()
@@ -37,9 +42,9 @@ class GameStateRepository @Inject constructor(
         val gameState = gameStateDao.getGameState()
         return gameStateDao.updateGameTime(gameState.id, gameTime)
     }
-    fun setGameInProgress(gameInProgress: Int): Int {
+    fun setGameInProgress(gameInProgress: Int) {
         val gameState = gameStateDao.getGameState()
-        return gameStateDao.setGameInProgress(gameState.id, gameInProgress)
+        if(gameState!=null) gameStateDao.setGameInProgress(gameState.id, gameInProgress)
     }
     fun updatePlanetLoyalty(planetId:Long, loyalty: Int): Int {
         return gameStateDao.updatePlanetLoyalty(planetId, loyalty)
