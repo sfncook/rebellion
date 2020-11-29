@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.gamecontrols.DaggerGameControlsComponent
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
@@ -63,10 +64,11 @@ class SectorsListActivity: BaseActivity() {
     }
 
     private fun initAppDependencyInjection() {
-        gameStateComponent = DaggerGameStateComponent
-            .builder()
-            .contextModule(ContextModule(applicationContext))
-            .build()
-        gameStateViewModel = gameStateComponent.gameStateViewModel()
+        val gameStateComponent = DaggerSectorsListComponent.factory().create(gameStateComponent).inject(this)
+//        gameStateComponent = DaggerSectorsListComponent
+//            .builder()
+//            .contextModule(ContextModule(applicationContext))
+//            .build()
+//        gameStateViewModel = gameStateComponent.gameStateViewModel()
     }
 }

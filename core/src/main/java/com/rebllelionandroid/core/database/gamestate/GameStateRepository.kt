@@ -1,6 +1,5 @@
 package com.rebllelionandroid.core.database.gamestate
 
-import androidx.lifecycle.LiveData
 import javax.inject.Inject
 
 class GameStateRepository @Inject constructor(
