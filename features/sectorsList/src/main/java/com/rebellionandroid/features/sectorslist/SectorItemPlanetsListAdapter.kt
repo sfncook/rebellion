@@ -18,7 +18,11 @@ class SectorItemPlanetsListAdapter(
         val planetLoyaltyImg: ImageView = view.findViewById(R.id.planet_loyalty_img)
 
         init {
-            // Define click listener for the ViewHolder's View.
+            view.setOnClickListener {
+                // This sucks, but i'm not sure how else to fix it
+                val parent = it.parent.parent.parent as View
+                parent.performClick()
+            }
         }
     }
 
