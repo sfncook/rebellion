@@ -1,10 +1,9 @@
 package com.rebellionandroid.features.sectordetail
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
-import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule
@@ -13,8 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-class SectorDetailActivity: Activity() {
-    lateinit var gameStateViewModel: GameStateViewModel
+class SectorDetailActivity: BaseActivity() {
 
     lateinit var viewAdapter: PlanetsListAdapter
     private val mainScope = MainScope()

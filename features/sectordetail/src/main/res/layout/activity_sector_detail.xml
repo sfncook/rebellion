@@ -26,4 +26,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/sector_detail_gamecontrols"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:name="com.rebellionandroid.components.gamecontrols.GameControlsFragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>
