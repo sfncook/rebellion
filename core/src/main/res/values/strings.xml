@@ -1,0 +1,4 @@
+<resources>
+    <string name="keyCurrentGameId">keyCurrentGameId</string>
+    <string name="gameStateSharedPrefFile">gameStateSharedPrefFile</string>
+</resources>

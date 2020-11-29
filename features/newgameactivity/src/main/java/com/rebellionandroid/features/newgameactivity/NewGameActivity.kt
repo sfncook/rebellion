@@ -1,5 +1,6 @@
 package com.rebellionandroid.features.newgameactivity
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +23,14 @@ class NewGameActivity : AppCompatActivity() {
         val newGameBtn = findViewById<Button>(R.id.newgame_start_btn)
         newGameBtn.setOnClickListener {
             mainScope.launch(Dispatchers.IO) {
-                gameStateViewModel.createNewGameState()
+                val gameStateId = gameStateViewModel.createNewGameState()
+                val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
+                val keyCurrentGameId = getString(R.string.keyCurrentGameId)
+                val sharedPref = getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+                with (sharedPref.edit()) {
+                    putLong(keyCurrentGameId, gameStateId)
+                    commit()
+                }
                 finish()
             }
         }

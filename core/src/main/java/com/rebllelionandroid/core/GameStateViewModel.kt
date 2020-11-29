@@ -1,5 +1,6 @@
 package com.rebllelionandroid.core
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.*
@@ -47,7 +48,7 @@ class GameStateViewModel @Inject constructor(
         }
     }
 
-    fun createNewGameState() {
+    fun createNewGameState(): Long {
         val gameState = GameState(Random.nextLong(), false, 1, TeamLoyalty.TeamA)
         gameStateRepository.createNewGameState(gameState)
 
@@ -155,6 +156,8 @@ class GameStateViewModel @Inject constructor(
             )
             gameStateRepository.insertNewUnit(unit)
         }
+
+        return gameState.id
     }
 
     fun getCurrentGameStateWithSectors() = gameStateRepository.getCurrentGameStateWithSectors()

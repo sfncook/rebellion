@@ -1,7 +1,9 @@
 package com.rebllelionandroid
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.rebellionandroid.features.newgameactivity.NewGameActivity
 import com.rebellionandroid.features.sectorslist.SectorsListActivity
 import com.rebllelionandroid.core.BaseActivity
@@ -34,14 +36,15 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        mainScope.launch(Dispatchers.IO) {
-            if(gameStateViewModel.getManyGameStates() == 0) {
-                val intent = Intent(applicationContext, NewGameActivity::class.java)
-                startActivity(intent)
-            } else {
-                val intent = Intent(applicationContext, SectorsListActivity::class.java)
-                startActivity(intent)
-            }
+
+        // Look for currently-active game or show NewGameActivity
+        val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
+        val keyCurrentGameId = getString(R.string.keyCurrentGameId)
+        val sharedPref = getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+        if(sharedPref.contains(keyCurrentGameId)) {
+            startActivity(Intent(applicationContext, SectorsListActivity::class.java))
+        } else {
+            startActivity(Intent(applicationContext, NewGameActivity::class.java))
         }
     }
 }
