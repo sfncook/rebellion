@@ -33,6 +33,14 @@ class SectorsListActivity: BaseActivity() {
     override fun onResume() {
         super.onResume()
 
+        gameStateViewModel.gameStateLive.observe(this, {
+            println("gameStateViewModel.gameStateLive.observe")
+            updateSectorsList()
+        })
+        updateSectorsList()
+    }
+
+    private fun updateSectorsList() {
         mainScope.launch(Dispatchers.IO) {
             if(gameStateViewModel.getManyGameStates()>0) {
                 val sectors = gameStateViewModel.getCurrentGameStateWithSectors().sectors

@@ -1,12 +1,9 @@
 package com.rebellionandroid.components.gamecontrols
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,8 +12,6 @@ import com.google.android.material.button.MaterialButton
 import com.rebellionandroid.components.gamecontrols.databinding.FragmentGameControlsBinding
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
-import com.rebllelionandroid.core.di.DaggerGameStateComponent
-import com.rebllelionandroid.core.di.modules.ContextModule
 import javax.inject.Inject
 
 class GameControlsFragment: Fragment() {
@@ -53,6 +48,10 @@ class GameControlsFragment: Fragment() {
         gameStateViewModel.gameStateLive.observe(viewLifecycleOwner, Observer {
             println("GameControlsFragment gameStateLive observe notification")
             gameTimeText.text = it.gameTime.toString()
+        })
+
+        gameStateViewModel.gameStateLive.observe(viewLifecycleOwner, {
+            println("GameControlsFragment.onCreate gameStateViewModel.gameStateLive.observe")
         })
 
         return viewBinding.root

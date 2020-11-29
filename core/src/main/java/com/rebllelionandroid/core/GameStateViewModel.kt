@@ -173,7 +173,7 @@ class GameStateViewModel @Inject constructor(
             for(planetWithUnits in sectorWithPlanets.planets)  {
                 val planet = planetWithUnits.planet
                 var teamALoyalty = planetWithUnits.planet.teamALoyalty
-                if(teamALoyalty<90) {
+                if(teamALoyalty>90) {
                     teamALoyalty = 0
                 } else {
                     teamALoyalty+=10
