@@ -58,7 +58,7 @@ class GameControlsFragment: Fragment() {
         gameStateViewModel.stopTimer()
     }
 
-    fun updatePlayButton() {
+    private fun updatePlayButton() {
         if(gameStateViewModel.gameStateLive.value==null || gameStateViewModel.gameStateLive.value?.gameInProgress!!) {
             playPauseBtn.setIconResource(R.drawable.ic_baseline_play_circle_outline_24)
         } else {
