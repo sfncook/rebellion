@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":features:sectorsList"))
     implementation(project(":features:newgameactivity"))
+    implementation(project(":components:gamecontrols"))
 
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
