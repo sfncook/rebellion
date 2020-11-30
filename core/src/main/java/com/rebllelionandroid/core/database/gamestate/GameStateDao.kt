@@ -11,18 +11,6 @@ import androidx.room.*
 @Dao
 interface GameStateDao {
 
-    @Query("SELECT * FROM game_state")
-    fun getAllGameStatesLive(): LiveData<List<GameState>>
-
-    @Query("SELECT * FROM game_state")
-    fun getAllGameStates(): List<GameState>
-
-    @Query("SELECT * FROM game_state LIMIT 1")
-    fun getGameStateLive(): LiveData<GameState>
-
-    @Query("SELECT * FROM game_state LIMIT 1")
-    fun getGameState(): GameState
-
     @Transaction
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameStateWithSectors(gameStateId: Long): GameStateWithSectors
@@ -31,15 +19,12 @@ interface GameStateDao {
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameStateWithSectorsLive(gameStateId: Long): LiveData<GameStateWithSectors>
 
-    @Query("SELECT * FROM game_state WHERE id = :gameStateId")
-    fun getGameState(gameStateId: Long): GameState
-
     @Transaction
     @Query("SELECT * FROM sectors WHERE id = :sectorId")
     fun getSectorWithPlanets(sectorId: Long): SectorWithPlanets
 
-    @Query("SELECT COUNT(id) FROM game_state")
-    fun getManyGameStates(): Int
+    @Query("SELECT * FROM game_state WHERE id = :gameStateId")
+    fun getGameState(gameStateId: Long): GameState
 
     @Query("SELECT * FROM sectors WHERE game_state_id = :gameStateId")
     fun getAllSectorsForGameStateId(gameStateId: Long): List<Sector>

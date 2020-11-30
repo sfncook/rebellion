@@ -7,23 +7,9 @@ class GameStateRepository @Inject constructor(
     private val gameStateDao: GameStateDao
 ) {
 
-    fun getGameStateLive() = gameStateDao.getGameStateLive()
-
-    fun getCurrentGameStateWithSectors(): GameStateWithSectors {
-        val gameState = gameStateDao.getGameState()
-        return gameStateDao.getGameStateWithSectors(gameState.id)
-    }
-    fun getGameStateWithSectorsLive(): LiveData<GameStateWithSectors> {
-        val gameState = gameStateDao.getGameState()
-        return gameStateDao.getGameStateWithSectorsLive(gameState.id)
-    }
-    fun getGameState(): GameState {
-        val gameState = gameStateDao.getGameState()
-        return gameStateDao.getGameState(gameState.id)
-    }
+    fun getGameStateWithSectorsLive(gameStateId: Long) = gameStateDao.getGameStateWithSectorsLive(gameStateId)
     fun getSectorWithPlanets(sectorId: Long) = gameStateDao.getSectorWithPlanets(sectorId)
-
-    fun getManyGameStates() = gameStateDao.getManyGameStates()
+    fun getGameState(gameStateId: Long) = gameStateDao.getGameState(gameStateId)
 
 
 
@@ -38,14 +24,8 @@ class GameStateRepository @Inject constructor(
 
 
     // Updates
-    fun updateGameTime(gameTime: Int): Int {
-        val gameState = gameStateDao.getGameState()
-        return gameStateDao.updateGameTime(gameState.id, gameTime)
-    }
-    fun setGameInProgress(gameInProgress: Int) {
-        val gameState = gameStateDao.getGameState()
-        if(gameState!=null) gameStateDao.setGameInProgress(gameState.id, gameInProgress)
-    }
+    fun updateGameTime(gameStateId: Long, gameTime: Int) = gameStateDao.updateGameTime(gameStateId, gameTime)
+    fun setGameInProgress(gameStateId: Long, gameInProgress: Int) = gameStateDao.setGameInProgress(gameStateId, gameInProgress)
     fun updatePlanetLoyalty(planetId:Long, loyalty: Int): Int {
         return gameStateDao.updatePlanetLoyalty(planetId, loyalty)
     }

@@ -17,6 +17,7 @@ class SectorDetailActivity: BaseActivity() {
     lateinit var viewAdapter: PlanetsListAdapter
     private val mainScope = MainScope()
     private lateinit var recyclerView: RecyclerView
+    var currentGameStateId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initAppDependencyInjection()
@@ -24,17 +25,15 @@ class SectorDetailActivity: BaseActivity() {
         setContentView(R.layout.activity_sector_detail)
 
         mainScope.launch(Dispatchers.IO) {
-            if(gameStateViewModel.getManyGameStates()>0) {
-                val selectedSectorId = intent.getLongExtra("SELECTED_SECTOR_ID", 0)
-                val sectorWithPlanets = gameStateViewModel.getSectorWithPlanets(selectedSectorId)
-                val sector = sectorWithPlanets.sector
-                val toolbar = findViewById<Toolbar>(R.id.sector_detail_toolbar)
-                viewAdapter = PlanetsListAdapter(Utilities.sortPlanets(sectorWithPlanets.planets))
-                recyclerView = findViewById(R.id.planets_list)
-                mainScope.launch(Dispatchers.Main) {
-                    toolbar.title = "Sector: ${sector.name}"
-                    recyclerView.adapter = viewAdapter
-                }
+            val selectedSectorId = intent.getLongExtra("SELECTED_SECTOR_ID", 0)
+            val sectorWithPlanets = gameStateViewModel.getSectorWithPlanets(selectedSectorId)
+            val sector = sectorWithPlanets.sector
+            val toolbar = findViewById<Toolbar>(R.id.sector_detail_toolbar)
+            viewAdapter = PlanetsListAdapter(Utilities.sortPlanets(sectorWithPlanets.planets))
+            recyclerView = findViewById(R.id.planets_list)
+            mainScope.launch(Dispatchers.Main) {
+                toolbar.title = "Sector: ${sector.name}"
+                recyclerView.adapter = viewAdapter
             }
         }
     }

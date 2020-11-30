@@ -23,28 +23,31 @@ class GameStateViewModel @Inject constructor(
     private val staticTypesRepository: StaticTypesRepository
 ) : ViewModel() {
     lateinit var timerJob: Job
-    val gameStateLive = gameStateRepository.getGameStateLive()
 
-    fun startTimer() {
+    fun getGameStateWithSectorsLive(gameStateId: Long) = gameStateRepository.getGameStateWithSectorsLive(gameStateId)
+    fun getSectorWithPlanets(sectorId: Long) = gameStateRepository.getSectorWithPlanets(sectorId)
+    fun getGameState(gameStateId: Long) = gameStateRepository.getGameState(gameStateId)
+
+    fun startTimer(gameStateId: Long) {
         timerJob = viewModelScope.launch(Dispatchers.IO) {
-            gameStateRepository.setGameInProgress(1)
+            gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
-                val gameState = gameStateRepository.getGameState()
+                val gameState = gameStateRepository.getGameState(gameStateId)
                 val timeVal = gameState.gameTime.plus(1)
-                timeVal.let { gameStateRepository.updateGameTime(it) }
+                timeVal.let { gameStateRepository.updateGameTime(gameStateId, it) }
                 println("my thread i:$timeVal")
                 updateGameState()
-                delay(2000)
+                delay(1500)
             }
         }
     }
 
-    fun stopTimer() {
+    fun stopTimer(gameStateId: Long) {
         if(this::timerJob.isInitialized) {
             timerJob.cancel()
         }
         viewModelScope.launch(Dispatchers.IO) {
-            gameStateRepository.setGameInProgress(0)
+            gameStateRepository.setGameInProgress(gameStateId, 0)
         }
     }
 
@@ -159,14 +162,6 @@ class GameStateViewModel @Inject constructor(
 
         return gameState.id
     }
-
-    fun getCurrentGameStateWithSectors() = gameStateRepository.getCurrentGameStateWithSectors()
-    fun getGameStateWithSectorsLive() = gameStateRepository.getGameStateWithSectorsLive()
-
-    fun getManyGameStates() = gameStateRepository.getManyGameStates()
-
-    fun getSectorWithPlanets(sectorId: Long) = gameStateRepository.getSectorWithPlanets(sectorId)
-
 
 
     private fun updateGameState() {
