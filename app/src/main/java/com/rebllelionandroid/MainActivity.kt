@@ -29,13 +29,13 @@ class MainActivity : BaseActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.navigation_dashboard, R.id.navigation_sectorslist))
+            R.id.navigation_dashboard, R.id.second_graph))
         setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
 
         findViewById<MaterialButton>(R.id.toggle_btn).setOnClickListener {
             if(fragDash) {
-                navController.navigate(R.id.navigation_sectorslist)
+                navController.navigate(R.id.second_graph)
             } else {
                 navController.navigate(R.id.navigation_dashboard)
             }

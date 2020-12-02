@@ -6,15 +6,16 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_dashboard">
 
-    <fragment
-        android:id="@+id/navigation_sectorslist"
-        android:name="com.rebellionandroid.features.sectorslist.SectorsListFragment"
-        android:label="Sectors List"
-        tools:layout="@layout/fragment_sectors_list" />
+    <include app:graph="@navigation/included_graph" />
+
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.rebllelionandroid.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_fragment_to_second_graph"
+            app:destination="@id/second_graph" />
+    </fragment>
 
 </navigation>
