@@ -16,6 +16,15 @@
         <action
             android:id="@+id/action_fragment_to_second_graph"
             app:destination="@id/second_graph" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_newgame"
+            app:destination="@id/navigation_newgame" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_newgame"
+        android:name="com.rebellionandroid.features.newgameactivity.NewGameFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard"/>
 
 </navigation>

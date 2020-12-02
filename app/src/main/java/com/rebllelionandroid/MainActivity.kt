@@ -41,6 +41,10 @@ class MainActivity : BaseActivity() {
             }
             fragDash = !fragDash
         }
+
+        findViewById<MaterialButton>(R.id.btn_new_game).setOnClickListener {
+            navController.navigate(R.id.navigation_newgame)
+        }
     }
 
     private fun initAppDependencyInjection() {
