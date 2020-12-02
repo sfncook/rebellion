@@ -8,21 +8,11 @@
         android:id="@+id/sectorlist_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sector List Fragment"
+        android:text="Sector Detail Fragment"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_goto_detail"
-        />
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_goto_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Goto Sector_Detail"
-        app:layout_constraintTop_toBottomOf="@+id/sectorlist_text"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
