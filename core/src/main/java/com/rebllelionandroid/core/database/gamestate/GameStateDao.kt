@@ -11,9 +11,8 @@ import androidx.room.*
 @Dao
 interface GameStateDao {
 
-    @Transaction
     @Query("SELECT * FROM game_state")
-    fun getAllGameStates(): List<GameStateWithSectors>
+    fun getAllGameStates(): List<GameState>
 
     @Transaction
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")

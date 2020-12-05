@@ -5,10 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import com.google.android.material.button.MaterialButton
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.database.gamestate.GameState
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class NewGameFragment: Fragment() {
 
@@ -21,12 +27,30 @@ class NewGameFragment: Fragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_new_game, container, false)
 
-//        root.findViewById<MaterialButton>(R.id.btn_go_back).setOnClickListener {
-//            root.findNavController().navigateUp()
+//        gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+//        gameStateViewModel.getAllGameStates {
+//            println("Many games:${it.size}")
+//            val viewAdapter = GameListAdapter(it)
+//            val listGames = root.findViewById<RecyclerView>(R.id.list_games)
+//            listGames.adapter = viewAdapter
 //        }
 
-        gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-//        println(gameStateViewModel.getAllGameStates())
+        val rvContacts = root.findViewById<RecyclerView>(R.id.list_games)
+        // Initialize contacts
+        val contacts = ArrayList<GameState>()
+        contacts.add(GameState(Random.nextLong(), false, 0, TeamLoyalty.TeamA))
+        contacts.add(GameState(Random.nextLong(), false, 999, TeamLoyalty.TeamA))
+        contacts.add(GameState(Random.nextLong(), false, 8888, TeamLoyalty.TeamA))
+        contacts.add(GameState(Random.nextLong(), false, 77777, TeamLoyalty.TeamA))
+
+        // Create adapter passing in the sample user data
+        val adapter = GameListAdapter(contacts)
+
+        // Attach the adapter to the recyclerview to populate items
+        rvContacts.adapter = adapter
+
+        // Set layout manager to position the items
+        rvContacts.layoutManager = LinearLayoutManager(context)
 
         return root
     }

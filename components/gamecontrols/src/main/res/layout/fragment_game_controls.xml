@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".GameControlsFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="3dp"
     >
 
     <TextView
         android:id="@+id/ctl_time"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:paddingLeft="5dp"
         android:text="0000"
