@@ -26,10 +26,13 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.navigation_dashboard, R.id.sectors_list_graph))
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        navController = findNavController(R.id.nav_host_fragment)
+//        val appBarConfiguration = AppBarConfiguration(setOf(
+//            R.id.navigation_dashboard,
+//            R.id.sectors_list_graph,
+//            R.id.sector_detail_graph,
+//        ))
+//        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     private fun initAppDependencyInjection() {
