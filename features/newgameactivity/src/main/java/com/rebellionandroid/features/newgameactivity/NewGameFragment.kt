@@ -1,5 +1,6 @@
 package com.rebellionandroid.features.newgameactivity
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,11 +40,22 @@ class NewGameFragment: Fragment() {
     private fun updateList(view: View) {
         gameStateViewModel.getAllGameStates { allGameStates ->
             val sortedGameStatesArr = allGameStates.sortedBy { gameState -> gameState.gameStartedTime }
-            val viewAdapter = GameListAdapter(sortedGameStatesArr, view.findNavController())
+            val viewAdapter = GameListAdapter(sortedGameStatesArr, ::onClickOldGame)
             val listGames = view.findViewById<RecyclerView>(R.id.list_games)
             viewLifecycleOwner.lifecycleScope.launch {
                 listGames.adapter = viewAdapter
             }
         }
+    }
+
+    private fun onClickOldGame(gameId: Long) {
+        val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
+        val keyCurrentGameId = getString(R.string.keyCurrentGameId)
+        val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+        with (sharedPref?.edit()) {
+            this?.putLong(keyCurrentGameId, gameId)
+            this?.commit()
+        }
+        view?.findNavController()?.navigate(R.id.second_graph)
     }
 }
