@@ -1,6 +1,8 @@
 package com.rebllelionandroid.core
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.*
@@ -22,11 +24,23 @@ class GameStateViewModel @Inject constructor(
     private val gameStateRepository: GameStateRepository,
     private val staticTypesRepository: StaticTypesRepository
 ) : ViewModel() {
-    lateinit var timerJob: Job
 
+    lateinit var timerJob: Job
+    private val _data = MutableLiveData<GameStateWithSectors>()
+    val data: LiveData<GameStateWithSectors>
+        get() = _data
+
+
+    fun loadAllGameStatesWithSectors(gameId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val allGameStates = gameStateRepository.getGameStateWithSectors(gameId)
+            _data.postValue(allGameStates)
+        }
+    }
     fun getGameStateWithSectorsLive(gameStateId: Long) = gameStateRepository.getGameStateWithSectorsLive(gameStateId)
-    fun getSectorWithPlanets(sectorId: Long) = gameStateRepository.getSectorWithPlanets(sectorId)
     fun getGameState(gameStateId: Long) = gameStateRepository.getGameState(gameStateId)
+    fun getSectorWithPlanets(sectorId: Long) = gameStateRepository.getSectorWithPlanets(sectorId)
+
 
     fun startTimer(gameStateId: Long) {
         timerJob = viewModelScope.launch(Dispatchers.IO) {

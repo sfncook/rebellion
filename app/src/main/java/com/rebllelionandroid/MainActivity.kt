@@ -3,6 +3,7 @@ package com.rebllelionandroid
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -18,6 +19,8 @@ import com.rebllelionandroid.core.di.modules.ContextModule
 class MainActivity : BaseActivity() {
 
     var fragDash: Boolean = true
+    lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         initAppDependencyInjection()
         super.onCreate(savedInstanceState)
@@ -25,7 +28,7 @@ class MainActivity : BaseActivity() {
 
 //        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        val navController = findNavController(R.id.nav_host_fragment)
+        navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
@@ -33,18 +36,19 @@ class MainActivity : BaseActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
 
-        findViewById<MaterialButton>(R.id.toggle_btn).setOnClickListener {
-            if(fragDash) {
-                navController.navigate(R.id.second_graph)
-            } else {
-                navController.navigate(R.id.navigation_dashboard)
-            }
-            fragDash = !fragDash
-        }
+//        findViewById<MaterialButton>(R.id.toggle_btn).setOnClickListener {
+//            if(fragDash) {
+//                navController.navigate(R.id.second_graph)
+//            } else {
+//                navController.navigate(R.id.navigation_dashboard)
+//            }
+//            fragDash = !fragDash
+//        }
+//
+//        findViewById<MaterialButton>(R.id.btn_new_game).setOnClickListener {
+//            navController.navigate(R.id.navigation_newgame)
+//        }
 
-        findViewById<MaterialButton>(R.id.btn_new_game).setOnClickListener {
-            navController.navigate(R.id.navigation_newgame)
-        }
     }
 
     private fun initAppDependencyInjection() {

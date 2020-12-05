@@ -7,8 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.button.MaterialButton
+import com.rebllelionandroid.core.BaseActivity
+import com.rebllelionandroid.core.GameStateViewModel
 
 class NewGameFragment: Fragment() {
+
+    private lateinit var gameStateViewModel: GameStateViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -17,9 +21,12 @@ class NewGameFragment: Fragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_new_game, container, false)
 
-        root.findViewById<MaterialButton>(R.id.btn_go_back).setOnClickListener {
-            root.findNavController().navigateUp()
-        }
+//        root.findViewById<MaterialButton>(R.id.btn_go_back).setOnClickListener {
+//            root.findNavController().navigateUp()
+//        }
+
+        gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+//        println(gameStateViewModel.getAllGameStates())
 
         return root
     }

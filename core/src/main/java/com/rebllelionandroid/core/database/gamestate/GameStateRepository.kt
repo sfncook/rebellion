@@ -7,7 +7,9 @@ class GameStateRepository @Inject constructor(
     private val gameStateDao: GameStateDao
 ) {
 
+    fun getAllGameStates() = gameStateDao.getAllGameStates()
     fun getGameStateWithSectorsLive(gameStateId: Long) = gameStateDao.getGameStateWithSectorsLive(gameStateId)
+    fun getGameStateWithSectors(gameStateId: Long) = gameStateDao.getGameStateWithSectors(gameStateId)
     fun getSectorWithPlanets(sectorId: Long) = gameStateDao.getSectorWithPlanets(sectorId)
     fun getGameState(gameStateId: Long) = gameStateDao.getGameState(gameStateId)
 
