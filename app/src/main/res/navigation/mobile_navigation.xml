@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/navigation_newgame"
         android:name="com.rebellionandroid.features.newgameactivity.NewGameFragment"
-        android:label="New Game"
+        android:label="Welcome to the Rebellion Rip Off"
         tools:layout="@layout/fragment_dashboard"/>
 
 </navigation>
