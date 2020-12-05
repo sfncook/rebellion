@@ -6,16 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
-import com.rebllelionandroid.core.database.gamestate.GameState
-import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 class NewGameFragment: Fragment() {
 
@@ -43,7 +39,7 @@ class NewGameFragment: Fragment() {
     private fun updateList(view: View) {
         gameStateViewModel.getAllGameStates { allGameStates ->
             val sortedGameStatesArr = allGameStates.sortedBy { gameState -> gameState.gameStartedTime }
-            val viewAdapter = GameListAdapter(sortedGameStatesArr)
+            val viewAdapter = GameListAdapter(sortedGameStatesArr, view.findNavController())
             val listGames = view.findViewById<RecyclerView>(R.id.list_games)
             viewLifecycleOwner.lifecycleScope.launch {
                 listGames.adapter = viewAdapter

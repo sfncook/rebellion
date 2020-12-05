@@ -15,7 +15,6 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":features:sectordetail"))
-    implementation(project(":features:newgameactivity"))
     implementation(project(":components:gamecontrols"))
 
     implementation(Dependencies.KOTLIN)
