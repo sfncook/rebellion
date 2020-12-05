@@ -42,13 +42,8 @@ class NewGameFragment: Fragment() {
 
     private fun updateList(view: View) {
         gameStateViewModel.getAllGameStates { allGameStates ->
-//            val sortedGameStates = it.toSortedSet(Comparator { s1, s2 ->
-//                s1.gameTime.compareTo(s2.gameTime)
-//            })
-//            val sortedGameStatesArr = ArrayList(sortedGameStates)
             val sortedGameStatesArr = allGameStates.sortedBy { gameState -> gameState.gameStartedTime }
             val viewAdapter = GameListAdapter(sortedGameStatesArr)
-//            val viewAdapter = GameListAdapter(it)
             val listGames = view.findViewById<RecyclerView>(R.id.list_games)
             viewLifecycleOwner.lifecycleScope.launch {
                 listGames.adapter = viewAdapter
