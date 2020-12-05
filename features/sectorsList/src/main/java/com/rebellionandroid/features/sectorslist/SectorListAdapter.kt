@@ -28,7 +28,6 @@ class SectorListAdapter(
             view.setOnClickListener {
                 val sectorWithPlanets = sectorsWithPlanets[adapterPosition]
                 val sectorId = sectorWithPlanets.sector.id
-                println("Sending sectorId:${sectorId}")
                 val bundle = bundleOf("sectorId" to sectorId)
                 it.findNavController().navigate(R.id.sector_detail_graph, bundle)
             }

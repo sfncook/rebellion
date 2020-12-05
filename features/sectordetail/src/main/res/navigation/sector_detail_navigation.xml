@@ -5,6 +5,8 @@
     android:id="@+id/sector_detail_graph"
     app:startDestination="@id/fragment_sector_detail">
 
+    <include app:graph="@navigation/planet_detail_navigation" />
+
     <fragment
         android:id="@+id/fragment_sector_detail"
         android:name="com.rebellionandroid.features.sectordetail.SectorDetailFragment"

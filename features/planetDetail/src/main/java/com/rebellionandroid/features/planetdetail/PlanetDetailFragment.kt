@@ -40,7 +40,9 @@ class PlanetDetailFragment: Fragment() {
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         val gameStateWithSectors = gameStateViewModel.gameState
         gameStateWithSectors.observe(viewLifecycleOwner , {
-            val planetWithUnits = gameStateViewModel.getPlanetWithUnits(selectedPlanetId)
+            val planetWithUnits = gameStateViewModel.getPlanetWithUnits(selectedPlanetId) {
+
+            }
 //            updatePlanetDetail(planetWithUnits)
         })
 
