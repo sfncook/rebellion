@@ -11,6 +11,7 @@ class GameStateRepository @Inject constructor(
     fun getGameStateWithSectorsLive(gameStateId: Long) = gameStateDao.getGameStateWithSectorsLive(gameStateId)
     fun getGameStateWithSectors(gameStateId: Long) = gameStateDao.getGameStateWithSectors(gameStateId)
     fun getSectorWithPlanets(sectorId: Long) = gameStateDao.getSectorWithPlanets(sectorId)
+    fun getPlanetWithUnits(planetId: Long) = gameStateDao.getPlanetWithUnits(planetId)
     fun getGameState(gameStateId: Long) = gameStateDao.getGameState(gameStateId)
 
 

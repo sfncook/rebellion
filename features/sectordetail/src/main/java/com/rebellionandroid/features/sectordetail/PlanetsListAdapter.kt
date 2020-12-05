@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.features.planetdetail.PlanetDetailActivity
 import com.rebllelionandroid.core.Utilities
@@ -33,10 +35,14 @@ class PlanetsListAdapter(
         init {
             view.setOnClickListener {
                 val planetWithUnits = planetsWithUnits[adapterPosition]
-                println("click planet ${planetWithUnits.planet.name}")
-                val intent = Intent(it.context, PlanetDetailActivity::class.java)
-                intent.putExtra("SELECTED_PLANET_ID", planetWithUnits.planet.id);
-                it.context.startActivity(intent)
+                val planetId = planetWithUnits.planet.id
+                val bundle = bundleOf("planetId" to planetId)
+                it.findNavController().navigate(R.id.planet_detail_graph, bundle)
+//                val planetWithUnits = planetsWithUnits[adapterPosition]
+//                println("click planet ${planetWithUnits.planet.name}")
+//                val intent = Intent(it.context, PlanetDetailActivity::class.java)
+//                intent.putExtra("SELECTED_PLANET_ID", planetWithUnits.planet.id);
+//                it.context.startActivity(intent)
             }
         }
     }

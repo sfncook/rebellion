@@ -47,6 +47,7 @@ class GameStateViewModel @Inject constructor(
     fun getGameStateWithSectorsLive(gameStateId: Long) = gameStateRepository.getGameStateWithSectorsLive(gameStateId)
     fun getGameState(gameStateId: Long) = gameStateRepository.getGameState(gameStateId)
     fun getSectorWithPlanets(sectorId: Long) = gameStateRepository.getSectorWithPlanets(sectorId)
+    fun getPlanetWithUnits(planetId: Long) = gameStateRepository.getPlanetWithUnits(planetId)
 
 
     fun startTimer(gameStateId: Long) {

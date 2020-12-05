@@ -32,6 +32,7 @@ class MainActivity : BaseActivity() {
             R.id.navigation_dashboard,
             R.id.sectors_list_graph,
             R.id.sector_detail_graph,
+            R.id.planet_detail_graph,
         ))
         setupActionBarWithNavController(navController, appBarConfiguration)
 

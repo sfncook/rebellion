@@ -31,11 +31,6 @@ class SectorListAdapter(
                 println("Sending sectorId:${sectorId}")
                 val bundle = bundleOf("sectorId" to sectorId)
                 it.findNavController().navigate(R.id.sector_detail_graph, bundle)
-
-//                println("click sector ${sectorWithPlanets.sector.name}")
-//                val intent = Intent(it.context, SectorDetailActivity::class.java)
-//                intent.putExtra("SELECTED_SECTOR_ID", sectorWithPlanets.sector.id);
-//                it.context.startActivity(intent)
             }
         }
     }
