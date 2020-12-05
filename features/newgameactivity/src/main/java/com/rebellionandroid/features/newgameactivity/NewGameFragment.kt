@@ -56,6 +56,6 @@ class NewGameFragment: Fragment() {
             this?.putLong(keyCurrentGameId, gameId)
             this?.commit()
         }
-        view?.findNavController()?.navigate(R.id.second_graph)
+        view?.findNavController()?.navigate(R.id.sectors_list_graph)
     }
 }

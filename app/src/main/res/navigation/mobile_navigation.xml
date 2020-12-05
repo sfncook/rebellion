@@ -6,7 +6,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_newgame">
 
-    <include app:graph="@navigation/included_graph" />
+    <include app:graph="@navigation/sectors_list_navigation" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -15,7 +15,7 @@
         tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_fragment_to_second_graph"
-            app:destination="@id/second_graph" />
+            app:destination="@id/sectors_list_graph" />
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_newgame"
             app:destination="@id/navigation_newgame" />

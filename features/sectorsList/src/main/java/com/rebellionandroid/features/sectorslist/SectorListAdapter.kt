@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.features.sectordetail.SectorDetailActivity
+import com.rebellionandroid.features.sectordetail.SectorDetailFragment
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.features.sectorsList.R
@@ -23,6 +25,8 @@ class SectorListAdapter(
 
         init {
             view.setOnClickListener {
+//                SectorDetailFragmentDirections
+//                it.findNavController().navigate(action)
                 val sectorWithPlanets = sectorsWithPlanets[adapterPosition]
                 println("click sector ${sectorWithPlanets.sector.name}")
                 val intent = Intent(it.context, SectorDetailActivity::class.java)

@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/third_graph"
-    app:startDestination="@id/includedStart">
+    app:startDestination="@id/fragment_sector_detail">
 
     <fragment
-        android:id="@+id/includedStart"
+        android:id="@+id/fragment_sector_detail"
         android:name="com.rebellionandroid.features.sectordetail.SectorDetailFragment"
         android:label="fragment_included_start"
-        tools:layout="@layout/fragment_sector_detail" />
+        tools:layout="@layout/fragment_sector_detail" >
+        <argument
+            android:name="sectorId"
+            app:argType="long" />
+    </fragment>
 </navigation>
