@@ -15,6 +15,7 @@ class GameListAdapter(
             view
     ) {
         val textGameId: TextView = view.findViewById(R.id.text_game_id)
+        val textGameStartTime: TextView = view.findViewById(R.id.text_game_start_time)
 
         init {
             view.setOnClickListener {
@@ -36,6 +37,7 @@ class GameListAdapter(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val gameState = gameStates[position]
         viewHolder.textGameId.text = "Game #:${gameState.id.toString()}"
+        viewHolder.textGameStartTime.text = gameState.gameStartedTime.toString()
     }
 
     override fun getItemCount() = gameStates.size
