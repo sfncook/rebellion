@@ -9,7 +9,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.BaseActivity
+import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.features.sectorsList.R
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +21,7 @@ class SectorsListFragment: Fragment() {
 
     private var currentGameStateId: Long = 0
     private lateinit var gameStateWithSectors: LiveData<GameStateWithSectors>
+    private lateinit var gameStateViewModel: GameStateViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,28 +30,46 @@ class SectorsListFragment: Fragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_sectors_list, container, false)
 
-        val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+        gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         gameStateWithSectors = gameStateViewModel.gameState
         gameStateWithSectors.observe(viewLifecycleOwner , {
-            root.findViewById<TextView>(R.id.sectorlist_text).text = it.gameState.id.toString()
+            updateSectorsList(it)
         })
 
 //        root.findViewById<MaterialButton>(R.id.btn_goto_detail).setOnClickListener {
 //            root.findNavController().navigate(R.id.third_graph)
 //        }
+
+        return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
         val keyCurrentGameId = getString(R.string.keyCurrentGameId)
         val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
         if(sharedPref?.contains(keyCurrentGameId) == true) {
             currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                gameStateViewModel.loadAllGameStateWithSectors(currentGameStateId)
-            }
+            gameStateViewModel.loadAllGameStateWithSectors(currentGameStateId)
         } else {
-            println("ERROR No current game ID found in shared preferences")
+            println("ERROR No current game ID foudn in shared preferences")
         }
+    }
 
-        return root
+    private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors) {
+        val sectors = gameStateWithSectors.sectors
+        val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
+            s1.sector.name.compareTo(s2.sector.name)
+        })
+        val viewAdapter = SectorListAdapter(ArrayList(sortedSectors))
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.sectors_list)
+        viewLifecycleOwner.lifecycleScope.launch {
+            recyclerView?.adapter = viewAdapter
+//            viewBinding.sectorsList.apply {
+//                adapter = viewAdapter
+//            }
+        }
     }
 
 }

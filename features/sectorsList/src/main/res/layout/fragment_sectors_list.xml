@@ -2,27 +2,39 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/sectorlist_text"
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/sectors_list_toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sector List Fragment"
-        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/sectors_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:title="All Sectors" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sectors_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/sectors_list_gamecontrols"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btn_goto_detail"
-        />
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_goto_detail"
-        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sectors_list_toolbar"
+        app:spanCount="2"
+        tools:listitem="@layout/list_item_sector" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/sectors_list_gamecontrols"
+        android:name="com.rebellionandroid.components.gamecontrols.GameControlsFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Goto Sector_Detail"
-        app:layout_constraintTop_toBottomOf="@+id/sectorlist_text"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
