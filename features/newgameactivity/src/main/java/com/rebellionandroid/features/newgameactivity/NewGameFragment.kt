@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.GameState
@@ -28,16 +29,26 @@ class NewGameFragment: Fragment() {
         val root = inflater.inflate(R.layout.fragment_new_game, container, false)
 
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-        gameStateViewModel.getAllGameStates {
-            println("Many games:${it.size}")
-            val viewAdapter = GameListAdapter(it)
-            val listGames = root.findViewById<RecyclerView>(R.id.list_games)
-            viewLifecycleOwner.lifecycleScope.launch {
-                listGames.adapter = viewAdapter
+        updateList(root)
+
+        root.findViewById<MaterialButton>(R.id.btn_create_new_game).setOnClickListener {
+            gameStateViewModel.createNewGameState() {
+                updateList(root)
             }
         }
 
         return root
+    }
+
+    private fun updateList(view: View) {
+        gameStateViewModel.getAllGameStates {
+            println("Many games:${it.size}")
+            val viewAdapter = GameListAdapter(it)
+            val listGames = view.findViewById<RecyclerView>(R.id.list_games)
+            viewLifecycleOwner.lifecycleScope.launch {
+                listGames.adapter = viewAdapter
+            }
+        }
     }
 
 }
