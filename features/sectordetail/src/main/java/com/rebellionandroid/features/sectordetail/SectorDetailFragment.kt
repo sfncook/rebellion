@@ -14,6 +14,8 @@ class SectorDetailFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val root = inflater.inflate(R.layout.fragment_sector_detail, container, false)
+        val sectorId = arguments?.getLong("sectorId")
+        println("Received sectorId:${sectorId}")
         return root
     }
 

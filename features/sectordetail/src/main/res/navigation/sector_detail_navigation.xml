@@ -2,13 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/third_graph"
+    android:id="@+id/sector_detail_graph"
     app:startDestination="@id/fragment_sector_detail">
 
     <fragment
         android:id="@+id/fragment_sector_detail"
         android:name="com.rebellionandroid.features.sectordetail.SectorDetailFragment"
-        android:label="fragment_included_start"
+        android:label="Sector Detail"
         tools:layout="@layout/fragment_sector_detail" >
         <argument
             android:name="sectorId"

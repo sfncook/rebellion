@@ -36,10 +36,6 @@ class SectorsListFragment: Fragment() {
             updateSectorsList(it)
         })
 
-//        root.findViewById<MaterialButton>(R.id.btn_goto_detail).setOnClickListener {
-//            root.findNavController().navigate(R.id.third_graph)
-//        }
-
         return root
     }
 

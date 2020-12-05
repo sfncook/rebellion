@@ -10,10 +10,10 @@
     <fragment
         android:id="@+id/fragment_sectors_list"
         android:name="com.rebellionandroid.features.sectorslist.SectorsListFragment"
-        android:label="fragment_included_start"
+        android:label="Sectors List"
         tools:layout="@layout/fragment_sectors_list">
         <action
             android:id="@+id/action_fragment_to_third_graph"
-            app:destination="@id/third_graph" />
+            app:destination="@id/sector_detail_graph" />
     </fragment>
 </navigation>
