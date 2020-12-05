@@ -35,7 +35,7 @@ class GameListAdapter(
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val gameState = gameStates[position]
-        viewHolder.textGameId.text = gameState.id.toString()
+        viewHolder.textGameId.text = "Game #:${gameState.id.toString()}"
     }
 
     override fun getItemCount() = gameStates.size

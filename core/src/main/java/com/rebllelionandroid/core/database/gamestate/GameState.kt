@@ -11,5 +11,6 @@ data class GameState(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "gameInProgress") val gameInProgress: Boolean,
     @ColumnInfo(name = "gameTime") val gameTime: Int,
-    val myTeam: TeamLoyalty
+    val myTeam: TeamLoyalty,
+    val gameStartedTime: Date
 )

@@ -16,7 +16,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 class GameStateViewModel @Inject constructor(
@@ -71,7 +73,7 @@ class GameStateViewModel @Inject constructor(
     }
 
     fun createNewGameState(): Long {
-        val gameState = GameState(Random.nextLong(), false, 1, TeamLoyalty.TeamA)
+        val gameState = GameState(Random.nextLong(), false, 1, TeamLoyalty.TeamA, Date())
         gameStateRepository.createNewGameState(gameState)
 
         val allPlanets = ArrayList<Planet>()

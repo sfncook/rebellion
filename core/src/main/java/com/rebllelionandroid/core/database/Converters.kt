@@ -3,8 +3,14 @@ package com.rebllelionandroid.core.database
 import androidx.room.TypeConverter
 import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import java.util.*
 
 class Converters {
+    @TypeConverter
+    fun toDate(value: Long?) = value?.let { Date(value) }
+    @TypeConverter
+    fun fromDate(value: Date?) = value?.time
+
     @TypeConverter
     fun toShipType(value: String?) = value?.let { enumValueOf<ShipType>(it) }
     @TypeConverter

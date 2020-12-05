@@ -27,30 +27,13 @@ class NewGameFragment: Fragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_new_game, container, false)
 
-//        gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-//        gameStateViewModel.getAllGameStates {
-//            println("Many games:${it.size}")
-//            val viewAdapter = GameListAdapter(it)
-//            val listGames = root.findViewById<RecyclerView>(R.id.list_games)
-//            listGames.adapter = viewAdapter
-//        }
-
-        val rvContacts = root.findViewById<RecyclerView>(R.id.list_games)
-        // Initialize contacts
-        val contacts = ArrayList<GameState>()
-        contacts.add(GameState(Random.nextLong(), false, 0, TeamLoyalty.TeamA))
-        contacts.add(GameState(Random.nextLong(), false, 999, TeamLoyalty.TeamA))
-        contacts.add(GameState(Random.nextLong(), false, 8888, TeamLoyalty.TeamA))
-        contacts.add(GameState(Random.nextLong(), false, 77777, TeamLoyalty.TeamA))
-
-        // Create adapter passing in the sample user data
-        val adapter = GameListAdapter(contacts)
-
-        // Attach the adapter to the recyclerview to populate items
-        rvContacts.adapter = adapter
-
-        // Set layout manager to position the items
-        rvContacts.layoutManager = LinearLayoutManager(context)
+        gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+        gameStateViewModel.getAllGameStates {
+            println("Many games:${it.size}")
+            val viewAdapter = GameListAdapter(it)
+            val listGames = root.findViewById<RecyclerView>(R.id.list_games)
+            listGames.adapter = viewAdapter
+        }
 
         return root
     }
