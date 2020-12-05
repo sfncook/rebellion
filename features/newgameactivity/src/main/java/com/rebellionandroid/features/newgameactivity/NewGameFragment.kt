@@ -32,7 +32,9 @@ class NewGameFragment: Fragment() {
             println("Many games:${it.size}")
             val viewAdapter = GameListAdapter(it)
             val listGames = root.findViewById<RecyclerView>(R.id.list_games)
-            listGames.adapter = viewAdapter
+            viewLifecycleOwner.lifecycleScope.launch {
+                listGames.adapter = viewAdapter
+            }
         }
 
         return root
