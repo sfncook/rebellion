@@ -26,6 +26,7 @@ class PlanetUnitsFragment : Fragment() {
     private lateinit var textLoyaltyPercTeamB: TextView
     private lateinit var planetLoyaltyImg: ImageView
     private lateinit var listUnitsOnPlanetSurface: RecyclerView
+    private lateinit var listShipsWithUnits: RecyclerView
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -39,19 +40,27 @@ class PlanetUnitsFragment : Fragment() {
         textLoyaltyPercTeamB = root.findViewById(R.id.units_text_loyalty_perc_team_b)
         planetLoyaltyImg = root.findViewById(R.id.units_planet_loyalty)
         listUnitsOnPlanetSurface = root.findViewById(R.id.list_units_on_planet_surface)
+        listShipsWithUnits = root.findViewById(R.id.list_ships_with_units)
 
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         val gameStateWithSectors = gameStateViewModel.gameState
         gameStateWithSectors.observe(viewLifecycleOwner , {
-            gameStateViewModel.getPlanet(selectedPlanetId) {
+            gameStateViewModel.getPlanetWithUnits(selectedPlanetId) {
+                val planet = it.planet
                 viewLifecycleOwner.lifecycleScope.launch {
-                    textLoyaltyPercTeamA.text = "${it.teamALoyalty.toString()}%"
-                    textLoyaltyPercTeamB.text = "${it.teamBLoyalty.toString()}%"
-                    val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(it)
+                    textLoyaltyPercTeamA.text = "${planet.teamALoyalty.toString()}%"
+                    textLoyaltyPercTeamB.text = "${planet.teamBLoyalty.toString()}%"
+                    val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
                     planetLoyaltyImg.setImageResource(imgId)
                     planetLoyaltyImg.setColorFilter(
                         ContextCompat.getColor(root.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
                     )
+                }
+
+                it.ships.forEach {
+                    gameStateViewModel.getAllUnitsOnShip(it.id) {
+                        
+                    }
                 }
             }
 
