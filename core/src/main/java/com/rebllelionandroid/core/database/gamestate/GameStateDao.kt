@@ -30,6 +30,9 @@ interface GameStateDao {
     @Query("SELECT * FROM planets WHERE id = :planetId")
     fun getPlanetWithUnits(planetId: Long): PlanetWithUnits
 
+    @Query("SELECT * FROM planets WHERE id = :planetId")
+    fun getPlanet(planetId: Long): Planet
+
     @Query("SELECT * FROM units WHERE planet_id = :planetId")
     fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long): List<Unit>
 

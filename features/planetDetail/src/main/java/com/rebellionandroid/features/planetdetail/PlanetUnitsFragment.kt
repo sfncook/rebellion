@@ -43,12 +43,11 @@ class PlanetUnitsFragment : Fragment() {
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         val gameStateWithSectors = gameStateViewModel.gameState
         gameStateWithSectors.observe(viewLifecycleOwner , {
-            gameStateViewModel.getPlanetWithUnits(selectedPlanetId) {
-                val planet = it.planet
+            gameStateViewModel.getPlanet(selectedPlanetId) {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    textLoyaltyPercTeamA.text = "${planet.teamALoyalty.toString()}%"
-                    textLoyaltyPercTeamB.text = "${planet.teamBLoyalty.toString()}%"
-                    val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
+                    textLoyaltyPercTeamA.text = "${it.teamALoyalty.toString()}%"
+                    textLoyaltyPercTeamB.text = "${it.teamBLoyalty.toString()}%"
+                    val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(it)
                     planetLoyaltyImg.setImageResource(imgId)
                     planetLoyaltyImg.setColorFilter(
                         ContextCompat.getColor(root.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY

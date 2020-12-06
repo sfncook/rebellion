@@ -57,6 +57,7 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/units_text_loyalty_perc_team_b" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_units_on_planet_surface"
         android:layout_width="match_parent"
