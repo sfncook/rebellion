@@ -6,14 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.Utilities
+import kotlinx.coroutines.launch
 
 class PlanetUnitsFragment : Fragment() {
     private var currentGameStateId: Long = 0
     private var selectedPlanetId: Long = 0
     private lateinit var gameStateViewModel: GameStateViewModel
+    private lateinit var textLoyaltyPercTeamA: TextView
+    private lateinit var textLoyaltyPercTeamB: TextView
+    private lateinit var planetLoyaltyImg: ImageView
+    private lateinit var listUnitsOnPlanetSurface: RecyclerView
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -23,15 +32,25 @@ class PlanetUnitsFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_planet_units, container, false)
         selectedPlanetId = arguments?.getLong("planetId")!!
 
-        val textLoyaltyPercTeamA = root.findViewById<TextView>(R.id.units_text_loyalty_perc_team_a)
-        val textLoyaltyPercTeamB = root.findViewById<TextView>(R.id.units_text_loyalty_perc_team_b)
-        val planetLoyaltyImg = root.findViewById<ImageView>(R.id.units_planet_loyalty)
+        textLoyaltyPercTeamA = root.findViewById(R.id.units_text_loyalty_perc_team_a)
+        textLoyaltyPercTeamB = root.findViewById(R.id.units_text_loyalty_perc_team_b)
+        planetLoyaltyImg = root.findViewById(R.id.units_planet_loyalty)
+        listUnitsOnPlanetSurface = root.findViewById(R.id.list_units_on_planet_surface)
 
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         val gameStateWithSectors = gameStateViewModel.gameState
         gameStateWithSectors.observe(viewLifecycleOwner , {
-            val planetWithUnits = gameStateViewModel.getPlanetWithUnits(selectedPlanetId) {
+            gameStateViewModel.getPlanetWithUnits(selectedPlanetId) {
                 val planet = it.planet
+                viewLifecycleOwner.lifecycleScope.launch {
+                    textLoyaltyPercTeamA.text = "${planet.teamALoyalty.toString()}%"
+                    textLoyaltyPercTeamB.text = "${planet.teamBLoyalty.toString()}%"
+                    val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
+                    planetLoyaltyImg.setImageResource(imgId)
+                    planetLoyaltyImg.setColorFilter(
+                        ContextCompat.getColor(root.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
+                    )
+                }
             }
 //            updatePlanetDetail(planetWithUnits)
         })
