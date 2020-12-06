@@ -15,6 +15,7 @@ import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.Unit
 import kotlinx.coroutines.launch
 
@@ -56,6 +57,7 @@ class PlanetUnitsFragment : Fragment() {
                         ContextCompat.getColor(root.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
                     )
                 }
+                updateUnitsOnShips(it.shipsWithUnits)
             }
 
             gameStateViewModel.getAllUnitsOnTheSurfaceOfPlanet(selectedPlanetId) {
@@ -70,6 +72,13 @@ class PlanetUnitsFragment : Fragment() {
         val viewAdapter = UnitListAdapter(units)
         viewLifecycleOwner.lifecycleScope.launch {
             listUnitsOnPlanetSurface.adapter = viewAdapter
+        }
+    }
+
+    private fun updateUnitsOnShips(shipsWithUnits: List<ShipWithUnits>) {
+        val viewAdapter = ShipsWithUnitListAdapter(shipsWithUnits)
+        viewLifecycleOwner.lifecycleScope.launch {
+            listShipsWithUnits.adapter = viewAdapter
         }
     }
 }

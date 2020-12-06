@@ -6,16 +6,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.rebllelionandroid.core.database.gamestate.Ship
-import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
-import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 
 class ShipsWithUnitListAdapter(
-    private val ships: List<Ship>
+    private val shipsWithUnits: List<ShipWithUnits>
 ) : RecyclerView.Adapter<ShipsWithUnitListAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View, private val ships: List<Ship>) : RecyclerView.ViewHolder(
+    class ViewHolder(view: View, private val shipsWithUnits: List<ShipWithUnits>) : RecyclerView.ViewHolder(
         view
     ) {
         val shipLabel: TextView = view.findViewById(R.id.ship_with_units_label)
@@ -24,7 +22,7 @@ class ShipsWithUnitListAdapter(
 
         init {
             view.setOnClickListener {
-                val ship = ships[adapterPosition]
+                val shipWithUnits = shipsWithUnits[adapterPosition]
                 // Open mission assignment fragment
             }
         }
@@ -33,13 +31,13 @@ class ShipsWithUnitListAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item_ship_with_units, viewGroup, false)
-        return ViewHolder(view, ships)
+        return ViewHolder(view, shipsWithUnits)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val ship = ships[position]
-        viewHolder.shipLabel.text = ship.shipType.value
-        val imgSrc  = when(ship.shipType) {
+        val shipWithUnits = shipsWithUnits[position]
+        viewHolder.shipLabel.text = shipWithUnits.ship.shipType.value
+        val imgSrc  = when(shipWithUnits.ship.shipType) {
             ShipType.Biremes -> R.drawable.ship_2
             ShipType.Triremes -> R.drawable.ship_3
             ShipType.Quadriremes -> R.drawable.ship_4
@@ -50,9 +48,9 @@ class ShipsWithUnitListAdapter(
         }
         viewHolder.shipImg.setImageResource(imgSrc)
 
-//        viewHolder.shipWithUnitsList.adapter = UnitListAdapter(units)
+        viewHolder.shipWithUnitsList.adapter = UnitListAdapter(shipWithUnits.units)
     }
 
-    override fun getItemCount() =  ships.size
+    override fun getItemCount() =  shipsWithUnits.size
 
 }
