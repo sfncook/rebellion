@@ -67,15 +67,22 @@ class GameStateViewModel @Inject constructor(
     }
 
 
+    fun toggleTimer(gameStateId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val _gameState = gameStateRepository.getGameState(gameStateId)
+            if(_gameState.gameInProgress) {
+                stopTimer(gameStateId)
+            } else {
+                startTimer(gameStateId)
+            }
+        }
+    }
+
     fun startTimer(gameStateId: Long) {
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
-                val gameState = gameStateRepository.getGameState(gameStateId)
-                val timeVal = gameState.gameTime.plus(1)
-                timeVal.let { gameStateRepository.updateGameTime(gameStateId, it) }
-                println("my thread i:$timeVal")
-                updateGameState()
+                updateGameState(gameStateId)
                 delay(1500)
             }
         }
@@ -87,7 +94,13 @@ class GameStateViewModel @Inject constructor(
         }
         viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 0)
+            postUpdate(gameStateId)
         }
+    }
+
+    private fun postUpdate(gameStateId: Long) {
+        val newGameStateWithSectors = gameStateRepository.getGameStateWithSectors(gameStateId)
+        _gameState.postValue(newGameStateWithSectors)
     }
 
     fun createNewGameState(callback: () -> kotlin.Unit) {
@@ -225,7 +238,11 @@ class GameStateViewModel @Inject constructor(
     }
 
 
-    private fun updateGameState() {
+    private fun updateGameState(gameStateId: Long) {
+        val gameStateWithSectors = gameStateRepository.getGameStateWithSectors(gameStateId)
+        val timeVal = gameStateWithSectors.gameState.gameTime.plus(1)
+        timeVal.let { gameStateRepository.updateGameTime(gameStateId, it) }
+        println("my thread i:$timeVal")
 //        val gameStateWithSectors = getCurrentGameStateWithSectors()
 //        val sectorsWithPlanets = gameStateWithSectors.sectors
 //        for(sectorWithPlanets in sectorsWithPlanets) {
@@ -243,5 +260,7 @@ class GameStateViewModel @Inject constructor(
 //            }
 //            println()
 //        }
+
+        postUpdate(gameStateId)
     }
 }
