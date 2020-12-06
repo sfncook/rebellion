@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 import com.rebllelionandroid.core.database.gamestate.enums.Mission
 import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 @Entity(
         tableName = "units",
@@ -30,5 +31,6 @@ data class Unit(
         @Nullable val mission: Mission?,
         val dayMissionComplete: Long,
         @Nullable val missionTargetType: MissionTargetType?,
-        @Nullable val missionTargetId: Long?
+        @Nullable val missionTargetId: Long?,
+        val team: TeamLoyalty
 )

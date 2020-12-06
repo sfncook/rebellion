@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 @Entity(
         tableName = "ships",
@@ -17,5 +18,6 @@ data class Ship(
         @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long,
         val shipType: ShipType,
         val isTraveling: Boolean,
-        val dayArrival: Long
+        val dayArrival: Long,
+        val team: TeamLoyalty
 )

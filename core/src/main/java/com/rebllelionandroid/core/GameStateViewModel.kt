@@ -95,9 +95,10 @@ class GameStateViewModel @Inject constructor(
             val gameState = GameState(Random.nextLong(), false, 1, TeamLoyalty.TeamA, Date())
             gameStateRepository.createNewGameState(gameState)
 
-            val allPlanets = ArrayList<Planet>()
-            val planetsTeamA = ArrayList<Planet>()
-            val planetsTeamB = ArrayList<Planet>()
+            val teamsToPlanets = mapOf(
+                TeamLoyalty.TeamA to ArrayList<Planet>(),
+                TeamLoyalty.TeamB to ArrayList<Planet>(),
+            )
 
             val allSectorTypes = staticTypesRepository.getAllSectorTypes()
             for (sectorType in allSectorTypes) {
@@ -128,80 +129,99 @@ class GameStateViewModel @Inject constructor(
                             energyCap = Random.nextInt(10)
                     )
                     gameStateRepository.insertNewPlanet(planet)
-                    allPlanets.add(planet)
-                    if (sectorType.initTeamLoyalty == TeamLoyalty.TeamA) {
-                        planetsTeamA.add(planet)
-                    } else if (sectorType.initTeamLoyalty == TeamLoyalty.TeamB) {
-                        planetsTeamB.add(planet)
+                    teamsToPlanets[sectorType.initTeamLoyalty]?.add(planet)
+
+                    val manyInitUnitsPerPlanet = 5
+                    for (u in 1..manyInitUnitsPerPlanet) {
+                        val unit = Unit(
+                            id = Random.nextLong(),
+                            unitType = UnitType.values().random(),
+                            locationPlanetId = planet.id,
+                            locationShip = null,
+                            mission = null,
+                            dayMissionComplete = 0,
+                            missionTargetType = null,
+                            missionTargetId = null,
+                            sectorType.initTeamLoyalty
+                        )
+                        gameStateRepository.insertNewUnit(unit)
                     }
                 }
             }
 
-            // Create units
-            // Orbital battery
-            val orbitalBattery = DefenseStructure(
-                    id = Random.nextLong(),
-                    defenseStructureType = DefenseStructureType.OrbitalBattery,
-                    locationPlanetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id,
-                    isTravelling = false,
-                    dayArrival = 0
-            )
-            gameStateRepository.insertNewDefenseStructure(orbitalBattery)
+            arrayListOf(TeamLoyalty.TeamA, TeamLoyalty.TeamB).forEach { teamLoyalty ->
+                val planetsForTeam = teamsToPlanets[teamLoyalty]
+                val planetForTeam = planetsForTeam?.get(Random.nextInt(planetsForTeam.size))
 
-            // Planetary shield
-            val planetaryShield = DefenseStructure(
-                    id = Random.nextLong(),
-                    defenseStructureType = DefenseStructureType.PlanetaryShield,
-                    locationPlanetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id,
-                    isTravelling = false,
-                    dayArrival = 0
-            )
-            gameStateRepository.insertNewDefenseStructure(planetaryShield)
-
-            val manyInitFactories = 3
-            for (u in 1..manyInitFactories) {
-                val planetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id
-                val factory = Factory(
+                if(planetForTeam != null) {
+                    // Orbital battery
+                    val orbitalBattery = DefenseStructure(
                         id = Random.nextLong(),
-                        factoryType = FactoryType.ConstructionYard,
-                        planetId,
-                        buildTargetType = null,
-                        dayBuildComplete = 0,
+                        defenseStructureType = DefenseStructureType.OrbitalBattery,
+                        locationPlanetId = planetForTeam.id,
                         isTravelling = false,
                         dayArrival = 0
-                )
-                gameStateRepository.insertNewFactory(factory)
-            }
+                    )
+                    gameStateRepository.insertNewDefenseStructure(orbitalBattery)
 
-            val manyInitShips = 5
-            for (u in 1..manyInitShips) {
-                val ship = Ship(
+                    // Planetary shield
+                    val planetaryShield = DefenseStructure(
                         id = Random.nextLong(),
-                        locationPlanetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id,
-                        shipType = ShipType.Biremes,
-                        isTraveling = false,
+                        defenseStructureType = DefenseStructureType.PlanetaryShield,
+                        locationPlanetId = planetForTeam.id,
+                        isTravelling = false,
                         dayArrival = 0
-                )
-                gameStateRepository.insertNewShip(ship)
-            }
+                    )
+                    gameStateRepository.insertNewDefenseStructure(planetaryShield)
 
-            val manyInitUnits = 5
-            for (u in 1..manyInitUnits) {
-                val unit = Unit(
-                        id = Random.nextLong(),
-                        unitType = UnitType.Garrison,
-                        locationPlanetId = planetsTeamA[Random.nextInt(planetsTeamA.size)].id,
-                        locationShip = null,
-                        mission = null,
-                        dayMissionComplete = 0,
-                        missionTargetType = null,
-                        missionTargetId = null
-                )
-                gameStateRepository.insertNewUnit(unit)
+                    val manyInitFactories = 3
+                    for (u in 1..manyInitFactories) {
+                        val planetId = planetForTeam.id
+                        val factory = Factory(
+                            id = Random.nextLong(),
+                            factoryType = FactoryType.values().random(),
+                            planetId,
+                            buildTargetType = null,
+                            dayBuildComplete = 0,
+                            isTravelling = false,
+                            dayArrival = 0
+                        )
+                        gameStateRepository.insertNewFactory(factory)
+                    }
+
+                    val manyInitShips = 5
+                    val manyInitUnitsPerShip = 4
+                    for (u in 1..manyInitShips) {
+                        val ship = Ship(
+                            id = Random.nextLong(),
+                            locationPlanetId = planetForTeam.id,
+                            shipType = ShipType.values().random(),
+                            isTraveling = false,
+                            dayArrival = 0,
+                            teamLoyalty
+                        )
+                        gameStateRepository.insertNewShip(ship)
+
+                        for (u in 1..manyInitUnitsPerShip) {
+                            val unit = Unit(
+                                id = Random.nextLong(),
+                                unitType = UnitType.values().random(),
+                                locationPlanetId = null,
+                                locationShip = ship.id,
+                                mission = null,
+                                dayMissionComplete = 0,
+                                missionTargetType = null,
+                                missionTargetId = null,
+                                teamLoyalty
+                            )
+                            gameStateRepository.insertNewUnit(unit)
+                        }
+                    }// ships
+                }
             }
 
             callback()
-        }
+        }// launch thread
     }
 
 
