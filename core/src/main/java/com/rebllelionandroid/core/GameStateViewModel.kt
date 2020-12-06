@@ -53,6 +53,12 @@ class GameStateViewModel @Inject constructor(
             callback(planetWithUnits)
         }
     }
+    fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long, callback: (units: List<Unit>) -> kotlin.Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val units = gameStateRepository.getAllUnitsOnTheSurfaceOfPlanet(planetId)
+            callback(units)
+        }
+    }
 
 
     fun startTimer(gameStateId: Long) {

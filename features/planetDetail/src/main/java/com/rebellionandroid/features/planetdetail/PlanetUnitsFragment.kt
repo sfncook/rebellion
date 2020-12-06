@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
+import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
+import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.gamestate.Unit
 import kotlinx.coroutines.launch
 
 class PlanetUnitsFragment : Fragment() {
@@ -52,9 +55,19 @@ class PlanetUnitsFragment : Fragment() {
                     )
                 }
             }
-//            updatePlanetDetail(planetWithUnits)
+
+            gameStateViewModel.getAllUnitsOnTheSurfaceOfPlanet(selectedPlanetId) {
+                updateUnitsOnPlanetSurface(it)
+            }
         })
 
         return root
+    }
+
+    private fun updateUnitsOnPlanetSurface(units: List<Unit>) {
+        val viewAdapter = UnitListAdapter(units)
+        viewLifecycleOwner.lifecycleScope.launch {
+            listUnitsOnPlanetSurface.adapter = viewAdapter
+        }
     }
 }
