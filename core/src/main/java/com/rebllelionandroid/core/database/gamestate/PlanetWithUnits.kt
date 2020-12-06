@@ -12,10 +12,11 @@ data class PlanetWithUnits(
         val units: List<Unit>,
 
         @Relation(
+                entity = Ship::class,
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
-        val ships: List<Ship>,
+        val shipsWithUnits: List<ShipWithUnits>,
 
         @Relation(
                 parentColumn = "id",

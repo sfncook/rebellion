@@ -56,12 +56,6 @@ class PlanetUnitsFragment : Fragment() {
                         ContextCompat.getColor(root.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
                     )
                 }
-
-                it.ships.forEach {
-                    gameStateViewModel.getAllUnitsOnShip(it.id) {
-                        
-                    }
-                }
             }
 
             gameStateViewModel.getAllUnitsOnTheSurfaceOfPlanet(selectedPlanetId) {

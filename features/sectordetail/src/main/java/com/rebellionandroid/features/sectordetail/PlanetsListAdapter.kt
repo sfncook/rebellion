@@ -58,7 +58,7 @@ class PlanetsListAdapter(
         val planet = planetWithUnit.planet
         viewHolder.planetName.text = planet.name
 
-        viewHolder.planetHasShipImg.visibility = if(planetWithUnit.ships.isEmpty()) GONE else VISIBLE
+        viewHolder.planetHasShipImg.visibility = if(planetWithUnit.shipsWithUnits.isEmpty()) GONE else VISIBLE
         viewHolder.planetHasUnitsImg.visibility = if(planetWithUnit.units.isEmpty()) GONE else VISIBLE
         viewHolder.planetHasDefenseImg.visibility = if(planetWithUnit.defenseStructures.isEmpty()) GONE else VISIBLE
         viewHolder.planetHasFactoriesImg.visibility = if(planetWithUnit.factories.isEmpty()) GONE else VISIBLE
