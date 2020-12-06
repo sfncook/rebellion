@@ -18,6 +18,7 @@ import javax.inject.Singleton
 @Module
 class DatabaseModule {
 
+    @Singleton
     @Provides
     fun provideGameStatelDatabase(context: Context) =
         Room.databaseBuilder(
@@ -28,19 +29,23 @@ class DatabaseModule {
             .createFromAsset("rebellion.db")
             .build()
 
+    @Singleton
     @Provides
     fun provideGameStateDao(gameStateDatabase: GameStateDatabase) =
             gameStateDatabase.gameStateDao()
 
+    @Singleton
     @Provides
     fun provideGameStateRepository(
             gameStateDao: GameStateDao
     ) = GameStateRepository(gameStateDao)
 
+    @Singleton
     @Provides
     fun provideStaticTypesDao(gameStateDatabase: GameStateDatabase) =
             gameStateDatabase.staticTypesDao()
 
+    @Singleton
     @Provides
     fun provideStaticTypesRepository(
             staticTypesDao: StaticTypesDao

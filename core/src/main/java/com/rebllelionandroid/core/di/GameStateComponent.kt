@@ -5,7 +5,9 @@ import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.di.modules.ContextModule
 import com.rebllelionandroid.core.di.modules.DatabaseModule
 import dagger.Component
+import javax.inject.Singleton
 
+@Singleton
 @Component(
     modules = [
         ContextModule::class,
