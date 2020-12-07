@@ -33,9 +33,6 @@ interface GameStateDao {
     @Query("SELECT * FROM units WHERE planet_id = :planetId")
     fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long): List<Unit>
 
-    @Query("SELECT * FROM units WHERE ship_id = :shipId")
-    fun getAllUnitsOnShip(shipId: Long): List<Unit>
-
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameState(gameStateId: Long): GameState
 

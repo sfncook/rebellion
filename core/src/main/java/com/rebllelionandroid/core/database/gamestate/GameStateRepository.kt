@@ -1,6 +1,5 @@
 package com.rebllelionandroid.core.database.gamestate
 
-import androidx.lifecycle.LiveData
 import javax.inject.Inject
 
 class GameStateRepository @Inject constructor(
@@ -13,7 +12,6 @@ class GameStateRepository @Inject constructor(
     fun getSectorWithPlanets(sectorId: Long) = gameStateDao.getSectorWithPlanets(sectorId)
     fun getPlanetWithUnits(planetId: Long) = gameStateDao.getPlanetWithUnits(planetId)
     fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long) = gameStateDao.getAllUnitsOnTheSurfaceOfPlanet(planetId)
-    fun getAllUnitsOnShip(shipId: Long) = gameStateDao.getAllUnitsOnShip(shipId)
     fun getGameState(gameStateId: Long) = gameStateDao.getGameState(gameStateId)
 
 

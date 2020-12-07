@@ -45,7 +45,6 @@ class GameStateViewModel @Inject constructor(
         }
     }
     fun getGameStateWithSectorsLive(gameStateId: Long) = gameStateRepository.getGameStateWithSectorsLive(gameStateId)
-    fun getGameState(gameStateId: Long) = gameStateRepository.getGameState(gameStateId)
     fun getSectorWithPlanets(sectorId: Long) = gameStateRepository.getSectorWithPlanets(sectorId)
     fun getPlanetWithUnits(planetId: Long, callback: (planetWithUnits: PlanetWithUnits) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -56,12 +55,6 @@ class GameStateViewModel @Inject constructor(
     fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long, callback: (units: List<Unit>) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val units = gameStateRepository.getAllUnitsOnTheSurfaceOfPlanet(planetId)
-            callback(units)
-        }
-    }
-    fun getAllUnitsOnShip(shipId: Long, callback: (units: List<Unit>) -> kotlin.Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val units = gameStateRepository.getAllUnitsOnShip(shipId)
             callback(units)
         }
     }
