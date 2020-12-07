@@ -243,23 +243,23 @@ class GameStateViewModel @Inject constructor(
         val timeVal = gameStateWithSectors.gameState.gameTime.plus(1)
         timeVal.let { gameStateRepository.updateGameTime(gameStateId, it) }
         println("my thread i:$timeVal")
-//        val gameStateWithSectors = getCurrentGameStateWithSectors()
-//        val sectorsWithPlanets = gameStateWithSectors.sectors
-//        for(sectorWithPlanets in sectorsWithPlanets) {
+
+        val sectorsWithPlanets = gameStateWithSectors.sectors
+        for(sectorWithPlanets in sectorsWithPlanets) {
 //            print("Sector: ")
-//            for(planetWithUnits in sectorWithPlanets.planets)  {
-//                val planet = planetWithUnits.planet
-//                var teamALoyalty = planetWithUnits.planet.teamALoyalty
-//                if(teamALoyalty>90) {
-//                    teamALoyalty = 0
-//                } else {
-//                    teamALoyalty+=10
-//                }
+            for(planetWithUnits in sectorWithPlanets.planets)  {
+                val planet = planetWithUnits.planet
+                var teamALoyalty = planetWithUnits.planet.teamALoyalty
+                if(teamALoyalty>90) {
+                    teamALoyalty = 0
+                } else {
+                    teamALoyalty+=10
+                }
 //                print("${teamALoyalty} ")
-//                gameStateRepository.updatePlanetLoyalty(planet.id, teamALoyalty)
-//            }
+                gameStateRepository.updatePlanetLoyalty(planet.id, teamALoyalty)
+            }
 //            println()
-//        }
+        }
 
         postUpdate(gameStateId)
     }
