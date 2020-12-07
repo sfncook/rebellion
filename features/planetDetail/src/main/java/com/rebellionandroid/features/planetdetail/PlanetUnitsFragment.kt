@@ -20,7 +20,6 @@ import com.rebllelionandroid.core.database.gamestate.Unit
 import kotlinx.coroutines.launch
 
 class PlanetUnitsFragment : Fragment() {
-    private var currentGameStateId: Long = 0
     private var selectedPlanetId: Long = 0
     private lateinit var gameStateViewModel: GameStateViewModel
     private lateinit var textLoyaltyPercTeamA: TextView

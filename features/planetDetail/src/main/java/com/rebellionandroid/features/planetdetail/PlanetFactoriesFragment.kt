@@ -5,14 +5,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import com.rebllelionandroid.core.BaseActivity
+import com.rebllelionandroid.core.database.gamestate.Factory
+import kotlinx.coroutines.launch
 
 class PlanetFactoriesFragment : Fragment() {
+    private var selectedPlanetId: Long = 0
+    private lateinit var listFactories: RecyclerView
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_planet_factories, container, false)
+        val root = inflater.inflate(R.layout.fragment_planet_factories, container, false)
+        selectedPlanetId = arguments?.getLong("planetId")!!
+        listFactories = root.findViewById(R.id.list_factories)
+
+        val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+        val gameStateWithSectors = gameStateViewModel.gameState
+        gameStateWithSectors.observe(viewLifecycleOwner , {
+            gameStateViewModel.getPlanetWithUnits(selectedPlanetId) {
+                updateUnitsOnPlanetSurface(it.factories)
+            }
+
+        })
+
+        return root
+    }
+
+    private fun updateUnitsOnPlanetSurface(factories: List<Factory>) {
+        val viewAdapter = FactoryListAdapter(factories)
+        viewLifecycleOwner.lifecycleScope.launch {
+            listFactories.adapter = viewAdapter
+        }
     }
 }
