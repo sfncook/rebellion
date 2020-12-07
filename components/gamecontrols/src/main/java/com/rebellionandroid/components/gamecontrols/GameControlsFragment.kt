@@ -38,6 +38,7 @@ class GameControlsFragment: Fragment() {
             }
         }
 
+        gameStateViewModel.stopAllGameStates()
         gameStateLive = gameStateViewModel.gameState
         gameStateLive.observe(viewLifecycleOwner , { gameStateWithSectors ->
             gameTimeText.text = gameStateWithSectors.gameState.gameTime.toString()

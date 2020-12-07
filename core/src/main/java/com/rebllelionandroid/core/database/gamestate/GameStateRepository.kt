@@ -13,6 +13,7 @@ class GameStateRepository @Inject constructor(
     fun getPlanetWithUnits(planetId: Long) = gameStateDao.getPlanetWithUnits(planetId)
     fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long) = gameStateDao.getAllUnitsOnTheSurfaceOfPlanet(planetId)
     fun getGameState(gameStateId: Long) = gameStateDao.getGameState(gameStateId)
+    fun stopAllGameStates() = gameStateDao.stopAllGameStates()
 
 
 

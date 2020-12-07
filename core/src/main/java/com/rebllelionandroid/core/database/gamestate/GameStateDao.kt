@@ -76,5 +76,8 @@ interface GameStateDao {
     @Query("UPDATE planets SET teamALoyalty = :loyalty WHERE id = :planetId")
     fun updatePlanetLoyalty(planetId:Long, loyalty: Int): Int
 
+    @Query("UPDATE game_state SET gameInProgress = 0")
+    fun stopAllGameStates(): Int
+
 
 }

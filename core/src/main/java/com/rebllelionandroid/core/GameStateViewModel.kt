@@ -58,6 +58,11 @@ class GameStateViewModel @Inject constructor(
             callback(units)
         }
     }
+    fun stopAllGameStates() {
+        viewModelScope.launch(Dispatchers.IO) {
+            gameStateRepository.stopAllGameStates()
+        }
+    }
 
 
     fun toggleTimer(gameStateId: Long) {
