@@ -3,16 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/planet_detail_graph"
-    app:startDestination="@+id/navigation_planet_units">
-
+    app:startDestination="@+id/navigation_planet_details">
     <fragment
-        android:id="@+id/navigation_planet_units"
-        android:name="com.rebellionandroid.features.planetdetail.PlanetUnitsFragment"
-        android:label="Units"
-        tools:layout="@layout/fragment_planet_units" />
-    <fragment
-        android:id="@+id/navigation_planet_factories"
-        android:name="com.rebellionandroid.features.planetdetail.PlanetFactoriesFragment"
-        android:label="Factories"
-        tools:layout="@layout/fragment_planet_factories" />
+        android:id="@+id/navigation_planet_details"
+        android:name="com.rebellionandroid.features.planetdetail.PlanetDetailFragment"
+        android:label="Planet Detail"
+        tools:layout="@layout/fragment_planet_detail" />
 </navigation>
