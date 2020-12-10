@@ -22,7 +22,6 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":components:commands"))
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
     implementation(Dependencies.APPCOMPAT)
