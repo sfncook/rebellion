@@ -64,6 +64,13 @@ class GameStateViewModel @Inject constructor(
         }
     }
 
+    fun getAllPlanets(callback: (planets: List<Planet>) -> kotlin.Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val planets = gameStateRepository.getAllPlanets()
+            callback(planets)
+        }
+    }
+
 
     fun toggleTimer(gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {

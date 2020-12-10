@@ -40,6 +40,10 @@ interface GameStateDao {
     fun getAllSectorsForGameStateId(gameStateId: Long): List<Sector>
 
 
+    @Query("SELECT * FROM planets")
+    fun getAllPlanets(): List<Planet>
+
+
 
     // Inserts
     @Insert(onConflict = OnConflictStrategy.REPLACE)

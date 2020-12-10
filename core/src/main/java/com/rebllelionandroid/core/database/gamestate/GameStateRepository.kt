@@ -15,6 +15,7 @@ class GameStateRepository @Inject constructor(
     fun getGameState(gameStateId: Long) = gameStateDao.getGameState(gameStateId)
     fun stopAllGameStates() = gameStateDao.stopAllGameStates()
 
+    fun getAllPlanets() = gameStateDao.getAllPlanets()
 
 
     // Inserts
