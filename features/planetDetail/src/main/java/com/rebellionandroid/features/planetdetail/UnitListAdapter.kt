@@ -5,7 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.commands.UnitCmdDialogFragment
+import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 
@@ -23,6 +26,9 @@ class UnitListAdapter(
             view.setOnClickListener {
                 val unit = units[adapterPosition]
                 // Open mission assignment fragment
+                val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
+                val editNameDialogFragment = UnitCmdDialogFragment()
+                editNameDialogFragment.show(fm, "fragment_edit_name")
             }
         }
     }

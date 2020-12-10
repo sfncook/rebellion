@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 
 
-class UnitCmdDialog: Fragment() {
-    private var selectedPlanetId: Long = 0
+class UnitCmdDialogFragment: DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
