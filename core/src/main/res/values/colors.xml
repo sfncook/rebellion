@@ -12,4 +12,6 @@
     <color name="loyalty_neutral">#52FAFF</color>
     <color name="loyalty_team_a">#11AA01</color>
     <color name="loyalty_team_b">#FF0000</color>
+
+    <color name="list_item_bg">#FFF5BF</color>
 </resources>

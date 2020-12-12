@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
@@ -51,8 +52,9 @@ class ShipsWithUnitListAdapter(
                 DragEvent.ACTION_DRAG_EXITED -> {
                     println("ACTION_DRAG_EXITED")
                     // Re-sets the color tint to blue. Returns true; the return value is ignored.
-//                    (v as? ImageView)?.setColorFilter(Color.BLUE)
-                    v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(Color.WHITE)
+                    v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(
+                        ContextCompat.getColor(v.context, R.color.list_item_bg)
+                    )
 
                     // Invalidate the view to force a redraw in the new tint
                     v.invalidate()
@@ -81,7 +83,9 @@ class ShipsWithUnitListAdapter(
                     true
                 }
                 DragEvent.ACTION_DRAG_ENDED -> {
-                    v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(Color.WHITE)
+                    v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(
+                        ContextCompat.getColor(v.context, R.color.list_item_bg)
+                    )
 
                     // Invalidate the view to force a redraw in the new tint
                     v.invalidate()
