@@ -40,54 +40,28 @@ class ShipsWithUnitListAdapter(
             // Handles each of the expected events
             when (event.action) {
                 DragEvent.ACTION_DRAG_ENTERED -> {
-                    println("ACTION_DRAG_ENTERED")
-                    // Applies a green tint to the View. Return true; the return value is ignored.
-//                    (v as? ImageView)?.setColorFilter(Color.GREEN)
                     v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(Color.GREEN)
-
-                    // Invalidate the view to force a redraw in the new tint
                     v.invalidate()
                     true
                 }
                 DragEvent.ACTION_DRAG_EXITED -> {
-                    println("ACTION_DRAG_EXITED")
-                    // Re-sets the color tint to blue. Returns true; the return value is ignored.
                     v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(
                         ContextCompat.getColor(v.context, R.color.list_item_bg)
                     )
-
-                    // Invalidate the view to force a redraw in the new tint
                     v.invalidate()
                     true
                 }
                 DragEvent.ACTION_DROP -> {
-                    println("ACTION_DROP")
-                    // Gets the item containing the dragged data
                     val item: ClipData.Item = event.clipData.getItemAt(0)
-
-                    // Gets the text data from the item.
                     val dragData = item.text
-
-                    // Displays a message containing the dragged data.
-                    println("Dragged data is $dragData")
                     val shipWithUnits = shipsWithUnits[adapterPosition]
                     gameStateViewModel.moveUnitToShip(dragData.toString().toLong(), shipWithUnits.ship.id, currentGameStateId)
-
-                    // Turns off any color tints
-                    (v as? ImageView)?.clearColorFilter()
-
-                    // Invalidates the view to force a redraw
-                    v.invalidate()
-
-                    // Returns true. DragEvent.getResult() will return true.
                     true
                 }
                 DragEvent.ACTION_DRAG_ENDED -> {
                     v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(
                         ContextCompat.getColor(v.context, R.color.list_item_bg)
                     )
-
-                    // Invalidate the view to force a redraw in the new tint
                     v.invalidate()
                     true
                 }
