@@ -77,21 +77,24 @@ class UnitListAdapter(
             }
 
             view.setOnLongClickListener { v: View ->
-                println("long click")
+                val unit = units[adapterPosition]
+                println("long click unit.id:"+unit.id)
                 // Create a new ClipData.
                 // This is done in two steps to provide clarity. The convenience method
                 // ClipData.newPlainText() can create a plain text ClipData in one step.
 
-                // Create a new ClipData.Item from the ImageView object's tag
-                val item = ClipData.Item(v.tag as? CharSequence)
+//                // Create a new ClipData.Item from the ImageView object's tag
+//                val item = ClipData.Item(v.tag as? CharSequence)
+//
+//                // Create a new ClipData using the tag as a label, the plain text MIME type, and
+//                // the already-created item. This will create a new ClipDescription object within the
+//                // ClipData, and set its MIME type entry to "text/plain"
+//                val dragData = ClipData(
+//                    v.tag as? CharSequence,
+//                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
+//                    item)
 
-                // Create a new ClipData using the tag as a label, the plain text MIME type, and
-                // the already-created item. This will create a new ClipDescription object within the
-                // ClipData, and set its MIME type entry to "text/plain"
-                val dragData = ClipData(
-                    v.tag as? CharSequence,
-                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
-                    item)
+                val dragData = ClipData.newPlainText("unit.id", unit.id.toString())
 
                 // Instantiates the drag shadow builder.
                 val myShadow = MyDragShadowBuilder(this.itemView)
