@@ -1,5 +1,6 @@
 package com.rebellionandroid.features.planetdetail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import com.rebllelionandroid.core.database.gamestate.Unit
 import kotlinx.coroutines.launch
 
 class PlanetUnitsFragment : Fragment() {
+    private var currentGameStateId: Long = 0
     private var selectedPlanetId: Long = 0
     private lateinit var gameStateViewModel: GameStateViewModel
     private lateinit var textLoyaltyPercTeamA: TextView
@@ -67,6 +69,19 @@ class PlanetUnitsFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
+        val keyCurrentGameId = getString(R.string.keyCurrentGameId)
+        val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+        if(sharedPref?.contains(keyCurrentGameId) == true) {
+            currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
+        } else {
+            println("ERROR No current game ID foudn in shared preferences")
+        }
+    }
+
     private fun updateUnitsOnPlanetSurface(units: List<Unit>) {
         val viewAdapter = UnitListAdapter(units)
         viewLifecycleOwner.lifecycleScope.launch {
@@ -75,7 +90,7 @@ class PlanetUnitsFragment : Fragment() {
     }
 
     private fun updateUnitsOnShips(shipsWithUnits: List<ShipWithUnits>) {
-        val viewAdapter = ShipsWithUnitListAdapter(shipsWithUnits, gameStateViewModel)
+        val viewAdapter = ShipsWithUnitListAdapter(shipsWithUnits, gameStateViewModel, currentGameStateId)
         viewLifecycleOwner.lifecycleScope.launch {
             listShipsWithUnits.adapter = viewAdapter
         }

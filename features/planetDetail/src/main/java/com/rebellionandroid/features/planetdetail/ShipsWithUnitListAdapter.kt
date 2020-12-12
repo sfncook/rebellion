@@ -17,14 +17,16 @@ import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 
 class ShipsWithUnitListAdapter(
     private val shipsWithUnits: List<ShipWithUnits>,
-    private val gameStateViewModel: GameStateViewModel
+    private val gameStateViewModel: GameStateViewModel,
+    private val currentGameStateId: Long
 ) : RecyclerView.Adapter<ShipsWithUnitListAdapter.ViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     class ViewHolder(
         view: View,
         private val shipsWithUnits: List<ShipWithUnits>,
-        private val gameStateViewModel: GameStateViewModel
+        private val gameStateViewModel: GameStateViewModel,
+        private val currentGameStateId: Long
         ) : RecyclerView.ViewHolder(view) {
         val shipLabel: TextView = view.findViewById(R.id.ship_with_units_label)
         val shipImg: ImageView = view.findViewById(R.id.ship_with_units_ship_img)
@@ -67,7 +69,7 @@ class ShipsWithUnitListAdapter(
                     // Displays a message containing the dragged data.
                     println("Dragged data is $dragData")
                     val shipWithUnits = shipsWithUnits[adapterPosition]
-                    gameStateViewModel.moveUnitToShip(dragData.toString().toLong(), shipWithUnits.ship.id)
+                    gameStateViewModel.moveUnitToShip(dragData.toString().toLong(), shipWithUnits.ship.id, currentGameStateId)
 
                     // Turns off any color tints
                     (v as? ImageView)?.clearColorFilter()
@@ -102,7 +104,7 @@ class ShipsWithUnitListAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item_ship_with_units, viewGroup, false)
-        return ViewHolder(view, shipsWithUnits, gameStateViewModel)
+        return ViewHolder(view, shipsWithUnits, gameStateViewModel, currentGameStateId)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {

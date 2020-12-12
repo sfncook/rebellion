@@ -71,9 +71,10 @@ class GameStateViewModel @Inject constructor(
         }
     }
 
-    fun moveUnitToShip(unitId: Long, shipId: Long) {
+    fun moveUnitToShip(unitId: Long, shipId: Long, gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.moveUnitToShip(unitId, shipId)
+            postUpdate(gameStateId)
         }
     }
 
