@@ -75,7 +75,7 @@ class PlanetUnitsFragment : Fragment() {
     }
 
     private fun updateUnitsOnShips(shipsWithUnits: List<ShipWithUnits>) {
-        val viewAdapter = ShipsWithUnitListAdapter(shipsWithUnits)
+        val viewAdapter = ShipsWithUnitListAdapter(shipsWithUnits, gameStateViewModel)
         viewLifecycleOwner.lifecycleScope.launch {
             listShipsWithUnits.adapter = viewAdapter
         }

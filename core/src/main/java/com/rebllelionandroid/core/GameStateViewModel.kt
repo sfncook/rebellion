@@ -71,6 +71,12 @@ class GameStateViewModel @Inject constructor(
         }
     }
 
+    fun moveUnitToShip(unitId: Long, shipId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            gameStateRepository.moveUnitToShip(unitId, shipId)
+        }
+    }
+
 
     fun toggleTimer(gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {

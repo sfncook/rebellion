@@ -11,17 +11,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 
 class ShipsWithUnitListAdapter(
-    private val shipsWithUnits: List<ShipWithUnits>
+    private val shipsWithUnits: List<ShipWithUnits>,
+    private val gameStateViewModel: GameStateViewModel
 ) : RecyclerView.Adapter<ShipsWithUnitListAdapter.ViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
-    class ViewHolder(view: View, private val shipsWithUnits: List<ShipWithUnits>) : RecyclerView.ViewHolder(
-        view
-    ) {
+    class ViewHolder(
+        view: View,
+        private val shipsWithUnits: List<ShipWithUnits>,
+        private val gameStateViewModel: GameStateViewModel
+        ) : RecyclerView.ViewHolder(view) {
         val shipLabel: TextView = view.findViewById(R.id.ship_with_units_label)
         val shipImg: ImageView = view.findViewById(R.id.ship_with_units_ship_img)
         val shipWithUnitsList: RecyclerView = view.findViewById(R.id.ship_with_units_list)
@@ -62,6 +66,8 @@ class ShipsWithUnitListAdapter(
 
                     // Displays a message containing the dragged data.
                     println("Dragged data is $dragData")
+                    val shipWithUnits = shipsWithUnits[adapterPosition]
+                    gameStateViewModel.moveUnitToShip(dragData.toString().toLong(), shipWithUnits.ship.id)
 
                     // Turns off any color tints
                     (v as? ImageView)?.clearColorFilter()
@@ -96,7 +102,7 @@ class ShipsWithUnitListAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item_ship_with_units, viewGroup, false)
-        return ViewHolder(view, shipsWithUnits)
+        return ViewHolder(view, shipsWithUnits, gameStateViewModel)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
