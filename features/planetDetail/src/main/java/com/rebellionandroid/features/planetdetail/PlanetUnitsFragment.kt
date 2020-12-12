@@ -1,12 +1,17 @@
 package com.rebellionandroid.features.planetdetail
 
+import android.content.ClipData
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +35,7 @@ class PlanetUnitsFragment : Fragment() {
     private lateinit var listUnitsOnPlanetSurface: RecyclerView
     private lateinit var listShipsWithUnits: RecyclerView
 
+    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -65,6 +71,38 @@ class PlanetUnitsFragment : Fragment() {
                 updateUnitsOnPlanetSurface(it)
             }
         })
+
+        val dragListen = View.OnDragListener { v, event ->
+            when (event.action) {
+                DragEvent.ACTION_DRAG_ENTERED -> {
+                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(Color.GREEN)
+                    v.invalidate()
+                    true
+                }
+                DragEvent.ACTION_DRAG_EXITED -> {
+                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(
+                        ContextCompat.getColor(v.context, R.color.list_item_bg)
+                    )
+                    v.invalidate()
+                    true
+                }
+                DragEvent.ACTION_DROP -> {
+                    val item: ClipData.Item = event.clipData.getItemAt(0)
+                    val dragData = item.text
+                    gameStateViewModel.moveUnitToPlanet(dragData.toString().toLong(), selectedPlanetId, currentGameStateId)
+                    true
+                }
+                DragEvent.ACTION_DRAG_ENDED -> {
+                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(
+                        ContextCompat.getColor(v.context, R.color.list_item_bg)
+                    )
+                    v.invalidate()
+                    true
+                }
+                else -> true
+            }
+        }
+        listUnitsOnPlanetSurface.setOnDragListener(dragListen)
 
         return root
     }

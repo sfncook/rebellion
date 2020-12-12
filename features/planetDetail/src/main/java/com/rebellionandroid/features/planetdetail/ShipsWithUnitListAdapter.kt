@@ -33,11 +33,8 @@ class ShipsWithUnitListAdapter(
         val shipImg: ImageView = view.findViewById(R.id.ship_with_units_ship_img)
         val shipWithUnitsList: RecyclerView = view.findViewById(R.id.ship_with_units_list)
 
-        // Creates a new drag event listener
         @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
         private val dragListen = View.OnDragListener { v, event ->
-
-            // Handles each of the expected events
             when (event.action) {
                 DragEvent.ACTION_DRAG_ENTERED -> {
                     v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(Color.GREEN)

@@ -86,5 +86,8 @@ interface GameStateDao {
     @Query("UPDATE units SET planet_id = null, ship_id = :shipId WHERE id = :unitId")
     fun moveUnitToShip(unitId: Long, shipId: Long): Int
 
+    @Query("UPDATE units SET planet_id = :planetId, ship_id = null WHERE id = :unitId")
+    fun moveUnitToPlanet(unitId: Long, planetId: Long): Int
+
 
 }

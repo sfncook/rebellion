@@ -36,5 +36,6 @@ class GameStateRepository @Inject constructor(
     }
 
     fun moveUnitToShip(unitId: Long, shipId: Long) = gameStateDao.moveUnitToShip(unitId, shipId)
+    fun moveUnitToPlanet(unitId: Long, planetId: Long) = gameStateDao.moveUnitToPlanet(unitId, planetId)
 
 }
