@@ -11,7 +11,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.commands.ShipMoveDialogFragment
+import com.rebellionandroid.components.commands.UnitCmdDialogFragment
+import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
@@ -68,8 +72,10 @@ class ShipsWithUnitListAdapter(
 
         init {
             view.setOnClickListener {
-                val shipWithUnits = shipsWithUnits[adapterPosition]
-                // Open mission assignment fragment
+//                val shipWithUnits = shipsWithUnits[adapterPosition]
+                val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
+                val shipMoveDialogFragment = ShipMoveDialogFragment()
+                shipMoveDialogFragment.show(fm, "shipMoveDialogFragment")
             }
             view.setOnDragListener(dragListen)
         }
