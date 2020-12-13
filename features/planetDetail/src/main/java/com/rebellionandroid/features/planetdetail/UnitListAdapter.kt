@@ -6,10 +6,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -19,6 +16,8 @@ import com.rebellionandroid.components.commands.UnitCmdDialogFragment
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class UnitListAdapter(
     private val units: List<Unit>
@@ -65,17 +64,25 @@ class UnitListAdapter(
     ) {
         val unitLabel: TextView = view.findViewById(R.id.unit_label)
         val unitImg: ImageView = view.findViewById(R.id.unit_img)
-        var isDragging:Boolean = false
+        private var mVelocityTracker: VelocityTracker? = null
+        private var isDragging:Boolean = false
 
         init {
             view.setOnTouchListener { v:View, event:MotionEvent ->
                 when(event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         println("ACTION_DOWN")
+
+                        mVelocityTracker?.clear()
+                        mVelocityTracker = mVelocityTracker ?: VelocityTracker.obtain()
+                        mVelocityTracker?.addMovement(event)
+
                         true
                     }
                     MotionEvent.ACTION_UP -> {
                         println("ACTION_UP")
+                        mVelocityTracker?.recycle()
+                        mVelocityTracker = null
                         if(isDragging) {
                             isDragging = false
                             true
@@ -86,22 +93,38 @@ class UnitListAdapter(
                         }
                     }
                     MotionEvent.ACTION_MOVE -> {
-                        if(!isDragging) {
-                            println("ACTION_MOVE start Dragging")
-                            val unit = units[adapterPosition]
-                            val dragData = ClipData.newPlainText("unit.id", unit.id.toString())
-                            val myShadow = MyDragShadowBuilder(this.itemView)
-                            v.startDrag(
-                                dragData,   // the data to be dragged
-                                myShadow,   // the drag shadow builder
-                                null,       // no need to use local data
-                                0           // flags (not currently used, set to 0)
-                            )
-                            isDragging = true
-                            true
-                        } else {
-                            false
+                        mVelocityTracker?.apply {
+                            val pointerId: Int = event.getPointerId(event.actionIndex)
+                            addMovement(event)
+                            // When you want to determine the velocity, call
+                            // computeCurrentVelocity(). Then call getXVelocity()
+                            // and getYVelocity() to retrieve the velocity for each pointer ID.
+                            computeCurrentVelocity(1000)
+                            // Log velocity of pixels per second
+                            // Best practice to use VelocityTrackerCompat where possible.
+                            val dx = getXVelocity(pointerId).toDouble()
+                            val dy = getYVelocity(pointerId).toDouble()
+//                            println("X velocity: ${dx}")
+//                            println("Y velocity: ${dy}")
+                            val vel = sqrt(dx.pow(2) + dy.pow(2))
+                            println("Velocity: $vel")
+                            if(vel>150) {
+                                if(!isDragging) {
+                                    println("ACTION_MOVE start Dragging")
+                                    val unit = units[adapterPosition]
+                                    val dragData = ClipData.newPlainText("unit.id", unit.id.toString())
+                                    val myShadow = MyDragShadowBuilder(itemView)
+                                    v.startDrag(
+                                        dragData,   // the data to be dragged
+                                        myShadow,   // the drag shadow builder
+                                        null,       // no need to use local data
+                                        0           // flags (not currently used, set to 0)
+                                    )
+                                    isDragging = true
+                                }
+                            }
                         }
+                        isDragging
                     }
                     else -> false
                 }
