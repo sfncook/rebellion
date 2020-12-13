@@ -10,15 +10,15 @@
     >
 
     <TextView
-        android:id="@+id/unit_cmd_title"
+        android:id="@+id/ship_move_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TESTING"
+        android:text="Send ship to a new planet:"
         app:layout_constraintBottom_toBottomOf="@+id/unit_cmd_close_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/unit_cmd_close_btn"
+        android:id="@+id/ship_move_close_btn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="#FF0000"
@@ -27,17 +27,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ExpandableListView
-        android:id="@+id/expandableListView"
+        android:id="@+id/ship_move_list_sector_and_planets"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="0.5dp"
-        android:background="@color/list_item_bg"
+        android:childDivider="@color/list_item_bg"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-        android:childDivider="@color/loyalty_team_a"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/unit_cmd_close_btn"
+        app:layout_constraintTop_toBottomOf="@+id/ship_move_close_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteY="79dp" />
 

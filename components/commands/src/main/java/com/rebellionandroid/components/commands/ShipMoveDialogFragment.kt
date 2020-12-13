@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.button.MaterialButton
 import com.rebellionandroid.components.commands.ExpandableListDataPump.data
+import com.rebllelionandroid.core.BaseActivity
 
 
 class ShipMoveDialogFragment: DialogFragment() {
@@ -26,15 +27,18 @@ class ShipMoveDialogFragment: DialogFragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_ship_move, container, false)
 
-        root.findViewById<MaterialButton>(R.id.unit_cmd_close_btn).setOnClickListener {
+        root.findViewById<MaterialButton>(R.id.ship_move_close_btn).setOnClickListener {
             dismiss()
         }
 
-        expandableListView = root.findViewById(R.id.expandableListView) as ExpandableListView
+        val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+
+        expandableListView = root.findViewById(R.id.ship_move_list_sector_and_planets) as ExpandableListView
         expandableListDetail = data
         expandableListTitle = ArrayList(expandableListDetail!!.keys)
         expandableListAdapter = CustomExpandableListAdapter(
-            root.context, expandableListTitle!!,
+            root.context,
+            expandableListTitle!!,
             expandableListDetail!!
         )
         expandableListView!!.setAdapter(expandableListAdapter)
