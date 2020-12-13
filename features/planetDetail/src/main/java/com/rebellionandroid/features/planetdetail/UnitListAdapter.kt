@@ -1,13 +1,13 @@
 package com.rebellionandroid.features.planetdetail
 
 import android.content.ClipData
-import android.content.ClipDescription
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -65,47 +65,53 @@ class UnitListAdapter(
     ) {
         val unitLabel: TextView = view.findViewById(R.id.unit_label)
         val unitImg: ImageView = view.findViewById(R.id.unit_img)
+        var isDragging:Boolean = false
 
         init {
+            view.setOnTouchListener { v:View, event:MotionEvent ->
+                when(event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        println("ACTION_DOWN")
+                        true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        println("ACTION_UP")
+                        if(isDragging) {
+                            isDragging = false
+                            true
+                        } else {
+                            v.performClick()
+                            isDragging = false
+                            false
+                        }
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        if(!isDragging) {
+                            println("ACTION_MOVE start Dragging")
+                            val unit = units[adapterPosition]
+                            val dragData = ClipData.newPlainText("unit.id", unit.id.toString())
+                            val myShadow = MyDragShadowBuilder(this.itemView)
+                            v.startDrag(
+                                dragData,   // the data to be dragged
+                                myShadow,   // the drag shadow builder
+                                null,       // no need to use local data
+                                0           // flags (not currently used, set to 0)
+                            )
+                            isDragging = true
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    else -> false
+                }
+            }
             view.setOnClickListener {
-                println("short click")
-                val unit = units[adapterPosition]
+//                val unit = units[adapterPosition]
                 // Open mission assignment fragment
                 val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                 val editNameDialogFragment = UnitCmdDialogFragment()
                 editNameDialogFragment.show(fm, "fragment_edit_name")
-            }
-
-            view.setOnLongClickListener { v: View ->
-                val unit = units[adapterPosition]
-                println("long click unit.id:"+unit.id)
-                // Create a new ClipData.
-                // This is done in two steps to provide clarity. The convenience method
-                // ClipData.newPlainText() can create a plain text ClipData in one step.
-
-//                // Create a new ClipData.Item from the ImageView object's tag
-//                val item = ClipData.Item(v.tag as? CharSequence)
-//
-//                // Create a new ClipData using the tag as a label, the plain text MIME type, and
-//                // the already-created item. This will create a new ClipDescription object within the
-//                // ClipData, and set its MIME type entry to "text/plain"
-//                val dragData = ClipData(
-//                    v.tag as? CharSequence,
-//                    arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
-//                    item)
-
-                val dragData = ClipData.newPlainText("unit.id", unit.id.toString())
-
-                // Instantiates the drag shadow builder.
-                val myShadow = MyDragShadowBuilder(this.itemView)
-
-                // Starts the drag
-                v.startDrag(
-                    dragData,   // the data to be dragged
-                    myShadow,   // the drag shadow builder
-                    null,       // no need to use local data
-                    0           // flags (not currently used, set to 0)
-                )
             }
         }
 
