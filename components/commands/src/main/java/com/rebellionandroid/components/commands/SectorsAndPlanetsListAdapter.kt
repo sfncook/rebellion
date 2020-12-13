@@ -7,20 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
+import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 
 
-internal class CustomExpandableListAdapter(
+internal class SectorsAndPlanetsListAdapter(
     private val context: Context,
-    private val expandableListTitle: List<String>,
-    private val expandableListDetail: HashMap<String, List<String>>
+    private val sectorsWithPlanets: List<SectorWithPlanets>,
 ) : BaseExpandableListAdapter() {
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
-        return expandableListDetail[expandableListTitle[listPosition]]!![expandedListPosition]
+        return sectorsWithPlanets[listPosition].planets[expandedListPosition]
     }
 
     override fun getChildId(listPosition: Int, expandedListPosition: Int): Long {
-        return expandedListPosition.toLong()
+        return sectorsWithPlanets[listPosition].planets[expandedListPosition].planet.id
     }
 
     override fun getChildView(
@@ -30,28 +31,30 @@ internal class CustomExpandableListAdapter(
         convertView: View?,
         parent: ViewGroup?
     ): View? {
-        val expandedListText = getChild(listPosition, expandedListPosition) as String
+        val planetWithUnits = getChild(listPosition, expandedListPosition) as PlanetWithUnits
         var convertView2: View? = convertView
         if (convertView2 == null) {
             val layoutInflater = context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView2 = layoutInflater.inflate(R.layout.ship_move_list_item_planet, null)
         }
-        val expandedListTextView = convertView?.findViewById(R.id.expandedListItem) as TextView
-        expandedListTextView.text = expandedListText
+        val expandedListTextView = convertView2?.findViewById<TextView>(R.id.expandedListItem)
+        if (expandedListTextView != null) {
+            expandedListTextView.text = planetWithUnits.planet.name
+        }
         return convertView2
     }
 
     override fun getChildrenCount(listPosition: Int): Int {
-        return expandableListDetail[expandableListTitle[listPosition]]!!.size
+        return sectorsWithPlanets[listPosition].planets.size
     }
 
     override fun getGroup(listPosition: Int): Any {
-        return expandableListTitle[listPosition]
+        return sectorsWithPlanets[listPosition]
     }
 
     override fun getGroupCount(): Int {
-        return expandableListTitle.size
+        return sectorsWithPlanets.size
     }
 
     override fun getGroupId(listPosition: Int): Long {
@@ -63,16 +66,15 @@ internal class CustomExpandableListAdapter(
         convertView: View?, parent: ViewGroup?
     ): View {
         var convertView2: View? = convertView
-        val listTitle = getGroup(listPosition) as String
+        val sectorWithPlanets = getGroup(listPosition) as SectorWithPlanets
         if (convertView2 == null) {
             val layoutInflater =
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView2 = layoutInflater.inflate(R.layout.ship_move_list_sector_group, null)
+            convertView2 = layoutInflater.inflate(R.layout.ship_move_list_sector_group, parent, false)
         }
-        val listTitleTextView = convertView2
-            ?.findViewById(R.id.listTitle) as TextView
+        val listTitleTextView = convertView2?.findViewById(R.id.listTitle) as TextView
         listTitleTextView.setTypeface(null, Typeface.BOLD)
-        listTitleTextView.text = listTitle
+        listTitleTextView.text = sectorWithPlanets.sector.name
         return convertView2
     }
 
