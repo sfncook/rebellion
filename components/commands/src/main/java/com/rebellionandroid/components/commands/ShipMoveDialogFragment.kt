@@ -78,10 +78,11 @@ class ShipMoveDialogFragment: DialogFragment() {
     }
 
     private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors) {
-        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(
-            rootContext,
-            gameStateWithSectors.sectors
-        )
+        val sectors = gameStateWithSectors.sectors
+        val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
+            s1.sector.name.compareTo(s2.sector.name)
+        })
+        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList())
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
     }
 }

@@ -62,9 +62,6 @@ class SectorsListFragment: Fragment() {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.sectors_list)
         viewLifecycleOwner.lifecycleScope.launch {
             recyclerView?.adapter = viewAdapter
-//            viewBinding.sectorsList.apply {
-//                adapter = viewAdapter
-//            }
         }
     }
 
