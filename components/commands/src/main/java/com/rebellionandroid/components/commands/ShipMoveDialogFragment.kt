@@ -62,4 +62,9 @@ class ShipMoveDialogFragment: DialogFragment() {
 
         return root
     }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.getWindow()?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    }
 }
