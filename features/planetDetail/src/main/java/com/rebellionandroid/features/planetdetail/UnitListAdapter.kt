@@ -32,10 +32,10 @@ class UnitListAdapter(
         // system.
         override fun onProvideShadowMetrics(size: Point, touch: Point) {
             // Sets the width of the shadow to half the width of the original View
-            val width: Int = view.width / 2
+            val width: Int = view.width
 
             // Sets the height of the shadow to half the height of the original View
-            val height: Int = view.height / 2
+            val height: Int = view.height
 
             // The drag shadow is a ColorDrawable. This sets its dimensions to be the same as the
             // Canvas that the system will provide. As a result, the drag shadow will fill the
