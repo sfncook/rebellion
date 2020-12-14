@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
+import kotlinx.coroutines.launch
 
 
 class ShipMoveDialogFragment: DialogFragment() {
@@ -35,39 +37,19 @@ class ShipMoveDialogFragment: DialogFragment() {
         sectorsAndPlanetsExpandableList = root.findViewById(R.id.ship_move_list_sector_and_planets) as ExpandableListView
 
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-        gameStateViewModel.gameState.observe(viewLifecycleOwner , {
-            updateSectorsList(it)
+        gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
+            val selectedShipId = arguments?.getLong("shipId")?.toLong()
+            if (selectedShipId != null) {
+                gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
+                    gameStateViewModel.getPlanetWithUnits(shipWithUnits.ship.locationPlanetId) { planetWithUnits ->
+                        val selectedSectorId = planetWithUnits.planet.sectorId
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            updateSectorsList(gameStateWithSectors, selectedSectorId)
+                        }
+                    }
+                }
+            }
         })
-
-//        expandableListDetail = data
-//        expandableListTitle = ArrayList(expandableListDetail!!.keys)
-//        expandableListAdapter = CustomExpandableListAdapter(
-//            root.context,
-//            expandableListTitle!!,
-//            expandableListDetail!!
-//        )
-//        expandableListView!!.setAdapter(expandableListAdapter)
-//        expandableListView!!.setOnGroupExpandListener { groupPosition ->
-//            println((expandableListTitle as ArrayList<String>).get(groupPosition) + " List Expanded.")
-//        }
-//
-//        expandableListView!!.setOnGroupCollapseListener { groupPosition ->
-//            Toast.makeText(
-//                root.context,
-//                (expandableListTitle as ArrayList<String>).get(groupPosition) + " List Collapsed.",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
-//
-//        expandableListView!!.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-//            Toast.makeText(
-//                root.context,
-//                (expandableListTitle as ArrayList<String>).get(groupPosition) + " -> "
-//                        + expandableListDetail!![(expandableListTitle as ArrayList<String>).get(groupPosition)]!![childPosition],
-//                Toast.LENGTH_SHORT
-//            ).show()
-//            false
-//        }
 
         return root
     }
@@ -77,16 +59,20 @@ class ShipMoveDialogFragment: DialogFragment() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
-    private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors) {
+    private fun updateSectorsList(
+        gameStateWithSectors: GameStateWithSectors,
+        selectedSectorId: Long?
+    ) {
         val sectors = gameStateWithSectors.sectors
         val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
             s1.sector.name.compareTo(s2.sector.name)
         })
         val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList())
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
-        sectorsAndPlanetsExpandableList.setOnGroupClickListener { parent, v, groupPosition, childPosition ->
-            println("click")
-            false
-        }
+
+        // Expand selected sector
+        val selectedSector = sortedSectors.find { sectorWithPlanets -> sectorWithPlanets.sector.id == selectedSectorId }
+        val indexOfSelectedSector = sortedSectors.indexOf(selectedSector)
+        sectorsAndPlanetsExpandableList.expandGroup(indexOfSelectedSector)
     }
 }

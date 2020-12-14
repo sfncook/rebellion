@@ -11,7 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.commands.ShipMoveDialogFragment
 import com.rebellionandroid.components.commands.UnitCmdDialogFragment
@@ -72,9 +74,11 @@ class ShipsWithUnitListAdapter(
 
         init {
             view.setOnClickListener {
-//                val shipWithUnits = shipsWithUnits[adapterPosition]
+                val shipWithUnits = shipsWithUnits[adapterPosition]
+                val bundle = bundleOf("shipId" to shipWithUnits.ship.id)
                 val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                 val shipMoveDialogFragment = ShipMoveDialogFragment()
+                shipMoveDialogFragment.arguments = bundle
                 shipMoveDialogFragment.show(fm, "shipMoveDialogFragment")
             }
             view.setOnDragListener(dragListen)
