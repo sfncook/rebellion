@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.sectorWithPlanetsFragment.SectorItemPlanetsListAdapter
+import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 
@@ -71,13 +73,15 @@ internal class SectorsAndPlanetsListAdapter(
         if (convertView2 == null) {
             val layoutInflater =
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView2 = layoutInflater.inflate(R.layout.ship_move_list_sector_group, parent, false)
+            convertView2 = layoutInflater.inflate(R.layout.list_item_sector, parent, false)
         }
-        val sectorNameTextView = convertView2?.findViewById(R.id.ship_move_sector_name) as TextView
+        val sectorNameTextView = convertView2?.findViewById(R.id.sector_name) as TextView
         sectorNameTextView.setTypeface(null, Typeface.BOLD)
         sectorNameTextView.text = sectorWithPlanets.sector.name
 
-        val listPlanets = convertView2.findViewById<RecyclerView>(R.id.ship_move_list_sector_and_planets)
+        val planetsList = convertView2.findViewById<RecyclerView>(R.id.planets_list)
+        val viewAdapter = SectorItemPlanetsListAdapter(Utilities.sortPlanets(sectorWithPlanets.planets))
+        planetsList.adapter = viewAdapter
 
         return convertView2
     }
