@@ -5,16 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.features.sectorsList.R
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SectorsListFragment: Fragment() {
@@ -58,7 +58,13 @@ class SectorsListFragment: Fragment() {
         val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
             s1.sector.name.compareTo(s2.sector.name)
         })
-        val viewAdapter = SectorListAdapter(ArrayList(sortedSectors))
+        val viewAdapter =
+            com.rebellionandroid.components.sectorWithPlanetsFragment.SectorListAdapter(
+                ArrayList(sortedSectors)
+            ) { sectorId ->
+                val bundle = bundleOf("sectorId" to sectorId)
+                this.view?.findNavController()?.navigate(R.id.sector_detail_graph, bundle)
+            }
         val recyclerView = view?.findViewById<RecyclerView>(R.id.sectors_list)
         viewLifecycleOwner.lifecycleScope.launch {
             recyclerView?.adapter = viewAdapter

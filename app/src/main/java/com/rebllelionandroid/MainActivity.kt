@@ -1,17 +1,10 @@
 package com.rebllelionandroid
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.button.MaterialButton
-import com.rebellionandroid.features.newgameactivity.NewGameActivity
-import com.rebellionandroid.features.sectorslist.SectorsListActivity
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.di.DaggerGameStateComponent
 import com.rebllelionandroid.core.di.modules.ContextModule

@@ -1,4 +1,4 @@
-package com.rebellionandroid.features.sectorslist
+package com.rebellionandroid.components.sectorWithPlanetsFragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
-import com.rebllelionandroid.features.sectorsList.R
 
 class SectorItemPlanetsListAdapter(
         private val planets: List<PlanetWithUnits>
