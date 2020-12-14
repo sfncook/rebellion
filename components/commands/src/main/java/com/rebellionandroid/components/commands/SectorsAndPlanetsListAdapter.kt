@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.sectorWithPlanetsFragment.SectorItemPlanetsListAdapter
 import com.rebllelionandroid.core.Utilities
@@ -73,15 +76,31 @@ internal class SectorsAndPlanetsListAdapter(
         if (convertView2 == null) {
             val layoutInflater =
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            convertView2 = layoutInflater.inflate(R.layout.list_item_sector, parent, false)
+            convertView2 = layoutInflater.inflate(R.layout.list_item_sector_2, parent, false)
         }
         val sectorNameTextView = convertView2?.findViewById(R.id.sector_name) as TextView
         sectorNameTextView.setTypeface(null, Typeface.BOLD)
         sectorNameTextView.text = sectorWithPlanets.sector.name
 
-        val planetsList = convertView2.findViewById<RecyclerView>(R.id.planets_list)
-        val viewAdapter = SectorItemPlanetsListAdapter(Utilities.sortPlanets(sectorWithPlanets.planets))
-        planetsList.adapter = viewAdapter
+//        val planetsList = convertView2.findViewById<RecyclerView>(R.id.planets_list)
+//        val viewAdapter = SectorItemPlanetsListAdapter(Utilities.sortPlanets(sectorWithPlanets.planets))
+//        planetsList.adapter = viewAdapter
+
+        val planetsList = convertView2?.findViewById<LinearLayout>(R.id.planets_list)
+        planetsList.removeAllViews()
+        val planetsWithUnits = sectorWithPlanets.planets
+        Utilities.sortPlanets(planetsWithUnits).forEach { planetWithUnits ->
+            val planet = planetWithUnits.planet
+            val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
+            val imgView = ImageView(context)
+            imgView.layoutParams = LinearLayout.LayoutParams(30, 30)
+            imgView.setImageResource(imgId)
+            imgView.setColorFilter(
+                ContextCompat.getColor(context, colorId),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            )
+            planetsList.addView(imgView)
+        }
 
         return convertView2
     }

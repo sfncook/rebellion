@@ -84,5 +84,9 @@ class ShipMoveDialogFragment: DialogFragment() {
         })
         val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList())
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
+        sectorsAndPlanetsExpandableList.setOnGroupClickListener { parent, v, groupPosition, childPosition ->
+            println("click")
+            false
+        }
     }
 }
