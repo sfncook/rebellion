@@ -21,6 +21,7 @@ class ShipMoveDialogFragment: DialogFragment() {
 //    var expandableListAdapter: ExpandableListAdapter? = null
 //    var expandableListTitle: List<String>? = null
 //    var expandableListDetail: HashMap<String, List<String>>? = null
+    private var lastGroupExpandedPos: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +51,13 @@ class ShipMoveDialogFragment: DialogFragment() {
                 }
             }
         })
+
+        sectorsAndPlanetsExpandableList.setOnGroupExpandListener { groupPosition ->
+            if (lastGroupExpandedPos != -1 && groupPosition != lastGroupExpandedPos) {
+                sectorsAndPlanetsExpandableList.collapseGroup(lastGroupExpandedPos);
+            }
+            lastGroupExpandedPos = groupPosition;
+        }
 
         return root
     }
