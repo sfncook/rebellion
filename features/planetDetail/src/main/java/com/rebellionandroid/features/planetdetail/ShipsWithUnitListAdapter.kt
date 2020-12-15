@@ -13,10 +13,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.commands.ShipMoveDialogFragment
-import com.rebellionandroid.components.commands.UnitCmdDialogFragment
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits

@@ -18,10 +18,8 @@ class ShipMoveDialogFragment: DialogFragment() {
 
     private lateinit var rootContext: Context
     private lateinit var sectorsAndPlanetsExpandableList: ExpandableListView
-//    var expandableListAdapter: ExpandableListAdapter? = null
-//    var expandableListTitle: List<String>? = null
-//    var expandableListDetail: HashMap<String, List<String>>? = null
     private var lastGroupExpandedPos: Int = -1
+    private var selectedShipId: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +28,7 @@ class ShipMoveDialogFragment: DialogFragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_ship_move, container, false)
         rootContext = root.context
+        selectedShipId = arguments?.getLong("shipId")!!
 
         root.findViewById<MaterialButton>(R.id.ship_move_close_btn).setOnClickListener {
             dismiss()
@@ -39,14 +38,11 @@ class ShipMoveDialogFragment: DialogFragment() {
 
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
-            val selectedShipId = arguments?.getLong("shipId")?.toLong()
-            if (selectedShipId != null) {
-                gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
-                    gameStateViewModel.getPlanetWithUnits(shipWithUnits.ship.locationPlanetId) { planetWithUnits ->
-                        val selectedSectorId = planetWithUnits.planet.sectorId
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            updateSectorsList(gameStateWithSectors, selectedSectorId)
-                        }
+            gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
+                gameStateViewModel.getPlanetWithUnits(shipWithUnits.ship.locationPlanetId) { planetWithUnits ->
+                    val selectedSectorId = planetWithUnits.planet.sectorId
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        updateSectorsList(gameStateWithSectors, selectedSectorId)
                     }
                 }
             }
@@ -57,6 +53,11 @@ class ShipMoveDialogFragment: DialogFragment() {
                 sectorsAndPlanetsExpandableList.collapseGroup(lastGroupExpandedPos);
             }
             lastGroupExpandedPos = groupPosition;
+        }
+
+        sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
+            println("Click child ID: $id")
+            true
         }
 
         return root
