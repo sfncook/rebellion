@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
+import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import kotlinx.coroutines.launch
 
 
@@ -42,11 +43,11 @@ class ShipMoveDialogFragment: DialogFragment() {
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
             currentGameTimeDay = gameStateWithSectors.gameState.gameTime
-            gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
-                gameStateViewModel.getPlanetWithUnits(shipWithUnits.ship.locationPlanetId) { planetWithUnits ->
+            gameStateViewModel.getShipWithUnits(selectedShipId) { selectedShipWithUnits ->
+                gameStateViewModel.getPlanetWithUnits(selectedShipWithUnits.ship.locationPlanetId) { planetWithUnits ->
                     val selectedSectorId = planetWithUnits.planet.sectorId
                     viewLifecycleOwner.lifecycleScope.launch {
-                        updateSectorsList(gameStateWithSectors, selectedSectorId)
+                        updateSectorsList(gameStateWithSectors, selectedSectorId, selectedShipWithUnits)
                     }
                 }
             }
@@ -75,13 +76,18 @@ class ShipMoveDialogFragment: DialogFragment() {
 
     private fun updateSectorsList(
         gameStateWithSectors: GameStateWithSectors,
-        selectedSectorId: Long?
+        selectedSectorId: Long,
+        selectedShipWithUnits: ShipWithUnits
     ) {
         val sectors = gameStateWithSectors.sectors
         val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
             s1.sector.name.compareTo(s2.sector.name)
         })
-        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList())
+        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(
+            rootContext,
+            sortedSectors.toList(),
+            selectedShipWithUnits
+        )
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
 
         // Expand selected sector

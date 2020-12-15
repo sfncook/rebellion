@@ -10,16 +10,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
-import com.rebellionandroid.components.sectorWithPlanetsFragment.SectorItemPlanetsListAdapter
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
+import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 
 
 internal class SectorsAndPlanetsListAdapter(
     private val context: Context,
     private val sectorsWithPlanets: List<SectorWithPlanets>,
+    private val selectedShipWithUnits: ShipWithUnits
 ) : BaseExpandableListAdapter() {
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
@@ -48,9 +48,19 @@ internal class SectorsAndPlanetsListAdapter(
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView2 = layoutInflater.inflate(R.layout.ship_move_list_item_planet, null)
         }
-        val expandedListTextView = convertView2?.findViewById<TextView>(R.id.expandedListItem)
+        val expandedListTextView = convertView2?.findViewById<TextView>(R.id.ship_move_planet_name)
         if (expandedListTextView != null) {
             expandedListTextView.text = planetWithUnits.planet.name
+        }
+
+        val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planetWithUnits.planet)
+        val loyaltyImg = convertView2?.findViewById<ImageView>(R.id.ship_move_planet_loyalty_img)
+        if(loyaltyImg != null) {
+            loyaltyImg.setImageResource(imgId)
+            loyaltyImg.setColorFilter(
+                ContextCompat.getColor(context, colorId),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            )
         }
         return convertView2
     }
