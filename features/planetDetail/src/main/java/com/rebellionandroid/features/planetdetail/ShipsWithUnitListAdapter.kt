@@ -28,43 +28,65 @@ class ShipsWithUnitListAdapter(
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     class ViewHolder(
-        view: View,
-        private val shipsWithUnits: List<ShipWithUnits>,
-        private val gameStateViewModel: GameStateViewModel,
-        private val currentGameStateId: Long
+            view: View,
+            private val shipsWithUnits: List<ShipWithUnits>,
+            private val gameStateViewModel: GameStateViewModel,
+            private val currentGameStateId: Long
         ) : RecyclerView.ViewHolder(view) {
         val shipLabel: TextView = view.findViewById(R.id.ship_with_units_label)
         val shipImg: ImageView = view.findViewById(R.id.ship_with_units_ship_img)
         val shipWithUnitsList: RecyclerView = view.findViewById(R.id.ship_with_units_list)
+        val bgView: View = view.findViewById(R.id.ship_with_units_background)
 
         @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
         private val dragListen = View.OnDragListener { v, event ->
+            val shipWithUnits = shipsWithUnits[adapterPosition]
             when (event.action) {
                 DragEvent.ACTION_DRAG_ENTERED -> {
-                    v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(Color.GREEN)
-                    v.invalidate()
-                    true
+                    if(!shipWithUnits.ship.isTraveling) {
+                        bgView.setBackgroundColor(Color.GREEN)
+                        v.invalidate()
+                        true
+                    } else {
+                        false
+                    }
                 }
                 DragEvent.ACTION_DRAG_EXITED -> {
-                    v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(
-                        ContextCompat.getColor(v.context, R.color.list_item_bg)
-                    )
-                    v.invalidate()
-                    true
+                    if(!shipWithUnits.ship.isTraveling) {
+                        bgView.setBackgroundColor(ContextCompat.getColor(v.context, R.color.list_item_bg))
+                        v.invalidate()
+                        true
+                    } else {
+                        false
+                    }
                 }
                 DragEvent.ACTION_DROP -> {
-                    val item: ClipData.Item = event.clipData.getItemAt(0)
-                    val dragData = item.text
-                    val shipWithUnits = shipsWithUnits[adapterPosition]
-                    gameStateViewModel.moveUnitToShip(dragData.toString().toLong(), shipWithUnits.ship.id, currentGameStateId)
-                    true
+                    if(!shipWithUnits.ship.isTraveling) {
+                        val item: ClipData.Item = event.clipData.getItemAt(0)
+                        val dragData = item.text
+                        gameStateViewModel.moveUnitToShip(
+                            dragData.toString().toLong(),
+                            shipWithUnits.ship.id,
+                            currentGameStateId
+                        )
+                        true
+                    } else {
+                        false
+                    }
                 }
                 DragEvent.ACTION_DRAG_ENDED -> {
-                    v.findViewById<View>(R.id.ship_with_units_background).setBackgroundColor(
-                        ContextCompat.getColor(v.context, R.color.list_item_bg)
-                    )
-                    v.invalidate()
-                    true
+                    if(!shipWithUnits.ship.isTraveling) {
+                        bgView.setBackgroundColor(
+                            ContextCompat.getColor(
+                                v.context,
+                                R.color.list_item_bg
+                            )
+                        )
+                        v.invalidate()
+                        true
+                    } else {
+                        false
+                    }
                 }
                 else -> true
             }
@@ -106,6 +128,12 @@ class ShipsWithUnitListAdapter(
             ShipType.Octeres -> R.drawable.ship_8
         }
         viewHolder.shipImg.setImageResource(imgSrc)
+
+        if(shipWithUnits.ship.isTraveling) {
+            viewHolder.bgView.setBackgroundColor(
+                ContextCompat.getColor(viewHolder.bgView.context, R.color.unit_travelling)
+            )
+        }
 
         viewHolder.shipWithUnitsList.adapter = UnitListAdapter(shipWithUnits.units)
     }
