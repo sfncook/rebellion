@@ -23,11 +23,15 @@ internal class SectorsAndPlanetsListAdapter(
 ) : BaseExpandableListAdapter() {
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
-        return sectorsWithPlanets[listPosition].planets[expandedListPosition]
+        val sectorWithPlanets = getGroup(listPosition) as SectorWithPlanets
+        val planetsWithUnits = sectorWithPlanets.planets
+        val sortedPlanets = Utilities.sortPlanets(planetsWithUnits)
+        return sortedPlanets[expandedListPosition]
     }
 
     override fun getChildId(listPosition: Int, expandedListPosition: Int): Long {
-        return sectorsWithPlanets[listPosition].planets[expandedListPosition].planet.id
+        val planetWithUnits = getChild(listPosition, expandedListPosition) as PlanetWithUnits
+        return planetWithUnits.planet.id
     }
 
     override fun getChildView(
