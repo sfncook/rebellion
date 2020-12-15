@@ -1,6 +1,5 @@
 package com.rebellionandroid.features.sectordetail
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -12,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.rebellionandroid.features.planetdetail.PlanetDetailActivity
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.features.sectorsdetail.R
@@ -38,11 +36,6 @@ class PlanetsListAdapter(
                 val planetId = planetWithUnits.planet.id
                 val bundle = bundleOf("planetId" to planetId)
                 it.findNavController().navigate(R.id.planet_detail_graph, bundle)
-//                val planetWithUnits = planetsWithUnits[adapterPosition]
-//                println("click planet ${planetWithUnits.planet.name}")
-//                val intent = Intent(it.context, PlanetDetailActivity::class.java)
-//                intent.putExtra("SELECTED_PLANET_ID", planetWithUnits.planet.id);
-//                it.context.startActivity(intent)
             }
         }
     }
