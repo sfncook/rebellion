@@ -86,10 +86,6 @@ internal class SectorsAndPlanetsListAdapter(
         sectorNameTextView.setTypeface(null, Typeface.BOLD)
         sectorNameTextView.text = sectorWithPlanets.sector.name
 
-//        val planetsList = convertView2.findViewById<RecyclerView>(R.id.planets_list)
-//        val viewAdapter = SectorItemPlanetsListAdapter(Utilities.sortPlanets(sectorWithPlanets.planets))
-//        planetsList.adapter = viewAdapter
-
         val planetsList = convertView2?.findViewById<LinearLayout>(R.id.planets_list)
         planetsList.removeAllViews()
         val planetsWithUnits = sectorWithPlanets.planets
