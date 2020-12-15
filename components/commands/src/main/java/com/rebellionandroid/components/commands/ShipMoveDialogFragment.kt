@@ -61,6 +61,7 @@ class ShipMoveDialogFragment: DialogFragment() {
 
         sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, planetId ->
             gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId, currentGameTimeDay.plus(10))
+            dismiss()
             true
         }
 
