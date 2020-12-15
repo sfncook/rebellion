@@ -20,7 +20,8 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 class UnitListAdapter(
-    private val units: List<Unit>
+    private val units: List<Unit>,
+    private val unitsAreTravelling: Boolean
 ) : RecyclerView.Adapter<UnitListAdapter.ViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
@@ -28,38 +29,25 @@ class UnitListAdapter(
 
         private val shadow = ColorDrawable(Color.LTGRAY)
 
-        // Defines a callback that sends the drag shadow dimensions and touch point back to the
-        // system.
         override fun onProvideShadowMetrics(size: Point, touch: Point) {
-            // Sets the width of the shadow to half the width of the original View
             val width: Int = view.width
-
-            // Sets the height of the shadow to half the height of the original View
             val height: Int = view.height
-
-            // The drag shadow is a ColorDrawable. This sets its dimensions to be the same as the
-            // Canvas that the system will provide. As a result, the drag shadow will fill the
-            // Canvas.
             shadow.setBounds(0, 0, width, height)
-
-            // Sets the size parameter's width and height values. These get back to the system
-            // through the size parameter.
             size.set(width, height)
-
-            // Sets the touch point's position to be in the middle of the drag shadow
             touch.set(width / 2, height / 2)
         }
 
-        // Defines a callback that draws the drag shadow in a Canvas that the system constructs
-        // from the dimensions passed in onProvideShadowMetrics().
         override fun onDrawShadow(canvas: Canvas) {
-            // Draws the ColorDrawable in the Canvas passed in from the system.
             shadow.draw(canvas)
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
-    class ViewHolder(view: View, private val units: List<Unit>) : RecyclerView.ViewHolder(
+    class ViewHolder(
+        view: View,
+        private val units: List<Unit>,
+        unitsAreTravelling: Boolean
+        ) : RecyclerView.ViewHolder(
         view
     ) {
         val unitLabel: TextView = view.findViewById(R.id.unit_label)
@@ -68,73 +56,62 @@ class UnitListAdapter(
         private var isDragging:Boolean = false
 
         init {
-            view.setOnTouchListener { v:View, event:MotionEvent ->
-                when(event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        println("ACTION_DOWN")
-
-                        mVelocityTracker?.clear()
-                        mVelocityTracker = mVelocityTracker ?: VelocityTracker.obtain()
-                        mVelocityTracker?.addMovement(event)
-
-                        true
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        println("ACTION_UP")
-                        mVelocityTracker?.recycle()
-                        mVelocityTracker = null
-                        if(isDragging) {
-                            isDragging = false
+            if(!unitsAreTravelling) {
+                view.setOnTouchListener { v: View, event: MotionEvent ->
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            mVelocityTracker?.clear()
+                            mVelocityTracker = mVelocityTracker ?: VelocityTracker.obtain()
+                            mVelocityTracker?.addMovement(event)
                             true
-                        } else {
-                            v.performClick()
-                            isDragging = false
-                            false
                         }
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        mVelocityTracker?.apply {
-                            val pointerId: Int = event.getPointerId(event.actionIndex)
-                            addMovement(event)
-                            // When you want to determine the velocity, call
-                            // computeCurrentVelocity(). Then call getXVelocity()
-                            // and getYVelocity() to retrieve the velocity for each pointer ID.
-                            computeCurrentVelocity(1000)
-                            // Log velocity of pixels per second
-                            // Best practice to use VelocityTrackerCompat where possible.
-                            val dx = getXVelocity(pointerId).toDouble()
-                            val dy = getYVelocity(pointerId).toDouble()
-//                            println("X velocity: ${dx}")
-//                            println("Y velocity: ${dy}")
-                            val vel = sqrt(dx.pow(2) + dy.pow(2))
-                            println("Velocity: $vel")
-                            if(vel>150) {
-                                if(!isDragging) {
-                                    println("ACTION_MOVE start Dragging")
-                                    val unit = units[adapterPosition]
-                                    val dragData = ClipData.newPlainText("unit.id", unit.id.toString())
-                                    val myShadow = MyDragShadowBuilder(itemView)
-                                    v.startDrag(
-                                        dragData,   // the data to be dragged
-                                        myShadow,   // the drag shadow builder
-                                        null,       // no need to use local data
-                                        0           // flags (not currently used, set to 0)
-                                    )
-                                    isDragging = true
-                                }
+                        MotionEvent.ACTION_UP -> {
+                            mVelocityTracker?.recycle()
+                            mVelocityTracker = null
+                            if (isDragging) {
+                                isDragging = false
+                                true
+                            } else {
+                                v.performClick()
+                                isDragging = false
+                                false
                             }
                         }
-                        isDragging
+                        MotionEvent.ACTION_MOVE -> {
+                            mVelocityTracker?.apply {
+                                val pointerId: Int = event.getPointerId(event.actionIndex)
+                                addMovement(event)
+                                computeCurrentVelocity(1000)
+                                val dx = getXVelocity(pointerId).toDouble()
+                                val dy = getYVelocity(pointerId).toDouble()
+                                val vel = sqrt(dx.pow(2) + dy.pow(2))
+                                if (vel > 150) {
+                                    if (!isDragging) {
+                                        val unit = units[adapterPosition]
+                                        val dragData =
+                                            ClipData.newPlainText("unit.id", unit.id.toString())
+                                        val myShadow = MyDragShadowBuilder(itemView)
+                                        v.startDrag(
+                                            dragData,
+                                            myShadow,
+                                            null,
+                                            0
+                                        )
+                                        isDragging = true
+                                    }
+                                }
+                            }
+                            isDragging
+                        }
+                        else -> false
                     }
-                    else -> false
                 }
-            }
-            view.setOnClickListener {
-//                val unit = units[adapterPosition]
-                // Open mission assignment fragment
-                val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
-                val editNameDialogFragment = UnitCmdDialogFragment()
-                editNameDialogFragment.show(fm, "fragment_edit_name")
+
+                view.setOnClickListener {
+                    val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
+                    val editNameDialogFragment = UnitCmdDialogFragment()
+                    editNameDialogFragment.show(fm, "fragment_edit_name")
+                }
             }
         }
 
@@ -144,7 +121,7 @@ class UnitListAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item_unit, viewGroup, false)
-        return ViewHolder(view, units)
+        return ViewHolder(view, units, unitsAreTravelling)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {

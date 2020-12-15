@@ -95,14 +95,16 @@ class ShipsWithUnitListAdapter(
         init {
             view.setOnClickListener {
                 val shipWithUnits = shipsWithUnits[adapterPosition]
-                val bundle = bundleOf(
-                    "shipId" to shipWithUnits.ship.id,
-                    "currentGameStateId" to currentGameStateId
-                )
-                val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
-                val shipMoveDialogFragment = ShipMoveDialogFragment()
-                shipMoveDialogFragment.arguments = bundle
-                shipMoveDialogFragment.show(fm, "shipMoveDialogFragment")
+                if(!shipWithUnits.ship.isTraveling) {
+                    val bundle = bundleOf(
+                        "shipId" to shipWithUnits.ship.id,
+                        "currentGameStateId" to currentGameStateId
+                    )
+                    val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
+                    val shipMoveDialogFragment = ShipMoveDialogFragment()
+                    shipMoveDialogFragment.arguments = bundle
+                    shipMoveDialogFragment.show(fm, "shipMoveDialogFragment")
+                }
             }
             view.setOnDragListener(dragListen)
         }
@@ -135,7 +137,7 @@ class ShipsWithUnitListAdapter(
             )
         }
 
-        viewHolder.shipWithUnitsList.adapter = UnitListAdapter(shipWithUnits.units)
+        viewHolder.shipWithUnitsList.adapter = UnitListAdapter(shipWithUnits.units, shipWithUnits.ship.isTraveling)
     }
 
     override fun getItemCount() =  shipsWithUnits.size

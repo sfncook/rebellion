@@ -121,7 +121,7 @@ class PlanetUnitsFragment : Fragment() {
     }
 
     private fun updateUnitsOnPlanetSurface(units: List<Unit>) {
-        val viewAdapter = UnitListAdapter(units)
+        val viewAdapter = UnitListAdapter(units, false)
         viewLifecycleOwner.lifecycleScope.launch {
             listUnitsOnPlanetSurface.adapter = viewAdapter
         }
