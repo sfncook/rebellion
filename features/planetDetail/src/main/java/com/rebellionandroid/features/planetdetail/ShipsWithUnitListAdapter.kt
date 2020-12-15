@@ -73,7 +73,10 @@ class ShipsWithUnitListAdapter(
         init {
             view.setOnClickListener {
                 val shipWithUnits = shipsWithUnits[adapterPosition]
-                val bundle = bundleOf("shipId" to shipWithUnits.ship.id)
+                val bundle = bundleOf(
+                    "shipId" to shipWithUnits.ship.id,
+                    "currentGameStateId" to currentGameStateId
+                )
                 val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                 val shipMoveDialogFragment = ShipMoveDialogFragment()
                 shipMoveDialogFragment.arguments = bundle

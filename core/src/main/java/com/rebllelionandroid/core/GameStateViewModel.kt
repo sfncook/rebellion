@@ -89,6 +89,12 @@ class GameStateViewModel @Inject constructor(
             postUpdate(gameStateId)
         }
     }
+    fun startShipJourneyToPlanet(shipId: Long, planetId: Long, gameStateId: Long, dayArrival: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            gameStateRepository.startShipJourneyToPlanet(shipId, planetId, dayArrival)
+            postUpdate(gameStateId)
+        }
+    }
 
 
     fun toggleTimer(gameStateId: Long) {

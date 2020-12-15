@@ -20,6 +20,8 @@ class ShipMoveDialogFragment: DialogFragment() {
     private lateinit var sectorsAndPlanetsExpandableList: ExpandableListView
     private var lastGroupExpandedPos: Int = -1
     private var selectedShipId: Long = 0
+    private var currentGameStateId: Long = 0
+    private var currentGameTimeDay: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +31,7 @@ class ShipMoveDialogFragment: DialogFragment() {
         val root = inflater.inflate(R.layout.fragment_ship_move, container, false)
         rootContext = root.context
         selectedShipId = arguments?.getLong("shipId")!!
+        currentGameStateId = arguments?.getLong("currentGameStateId")!!
 
         root.findViewById<MaterialButton>(R.id.ship_move_close_btn).setOnClickListener {
             dismiss()
@@ -38,6 +41,7 @@ class ShipMoveDialogFragment: DialogFragment() {
 
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
+            currentGameTimeDay = gameStateWithSectors.gameState.gameTime
             gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
                 gameStateViewModel.getPlanetWithUnits(shipWithUnits.ship.locationPlanetId) { planetWithUnits ->
                     val selectedSectorId = planetWithUnits.planet.sectorId
@@ -55,8 +59,8 @@ class ShipMoveDialogFragment: DialogFragment() {
             lastGroupExpandedPos = groupPosition;
         }
 
-        sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
-            println("Click child ID: $id")
+        sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, planetId ->
+            gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId, currentGameTimeDay.plus(10))
             true
         }
 
