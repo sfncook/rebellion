@@ -211,7 +211,7 @@ class GameStateViewModel @Inject constructor(
                     )
                     gameStateRepository.insertNewDefenseStructure(planetaryShield)
 
-                    val manyInitFactories = 3
+                    val manyInitFactories = planetForTeam.energyCap.coerceAtMost(3)
                     for (u in 1..manyInitFactories) {
                         val planetId = planetForTeam.id
                         val factory = Factory(
