@@ -63,6 +63,7 @@ class PlanetUnitsFragment : Fragment() {
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         val gameStateWithSectors = gameStateViewModel.gameState
         gameStateWithSectors.observe(viewLifecycleOwner , { gameStateWithSectors ->
+            val myTeam = gameStateWithSectors.gameState.myTeam
             gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
                 val planet = planetWithUnits.planet
                 viewLifecycleOwner.lifecycleScope.launch {
@@ -78,7 +79,7 @@ class PlanetUnitsFragment : Fragment() {
                     var manyEnemyUnitsSpecOps = 0
                     var manyEnemyUnitsGarison = 0
                     planetWithUnits.units.forEach{unit ->
-                        if(unit.team != gameStateWithSectors.gameState.myTeam) {
+                        if(unit.team != myTeam) {
                             when (unit.unitType) {
                                 UnitType.SpecialForces -> manyEnemyUnitsSpecOps =
                                     manyEnemyUnitsSpecOps.inc()
@@ -93,7 +94,7 @@ class PlanetUnitsFragment : Fragment() {
                     manyEnemyUnitsGarisonTxt.text = manyEnemyUnitsGarison.toString()
 
                     var enemyColor = 0
-                    when(gameStateWithSectors.gameState.myTeam) {
+                    when(myTeam) {
                         TeamLoyalty.TeamA -> enemyColor = R.color.loyalty_team_b
                         TeamLoyalty.TeamB -> enemyColor = R.color.loyalty_team_a
                         else -> {}
@@ -109,8 +110,9 @@ class PlanetUnitsFragment : Fragment() {
                 updateUnitsOnShips(planetWithUnits.shipsWithUnits)
             }
 
-            gameStateViewModel.getAllUnitsOnTheSurfaceOfPlanet(selectedPlanetId) {
-                updateUnitsOnPlanetSurface(it)
+            gameStateViewModel.getAllUnitsOnTheSurfaceOfPlanet(selectedPlanetId) { units ->
+                val myUnits = units.filter { unit -> unit.team == myTeam}
+                updateUnitsOnPlanetSurface(myUnits)
             }
         })
 
