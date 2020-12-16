@@ -19,10 +19,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
-import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
-import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.enums.UnitType
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.launch
 
 class PlanetUnitsFragment : Fragment() {
@@ -34,6 +34,11 @@ class PlanetUnitsFragment : Fragment() {
     private lateinit var planetLoyaltyImg: ImageView
     private lateinit var listUnitsOnPlanetSurface: RecyclerView
     private lateinit var listShipsWithUnits: RecyclerView
+
+    private lateinit var enemyUnitsSpecOpsImg: ImageView
+    private lateinit var manyEnemyUnitsSpecOpsTxt: TextView
+    private lateinit var enemyUnitsGarisonImg: ImageView
+    private lateinit var manyEnemyUnitsGarisonTxt: TextView
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     override fun onCreateView(
@@ -50,11 +55,16 @@ class PlanetUnitsFragment : Fragment() {
         listUnitsOnPlanetSurface = root.findViewById(R.id.list_units_on_planet_surface)
         listShipsWithUnits = root.findViewById(R.id.list_ships_with_units)
 
+        enemyUnitsSpecOpsImg = root.findViewById(R.id.enemy_units_specops_on_planet_img)
+        manyEnemyUnitsSpecOpsTxt = root.findViewById(R.id.many_enemy_units_specops_on_planet)
+        enemyUnitsGarisonImg = root.findViewById(R.id.enemy_units_garison_on_planet_img)
+        manyEnemyUnitsGarisonTxt = root.findViewById(R.id.many_enemy_units_garison_on_planet)
+
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         val gameStateWithSectors = gameStateViewModel.gameState
-        gameStateWithSectors.observe(viewLifecycleOwner , {
-            gameStateViewModel.getPlanetWithUnits(selectedPlanetId) {
-                val planet = it.planet
+        gameStateWithSectors.observe(viewLifecycleOwner , { gameStateWithSectors ->
+            gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
+                val planet = planetWithUnits.planet
                 viewLifecycleOwner.lifecycleScope.launch {
                     textLoyaltyPercTeamA.text = "${planet.teamALoyalty.toString()}%"
                     textLoyaltyPercTeamB.text = "${planet.teamBLoyalty.toString()}%"
@@ -63,8 +73,40 @@ class PlanetUnitsFragment : Fragment() {
                     planetLoyaltyImg.setColorFilter(
                         ContextCompat.getColor(root.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
                     )
+
+                    // **** Enemy Units ****
+                    var manyEnemyUnitsSpecOps = 0
+                    var manyEnemyUnitsGarison = 0
+                    planetWithUnits.units.forEach{unit ->
+                        if(unit.team != gameStateWithSectors.gameState.myTeam) {
+                            when (unit.unitType) {
+                                UnitType.SpecialForces -> manyEnemyUnitsSpecOps =
+                                    manyEnemyUnitsSpecOps.inc()
+                                UnitType.Garrison -> manyEnemyUnitsGarison =
+                                    manyEnemyUnitsGarison.inc()
+                                else -> {
+                                }
+                            }
+                        }
+                    }
+                    manyEnemyUnitsSpecOpsTxt.text = manyEnemyUnitsSpecOps.toString()
+                    manyEnemyUnitsGarisonTxt.text = manyEnemyUnitsGarison.toString()
+
+                    var enemyColor = 0
+                    when(gameStateWithSectors.gameState.myTeam) {
+                        TeamLoyalty.TeamA -> enemyColor = R.color.loyalty_team_b
+                        TeamLoyalty.TeamB -> enemyColor = R.color.loyalty_team_a
+                        else -> {}
+                    }
+                    enemyUnitsSpecOpsImg.setColorFilter(
+                        ContextCompat.getColor(requireContext(), enemyColor), android.graphics.PorterDuff.Mode.MULTIPLY
+                    )
+                    enemyUnitsGarisonImg.setColorFilter(
+                        ContextCompat.getColor(requireContext(), enemyColor), android.graphics.PorterDuff.Mode.MULTIPLY
+                    )
+                    // **** Enemy Units ****
                 }
-                updateUnitsOnShips(it.shipsWithUnits)
+                updateUnitsOnShips(planetWithUnits.shipsWithUnits)
             }
 
             gameStateViewModel.getAllUnitsOnTheSurfaceOfPlanet(selectedPlanetId) {

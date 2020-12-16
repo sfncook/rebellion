@@ -128,8 +128,8 @@ class UnitListAdapter(
         val unit = units[position]
         viewHolder.unitLabel.text = unit.unitType.value
         val imgSrc  = when(unit.unitType) {
-            UnitType.Garrison -> R.drawable.personelle_garrison
-            UnitType.SpecialForces -> R.drawable.personelle_specops_old
+            UnitType.Garrison -> R.drawable.personelle_garrison_outline
+            UnitType.SpecialForces -> R.drawable.personelle_specops_outline
         }
         viewHolder.unitImg.setImageResource(imgSrc)
     }
