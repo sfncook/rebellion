@@ -27,17 +27,27 @@ class PlanetsListAdapter(
         val planetName: TextView = view.findViewById(R.id.planet_name)
         val planetLoyaltyImg: ImageView = view.findViewById(R.id.planet_loyalty)
 
+        val planetHasDefenseImg: ImageView = view.findViewById(R.id.planet_has_defense)
+        val manyDefense: TextView = view.findViewById(R.id.many_defense)
+
+        val planetHasFactoriesImg: ImageView = view.findViewById(R.id.planet_has_factories)
+        val manyFactories: TextView = view.findViewById(R.id.many_factories)
+
+
+
         val planetHasShipImgTeamA: ImageView = view.findViewById(R.id.planet_has_ship_team_a)
         val manyShipsTeamA: TextView = view.findViewById(R.id.many_ships_team_a)
 
         val planetHasUnitsImgTeamA: ImageView = view.findViewById(R.id.planet_has_units_team_a)
         val manyUnitsTeamA: TextView = view.findViewById(R.id.many_units_team_a)
 
-        val planetHasDefenseImgTeamA: ImageView = view.findViewById(R.id.planet_has_defense_team_a)
-        val manyDefenseTeamA: TextView = view.findViewById(R.id.many_defense_team_a)
 
-        val planetHasFactoriesImgTeamA: ImageView = view.findViewById(R.id.planet_has_factories_team_a)
-        val manyFactoriesTeamA: TextView = view.findViewById(R.id.many_factories_team_a)
+
+        val planetHasShipImgTeamB: ImageView = view.findViewById(R.id.planet_has_ship_team_b)
+        val manyShipsTeamB: TextView = view.findViewById(R.id.many_ships_team_b)
+
+        val planetHasUnitsImgTeamB: ImageView = view.findViewById(R.id.planet_has_units_team_b)
+        val manyUnitsTeamB: TextView = view.findViewById(R.id.many_units_team_b)
 
         init {
             view.setOnClickListener {
@@ -61,12 +71,12 @@ class PlanetsListAdapter(
         viewHolder.planetName.text = planet.name
 
 
-        val manyShipsTeamA = 0
-        val manyShipsTeamB = 0
+        var manyShipsTeamA = 0
+        var manyShipsTeamB = 0
         planetWithUnit.shipsWithUnits.forEach { shipWithUnits ->
             when(shipWithUnits.ship.team) {
-                TeamLoyalty.TeamA -> manyShipsTeamA.inc()
-                TeamLoyalty.TeamB -> manyShipsTeamB.inc()
+                TeamLoyalty.TeamA -> manyShipsTeamA = manyShipsTeamA.inc()
+                TeamLoyalty.TeamB -> manyShipsTeamB = manyShipsTeamB.inc()
                 else -> {}
             }
         }
@@ -78,18 +88,65 @@ class PlanetsListAdapter(
             viewHolder.planetHasShipImgTeamA.visibility = GONE
             viewHolder.manyShipsTeamA.visibility = GONE
         }
-//        if(manyShipsTeamB>0) {
-//            viewHolder.planetHasShipImgTeamB.visibility = VISIBLE
-//            viewHolder.manyShipsTeamB.visibility = VISIBLE
-//            viewHolder.manyShipsTeamB.text = manyShipsTeamB.toString()
-//        } else {
-//            viewHolder.planetHasShipImgTeamB.visibility = GONE
-//            viewHolder.manyShipsTeamB.visibility = GONE
-//        }
 
-        viewHolder.planetHasUnitsImgTeamA.visibility = if(planetWithUnit.units.isEmpty()) GONE else VISIBLE
-        viewHolder.planetHasDefenseImgTeamA.visibility = if(planetWithUnit.defenseStructures.isEmpty()) GONE else VISIBLE
-        viewHolder.planetHasFactoriesImgTeamA.visibility = if(planetWithUnit.factories.isEmpty()) GONE else VISIBLE
+        if(manyShipsTeamB>0) {
+            viewHolder.planetHasShipImgTeamB.visibility = VISIBLE
+            viewHolder.manyShipsTeamB.visibility = VISIBLE
+            viewHolder.manyShipsTeamB.text = manyShipsTeamB.toString()
+        } else {
+            viewHolder.planetHasShipImgTeamB.visibility = GONE
+            viewHolder.manyShipsTeamB.visibility = GONE
+        }
+
+        
+
+        var manyUnitsTeamA = 0
+        var manyUnitsTeamB = 0
+        planetWithUnit.units.forEach { unit ->
+            when(unit.team) {
+                TeamLoyalty.TeamA -> manyUnitsTeamA = manyUnitsTeamA.inc()
+                TeamLoyalty.TeamB -> manyUnitsTeamB = manyUnitsTeamB.inc()
+                else -> {}
+            }
+        }
+        if(manyUnitsTeamA>0) {
+            viewHolder.planetHasUnitsImgTeamA.visibility = VISIBLE
+            viewHolder.manyUnitsTeamA.visibility = VISIBLE
+            viewHolder.manyUnitsTeamA.text = manyUnitsTeamA.toString()
+        } else {
+            viewHolder.planetHasUnitsImgTeamA.visibility = GONE
+            viewHolder.manyUnitsTeamA.visibility = GONE
+        }
+
+        if(manyUnitsTeamB>0) {
+            viewHolder.planetHasUnitsImgTeamB.visibility = VISIBLE
+            viewHolder.manyUnitsTeamB.visibility = VISIBLE
+            viewHolder.manyUnitsTeamB.text = manyUnitsTeamB.toString()
+        } else {
+            viewHolder.planetHasUnitsImgTeamB.visibility = GONE
+            viewHolder.manyUnitsTeamB.visibility = GONE
+        }
+
+        
+
+        if(planetWithUnit.defenseStructures.isEmpty()) {
+            viewHolder.planetHasDefenseImg.visibility = GONE
+            viewHolder.manyDefense.visibility = GONE
+        } else {
+            viewHolder.planetHasDefenseImg.visibility = VISIBLE
+            viewHolder.manyDefense.text = planetWithUnit.defenseStructures.size.toString()
+        }
+
+
+        if(planetWithUnit.factories.isEmpty()) {
+            viewHolder.planetHasFactoriesImg.visibility = GONE
+            viewHolder.manyFactories.visibility = GONE
+        } else {
+            viewHolder.planetHasFactoriesImg.visibility = VISIBLE
+            viewHolder.manyFactories.text = planetWithUnit.factories.size.toString()
+        }
+
+        
 
         val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
         viewHolder.planetLoyaltyImg.setImageResource(imgId)
