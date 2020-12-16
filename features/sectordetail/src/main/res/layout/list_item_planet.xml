@@ -38,51 +38,185 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/planet_row_2"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/planet_row_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         >
         <ImageView
-            android:id="@+id/planet_has_ship"
+            android:id="@+id/planet_has_ship_team_a"
             android:layout_width="25dp"
             android:layout_height="25dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/planet_has_units"
+            app:layout_constraintEnd_toStartOf="@+id/planet_has_units_team_a"
             android:src="@drawable/ship_5"
+            app:tint="@color/loyalty_team_a"
             />
+        <TextView
+            android:id="@+id/many_ships_team_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/planet_has_ship_team_a"
+            app:layout_constraintStart_toStartOf="@+id/planet_has_ship_team_a"
+            app:layout_constraintTop_toBottomOf="@+id/planet_has_ship_team_a"
+            app:tint="@color/loyalty_team_a"
+            />
+
         <ImageView
-            android:id="@+id/planet_has_units"
+            android:id="@+id/planet_has_units_team_a"
             android:layout_width="25dp"
             android:layout_height="25dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/planet_has_ship"
-            app:layout_constraintEnd_toStartOf="@+id/planet_has_defense"
-            android:src="@drawable/personelle_garrison"
+            app:layout_constraintStart_toEndOf="@+id/planet_has_ship_team_a"
+            app:layout_constraintEnd_toStartOf="@+id/planet_has_defense_team_a"
+            android:src="@drawable/personelle_specops"
+            app:tint="@color/loyalty_team_a"
             />
+        <TextView
+            android:id="@+id/many_units_team_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/planet_has_units_team_a"
+            app:layout_constraintStart_toStartOf="@+id/planet_has_units_team_a"
+            app:layout_constraintTop_toBottomOf="@+id/planet_has_units_team_a"
+            app:tint="@color/loyalty_team_a"
+            />
+
         <ImageView
-            android:id="@+id/planet_has_defense"
+            android:id="@+id/planet_has_defense_team_a"
             android:layout_width="25dp"
             android:layout_height="25dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/planet_has_units"
-            app:layout_constraintEnd_toStartOf="@+id/planet_has_factories"
+            app:layout_constraintStart_toEndOf="@+id/planet_has_units_team_a"
+            app:layout_constraintEnd_toStartOf="@+id/planet_has_factories_team_a"
             android:src="@drawable/planetary_shield"
+            app:tint="@color/loyalty_team_a"
             />
+        <TextView
+            android:id="@+id/many_defense_team_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/planet_has_defense_team_a"
+            app:layout_constraintStart_toStartOf="@+id/planet_has_defense_team_a"
+            app:layout_constraintTop_toBottomOf="@+id/planet_has_defense_team_a"
+            app:tint="@color/loyalty_team_a"
+            />
+
         <ImageView
-            android:id="@+id/planet_has_factories"
+            android:id="@+id/planet_has_factories_team_a"
             android:layout_width="25dp"
             android:layout_height="25dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/planet_has_defense"
+            app:layout_constraintStart_toEndOf="@+id/planet_has_defense_team_a"
             android:src="@drawable/factory_generic"
+            app:tint="@color/loyalty_team_a"
             />
+        <TextView
+            android:id="@+id/many_factories_team_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/planet_has_factories_team_a"
+            app:layout_constraintStart_toStartOf="@+id/planet_has_factories_team_a"
+            app:layout_constraintTop_toBottomOf="@+id/planet_has_factories_team_a"
+            app:tint="@color/loyalty_team_a"
+            />
+
+
+        <ImageView
+            android:id="@+id/planet_has_ship_team_b"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/planet_has_units_team_b"
+            android:src="@drawable/ship_5"
+            app:tint="@color/loyalty_team_b"
+            />
+        <TextView
+            android:id="@+id/many_ships_team_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/planet_has_ship_team_b"
+            app:layout_constraintStart_toStartOf="@+id/planet_has_ship_team_b"
+            app:layout_constraintTop_toBottomOf="@+id/planet_has_ship_team_b"
+            app:tint="@color/loyalty_team_b"
+            />
+
+        <ImageView
+            android:id="@+id/planet_has_units_team_b"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/planet_has_defense_team_b"
+            android:src="@drawable/personelle_specops"
+            app:tint="@color/loyalty_team_b"
+            />
+        <TextView
+            android:id="@+id/many_units_team_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/planet_has_units_team_b"
+            app:layout_constraintStart_toStartOf="@+id/planet_has_units_team_b"
+            app:layout_constraintTop_toBottomOf="@+id/planet_has_units_team_b"
+            app:tint="@color/loyalty_team_b"
+            />
+
+
+        <ImageView
+            android:id="@+id/planet_has_defense_team_b"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/planet_has_factories_team_b"
+            android:src="@drawable/planetary_shield"
+            app:tint="@color/loyalty_team_b"
+            />
+        <TextView
+            android:id="@+id/many_defense_team_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/planet_has_defense_team_b"
+            app:layout_constraintStart_toStartOf="@+id/planet_has_defense_team_b"
+            app:layout_constraintTop_toBottomOf="@+id/planet_has_defense_team_b"
+            app:tint="@color/loyalty_team_b"
+            />
+
+        <ImageView
+            android:id="@+id/planet_has_factories_team_b"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/factory_generic"
+            app:tint="@color/loyalty_team_b"
+            />
+        <TextView
+            android:id="@+id/many_factories_team_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/planet_has_factories_team_b"
+            app:layout_constraintTop_toBottomOf="@+id/planet_has_factories_team_b"
+            app:tint="@color/loyalty_team_b"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

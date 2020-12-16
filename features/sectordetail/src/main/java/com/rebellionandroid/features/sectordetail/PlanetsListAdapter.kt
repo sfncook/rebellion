@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.features.sectorsdetail.R
 
 
@@ -25,10 +26,18 @@ class PlanetsListAdapter(
     ) {
         val planetName: TextView = view.findViewById(R.id.planet_name)
         val planetLoyaltyImg: ImageView = view.findViewById(R.id.planet_loyalty)
-        val planetHasShipImg: ImageView = view.findViewById(R.id.planet_has_ship)
-        val planetHasUnitsImg: ImageView = view.findViewById(R.id.planet_has_units)
-        val planetHasDefenseImg: ImageView = view.findViewById(R.id.planet_has_defense)
-        val planetHasFactoriesImg: ImageView = view.findViewById(R.id.planet_has_factories)
+
+        val planetHasShipImgTeamA: ImageView = view.findViewById(R.id.planet_has_ship_team_a)
+        val manyShipsTeamA: TextView = view.findViewById(R.id.many_ships_team_a)
+
+        val planetHasUnitsImgTeamA: ImageView = view.findViewById(R.id.planet_has_units_team_a)
+        val manyUnitsTeamA: TextView = view.findViewById(R.id.many_units_team_a)
+
+        val planetHasDefenseImgTeamA: ImageView = view.findViewById(R.id.planet_has_defense_team_a)
+        val manyDefenseTeamA: TextView = view.findViewById(R.id.many_defense_team_a)
+
+        val planetHasFactoriesImgTeamA: ImageView = view.findViewById(R.id.planet_has_factories_team_a)
+        val manyFactoriesTeamA: TextView = view.findViewById(R.id.many_factories_team_a)
 
         init {
             view.setOnClickListener {
@@ -51,10 +60,36 @@ class PlanetsListAdapter(
         val planet = planetWithUnit.planet
         viewHolder.planetName.text = planet.name
 
-        viewHolder.planetHasShipImg.visibility = if(planetWithUnit.shipsWithUnits.isEmpty()) GONE else VISIBLE
-        viewHolder.planetHasUnitsImg.visibility = if(planetWithUnit.units.isEmpty()) GONE else VISIBLE
-        viewHolder.planetHasDefenseImg.visibility = if(planetWithUnit.defenseStructures.isEmpty()) GONE else VISIBLE
-        viewHolder.planetHasFactoriesImg.visibility = if(planetWithUnit.factories.isEmpty()) GONE else VISIBLE
+
+        val manyShipsTeamA = 0
+        val manyShipsTeamB = 0
+        planetWithUnit.shipsWithUnits.forEach { shipWithUnits ->
+            when(shipWithUnits.ship.team) {
+                TeamLoyalty.TeamA -> manyShipsTeamA.inc()
+                TeamLoyalty.TeamB -> manyShipsTeamB.inc()
+                else -> {}
+            }
+        }
+        if(manyShipsTeamA>0) {
+            viewHolder.planetHasShipImgTeamA.visibility = VISIBLE
+            viewHolder.manyShipsTeamA.visibility = VISIBLE
+            viewHolder.manyShipsTeamA.text = manyShipsTeamA.toString()
+        } else {
+            viewHolder.planetHasShipImgTeamA.visibility = GONE
+            viewHolder.manyShipsTeamA.visibility = GONE
+        }
+//        if(manyShipsTeamB>0) {
+//            viewHolder.planetHasShipImgTeamB.visibility = VISIBLE
+//            viewHolder.manyShipsTeamB.visibility = VISIBLE
+//            viewHolder.manyShipsTeamB.text = manyShipsTeamB.toString()
+//        } else {
+//            viewHolder.planetHasShipImgTeamB.visibility = GONE
+//            viewHolder.manyShipsTeamB.visibility = GONE
+//        }
+
+        viewHolder.planetHasUnitsImgTeamA.visibility = if(planetWithUnit.units.isEmpty()) GONE else VISIBLE
+        viewHolder.planetHasDefenseImgTeamA.visibility = if(planetWithUnit.defenseStructures.isEmpty()) GONE else VISIBLE
+        viewHolder.planetHasFactoriesImgTeamA.visibility = if(planetWithUnit.factories.isEmpty()) GONE else VISIBLE
 
         val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
         viewHolder.planetLoyaltyImg.setImageResource(imgId)
