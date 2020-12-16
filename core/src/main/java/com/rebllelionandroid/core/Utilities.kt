@@ -9,10 +9,10 @@ class Utilities {
             val loyaltyDiff = planet.teamALoyalty - planet.teamBLoyalty
             val imgId: Int
             val colorId: Int
-            if(!planet.isExplored) {
+            /*if(!planet.isExplored) {
                 imgId = R.drawable.loyalty_sm
                 colorId = R.color.loyalty_unexplored
-            } else if( 40 < loyaltyDiff) {
+            } else*/ if( 40 < loyaltyDiff) {
                 imgId = R.drawable.loyalty_lg
                 colorId = R.color.loyalty_team_a
             } else if( 10 < loyaltyDiff) {
