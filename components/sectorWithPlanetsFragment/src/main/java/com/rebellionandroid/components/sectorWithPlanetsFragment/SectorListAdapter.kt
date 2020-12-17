@@ -1,8 +1,10 @@
 package com.rebellionandroid.components.sectorWithPlanetsFragment
 
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -10,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.GameState
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class SectorListAdapter(
     private val sectors: List<SectorWithPlanets>,
+    private val myTeam: TeamLoyalty,
     private val onSelectCallback: (sectorId: Long) -> Unit
 ) : RecyclerView.Adapter<SectorListAdapter.ViewHolder>() {
 
@@ -25,6 +29,8 @@ class SectorListAdapter(
     ) {
         val sectorName: TextView = view.findViewById(R.id.sector_name)
         val planetsList: RecyclerView  = view.findViewById(R.id.planets_list)
+        val manyShipsInSectorTxt: TextView = view.findViewById(R.id.many_ships_in_sector_txt)
+        val shipsInSectorImg: ImageView = view.findViewById(R.id.ships_in_sector_img)
         init {
             view.setOnClickListener {
                 val sectorWithPlanets = sectorsWithPlanets[adapterPosition]
@@ -50,6 +56,13 @@ class SectorListAdapter(
         viewHolder.planetsList.apply {
             adapter = viewAdapter
         }
+
+        var manyMyShips = 0
+        planets.forEach { planetWithUnits ->
+            val myShips = planetWithUnits.shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team == myTeam }
+            manyMyShips += myShips.size
+        }
+        viewHolder.manyShipsInSectorTxt.text = manyMyShips.toString()
     }
 
     override fun getItemCount() =  sectors.size
