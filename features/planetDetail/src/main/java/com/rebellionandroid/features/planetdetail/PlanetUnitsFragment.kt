@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -69,6 +70,12 @@ class PlanetUnitsFragment : Fragment() {
             gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
                 val planet = planetWithUnits.planet
                 viewLifecycleOwner.lifecycleScope.launch {
+                    val planetName = planet.name
+                    val selectedSectorWithPlanets = gameStateWithSectors.sectors.find { sectorWithPlanets -> sectorWithPlanets.sector.id == planet.sectorId}
+                    val sectorName = selectedSectorWithPlanets?.sector?.name
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Planet: $planetName"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "Sector: $sectorName"
+
                     textLoyaltyPercTeamA.text = "${planet.teamALoyalty.toString()}%"
                     textLoyaltyPercTeamB.text = "${planet.teamBLoyalty.toString()}%"
                     val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)

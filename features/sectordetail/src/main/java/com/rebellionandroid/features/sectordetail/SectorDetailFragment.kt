@@ -5,16 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
-import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.features.sectorsdetail.R
 import kotlinx.coroutines.launch
+
 
 class SectorDetailFragment: Fragment() {
     private var currentGameStateId: Long = 0
@@ -31,10 +31,16 @@ class SectorDetailFragment: Fragment() {
 
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         val gameStateWithSectors = gameStateViewModel.gameState
-        gameStateWithSectors.observe(viewLifecycleOwner , {
-            val selectedSector = it.sectors.find { it.sector.id == selectedSectorId }
+        gameStateWithSectors.observe(viewLifecycleOwner, { _gameStateWithSectors ->
+            val selectedSector = _gameStateWithSectors.sectors.find { sectorWithPlanets ->
+                sectorWithPlanets.sector.id == selectedSectorId
+            }
             if (selectedSector != null) {
                 updateSectorDetail(selectedSector)
+                val sectorName = selectedSector.sector.name
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Sector: $sectorName"
+                (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "Sector Detail"
+
             }
         })
 
@@ -46,7 +52,10 @@ class SectorDetailFragment: Fragment() {
 
         val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
         val keyCurrentGameId = getString(R.string.keyCurrentGameId)
-        val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPref = activity?.getSharedPreferences(
+            gameStateSharedPrefFile,
+            Context.MODE_PRIVATE
+        )
         if(sharedPref?.contains(keyCurrentGameId) == true) {
             currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
             gameStateViewModel.loadAllGameStateWithSectors(currentGameStateId)

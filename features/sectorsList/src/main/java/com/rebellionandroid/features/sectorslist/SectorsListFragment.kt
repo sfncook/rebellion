@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -29,6 +30,9 @@ class SectorsListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val root = inflater.inflate(R.layout.fragment_sectors_list, container, false)
+
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Galactic Detail"
+        (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "All galactic sectors"
 
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         gameStateWithSectors = gameStateViewModel.gameState
