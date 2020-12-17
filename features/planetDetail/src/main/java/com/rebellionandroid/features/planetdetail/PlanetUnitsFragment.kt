@@ -34,6 +34,7 @@ class PlanetUnitsFragment : Fragment() {
     private lateinit var planetLoyaltyImg: ImageView
     private lateinit var listUnitsOnPlanetSurface: RecyclerView
     private lateinit var listShipsWithUnits: RecyclerView
+    private lateinit var listEnemyShips: RecyclerView
 
     private lateinit var enemyUnitsSpecOpsImg: ImageView
     private lateinit var manyEnemyUnitsSpecOpsTxt: TextView
@@ -54,6 +55,7 @@ class PlanetUnitsFragment : Fragment() {
         planetLoyaltyImg = root.findViewById(R.id.units_planet_loyalty)
         listUnitsOnPlanetSurface = root.findViewById(R.id.list_units_on_planet_surface)
         listShipsWithUnits = root.findViewById(R.id.list_ships_with_units)
+        listEnemyShips = root.findViewById(R.id.list_enemy_ships)
 
         enemyUnitsSpecOpsImg = root.findViewById(R.id.enemy_units_specops_on_planet_img)
         manyEnemyUnitsSpecOpsTxt = root.findViewById(R.id.many_enemy_units_specops_on_planet)
@@ -107,7 +109,7 @@ class PlanetUnitsFragment : Fragment() {
                     )
                     // **** Enemy Units ****
                 }
-                updateUnitsOnShips(planetWithUnits.shipsWithUnits)
+                updateUnitsOnShips(planetWithUnits.shipsWithUnits, gameStateWithSectors.gameState.myTeam)
             }
 
             gameStateViewModel.getAllUnitsOnTheSurfaceOfPlanet(selectedPlanetId) { units ->
@@ -160,7 +162,7 @@ class PlanetUnitsFragment : Fragment() {
         if(sharedPref?.contains(keyCurrentGameId) == true) {
             currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
         } else {
-            println("ERROR No current game ID foudn in shared preferences")
+            println("ERROR No current game ID found in shared preferences")
         }
     }
 
@@ -171,10 +173,15 @@ class PlanetUnitsFragment : Fragment() {
         }
     }
 
-    private fun updateUnitsOnShips(shipsWithUnits: List<ShipWithUnits>) {
-        val viewAdapter = ShipsWithUnitListAdapter(shipsWithUnits, gameStateViewModel, currentGameStateId)
+    private fun updateUnitsOnShips(shipsWithUnits: List<ShipWithUnits>, myTeam: TeamLoyalty) {
+        val myShipsWithUnits = shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team == myTeam }
+        val enemyShipsWithUnits = shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team != myTeam }
+
+        val myShipsViewAdapter = ShipsWithUnitListAdapter(myShipsWithUnits, gameStateViewModel, currentGameStateId)
+        val enemyShipsViewAdapter = EnemyShipsListAdapter(enemyShipsWithUnits)
         viewLifecycleOwner.lifecycleScope.launch {
-            listShipsWithUnits.adapter = viewAdapter
+            listShipsWithUnits.adapter = myShipsViewAdapter
+            listEnemyShips.adapter = enemyShipsViewAdapter
         }
     }
 }

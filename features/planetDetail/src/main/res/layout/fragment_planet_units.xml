@@ -136,6 +136,20 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_enemy_ships"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/list_item_bg"
+                android:minHeight="50dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/list_units_on_planet_surface_container"
+                app:spanCount="5"
+                tools:listitem="@layout/list_item_img" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_ships_with_units"
@@ -147,7 +161,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/list_units_on_planet_surface_container"
+                app:layout_constraintTop_toBottomOf="@+id/list_enemy_ships"
                 tools:listitem="@layout/list_item_ship_with_units" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

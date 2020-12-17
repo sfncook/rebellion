@@ -47,9 +47,7 @@ class UnitListAdapter(
         view: View,
         private val units: List<Unit>,
         unitsAreTravelling: Boolean
-        ) : RecyclerView.ViewHolder(
-        view
-    ) {
+        ) : RecyclerView.ViewHolder(view) {
         val unitLabel: TextView = view.findViewById(R.id.unit_label)
         val unitImg: ImageView = view.findViewById(R.id.unit_img)
         private var mVelocityTracker: VelocityTracker? = null
