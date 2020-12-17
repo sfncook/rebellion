@@ -174,21 +174,21 @@ class GameStateViewModel @Inject constructor(
                     gameStateRepository.insertNewPlanet(planet)
                     teamsToPlanets[sectorType.initTeamLoyalty]?.add(planet)
 
-                    val manyInitUnitsPerPlanet = 5
-                    for (u in 1..manyInitUnitsPerPlanet) {
-                        val unit = Unit(
-                            id = Random.nextLong(),
-                            unitType = UnitType.values().random(),
-                            locationPlanetId = planet.id,
-                            locationShip = null,
-                            mission = null,
-                            dayMissionComplete = 0,
-                            missionTargetType = null,
-                            missionTargetId = null,
-                            sectorType.initTeamLoyalty
-                        )
-                        gameStateRepository.insertNewUnit(unit)
-                    }
+//                    val manyInitUnitsPerPlanet = 5
+//                    for (u in 1..manyInitUnitsPerPlanet) {
+//                        val unit = Unit(
+//                            id = Random.nextLong(),
+//                            unitType = UnitType.values().random(),
+//                            locationPlanetId = planet.id,
+//                            locationShip = null,
+//                            mission = null,
+//                            dayMissionComplete = 0,
+//                            missionTargetType = null,
+//                            missionTargetId = null,
+//                            sectorType.initTeamLoyalty
+//                        )
+//                        gameStateRepository.insertNewUnit(unit)
+//                    }
                 }
             }
 
