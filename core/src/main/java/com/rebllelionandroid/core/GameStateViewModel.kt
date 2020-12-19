@@ -12,6 +12,7 @@ import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import com.rebllelionandroid.core.gameUpdater.GameUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -44,7 +45,7 @@ class GameStateViewModel @Inject constructor(
             callback(allGameStates)
         }
     }
-    fun getGameStateWithSectorsLive(gameStateId: Long) = gameStateRepository.getGameStateWithSectorsLive(gameStateId)
+    fun getGameStateWithSectors(gameStateId: Long) = gameStateRepository.getGameStateWithSectors(gameStateId)
     fun getSectorWithPlanets(sectorId: Long) = gameStateRepository.getSectorWithPlanets(sectorId)
     fun getPlanetWithUnits(planetId: Long, callback: (planetWithUnits: PlanetWithUnits) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -96,6 +97,10 @@ class GameStateViewModel @Inject constructor(
         }
     }
 
+    // Thin updates to be executed on background thread and update posted afterware
+    fun updateGameTime(gameStateId: Long, gameTime: Int) = gameStateRepository.updateGameTime(gameStateId, gameTime)
+    fun updatePlanetLoyalty(planetId:Long, loyalty: Int) = gameStateRepository.updatePlanetLoyalty(planetId, loyalty)
+
 
     fun toggleTimer(gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -109,10 +114,12 @@ class GameStateViewModel @Inject constructor(
     }
 
     fun startTimer(gameStateId: Long) {
+        val _this = this
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
-                updateGameState(gameStateId)
+                GameUpdater.updateGameState(_this, gameStateId)
+                postUpdate(gameStateId)
                 delay(1500)
             }
         }
@@ -267,30 +274,4 @@ class GameStateViewModel @Inject constructor(
         }// launch thread
     }
 
-
-    private fun updateGameState(gameStateId: Long) {
-        val gameStateWithSectors = gameStateRepository.getGameStateWithSectors(gameStateId)
-        val timeVal = gameStateWithSectors.gameState.gameTime.plus(1)
-        timeVal.let { gameStateRepository.updateGameTime(gameStateId, it) }
-        println("my thread i:$timeVal")
-
-        val sectorsWithPlanets = gameStateWithSectors.sectors
-        for(sectorWithPlanets in sectorsWithPlanets) {
-//            print("Sector: ")
-            for(planetWithUnits in sectorWithPlanets.planets)  {
-                val planet = planetWithUnits.planet
-                var teamALoyalty = planetWithUnits.planet.teamALoyalty
-                if(teamALoyalty>90) {
-                    teamALoyalty = 0
-                } else {
-                    teamALoyalty+=10
-                }
-//                print("${teamALoyalty} ")
-                gameStateRepository.updatePlanetLoyalty(planet.id, teamALoyalty)
-            }
-//            println()
-        }
-
-        postUpdate(gameStateId)
-    }
 }

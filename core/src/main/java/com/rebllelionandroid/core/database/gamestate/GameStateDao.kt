@@ -19,10 +19,6 @@ interface GameStateDao {
     fun getGameStateWithSectors(gameStateId: Long): GameStateWithSectors
 
     @Transaction
-    @Query("SELECT * FROM game_state WHERE id = :gameStateId")
-    fun getGameStateWithSectorsLive(gameStateId: Long): LiveData<GameStateWithSectors>
-
-    @Transaction
     @Query("SELECT * FROM sectors WHERE id = :sectorId")
     fun getSectorWithPlanets(sectorId: Long): SectorWithPlanets
 
