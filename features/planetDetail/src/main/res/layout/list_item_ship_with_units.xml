@@ -8,13 +8,6 @@
     android:layout_margin="5dp"
     android:background="@color/list_item_bg"
     >
-    <ImageView
-        android:id="@+id/ship_with_units_ship_img"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ship_with_units_label"
@@ -26,6 +19,43 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/ship_with_units_list"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ship_with_units_travelling_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Travelling"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ship_with_units_label"
+        app:layout_constraintStart_toEndOf="@+id/ship_with_units_label" />
+
+    <TextView
+        android:id="@+id/ship_with_units_eta_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="ETA Day:"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ship_with_units_label"
+        app:layout_constraintStart_toEndOf="@+id/ship_with_units_travelling_label" />
+    <TextView
+        android:id="@+id/ship_with_units_eta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ship_with_units_label"
+        app:layout_constraintStart_toEndOf="@+id/ship_with_units_eta_label" />
+
+    <ImageView
+        android:id="@+id/ship_with_units_ship_img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
