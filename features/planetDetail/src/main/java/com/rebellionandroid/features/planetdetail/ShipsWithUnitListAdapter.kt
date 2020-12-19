@@ -36,9 +36,9 @@ class ShipsWithUnitListAdapter(
             private val currentGameStateId: Long
         ) : RecyclerView.ViewHolder(view) {
         val shipLabel: TextView = view.findViewById(R.id.ship_with_units_label)
-        val travellingLabel: TextView = view.findViewById(R.id.ship_with_units_travelling_label)
         val travellingEtaText: TextView = view.findViewById(R.id.ship_with_units_eta)
         val shipImg: ImageView = view.findViewById(R.id.ship_with_units_ship_img)
+        val travellingIcon: ImageView = view.findViewById(R.id.ship_with_units_travelling_icon)
         val shipWithUnitsList: RecyclerView = view.findViewById(R.id.ship_with_units_list)
         val bgView: View = view.findViewById(R.id.ship_with_units_background)
 
@@ -134,7 +134,7 @@ class ShipsWithUnitListAdapter(
             ShipType.Octeres -> R.drawable.ship_8
         }
         viewHolder.shipImg.setImageResource(imgSrc)
-        viewHolder.travellingLabel.visibility =  if(shipWithUnits.ship.isTraveling) VISIBLE else GONE
+        viewHolder.travellingIcon.visibility =  if(shipWithUnits.ship.isTraveling) VISIBLE else GONE
         viewHolder.travellingEtaText.text =  shipWithUnits.ship.dayArrival.toString()
 
         if(shipWithUnits.ship.isTraveling) {
