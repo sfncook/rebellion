@@ -100,6 +100,7 @@ class GameStateViewModel @Inject constructor(
     // Thin updates to be executed on background thread and update posted afterware
     fun updateGameTime(gameStateId: Long, gameTime: Int) = gameStateRepository.updateGameTime(gameStateId, gameTime)
     fun updatePlanetLoyalty(planetId:Long, loyalty: Int) = gameStateRepository.updatePlanetLoyalty(planetId, loyalty)
+    fun endShipJourney(shipId: Long) = gameStateRepository.endShipJourney(shipId)
 
 
     fun toggleTimer(gameStateId: Long) {
