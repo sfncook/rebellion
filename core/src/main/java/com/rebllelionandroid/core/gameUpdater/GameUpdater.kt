@@ -8,35 +8,50 @@ class GameUpdater {
         fun updateGameState(
             gameStateViewModel: GameStateViewModel,
             gameStateId: Long
-        ) {
+        ): List<UpdateEvent> {
+            val updateEvents = mutableListOf<UpdateEvent>()
+
             val gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
             val timeDay = gameStateWithSectors.gameState.gameTime.plus(1)
             timeDay.let { gameStateViewModel.updateGameTime(gameStateId, it) }
-            println("New time day:$timeDay")
 
-//            val sectorsWithPlanets = gameStateWithSectors.sectors
-//            for(sectorWithPlanets in sectorsWithPlanets) {
-//                for(planetWithUnits in sectorWithPlanets.planets)  {
-//                    val planet = planetWithUnits.planet
-//                    var teamALoyalty = planetWithUnits.planet.teamALoyalty
-//                    if(teamALoyalty>90) {
-//                        teamALoyalty = 0
-//                    } else {
-//                        teamALoyalty+=10
-//                    }
-//                    gameStateViewModel.updatePlanetLoyalty(planet.id, teamALoyalty)
-//                }
-//            }
-
-            // sectors
+            // *** Update Battles ***
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    val planet = planetWithUnits.planet
+                    // ships
+                    planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
+                    }// ships
+
+                    // units on surface
+                    planetWithUnits.units.forEach { unit ->
+
+                    }
+                }// planets
+            }// sectors
+
+
+            // *** Update Loyalties ***
+            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+                // planets
+                sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    val planet = planetWithUnits.planet
+                }// planets
+            }// sectors
+
+
+            // *** Update Movement ***
+            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+                // planets
+                sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    val planet = planetWithUnits.planet
                     // ships
                     planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
                         val ship = shipWithUnits.ship
                         if(ship.isTraveling && timeDay >= ship.dayArrival ) {
                             gameStateViewModel.endShipJourney(ship.id)
+                            updateEvents.add(ShipArrivalEvent(ship, planet))
                         }
                     }// ships
 
@@ -47,6 +62,7 @@ class GameUpdater {
                 }// planets
             }// sectors
 
+            return updateEvents
         }
     }
 }
