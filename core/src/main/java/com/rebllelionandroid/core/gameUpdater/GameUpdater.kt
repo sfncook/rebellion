@@ -18,7 +18,7 @@ class GameUpdater {
         ): List<UpdateEvent> {
             val updateEvents = mutableListOf<UpdateEvent>()
 
-            val gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
+            var gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
             val timeDay = gameStateWithSectors.gameState.gameTime.plus(1)
             timeDay.let { gameStateViewModel.updateGameTime(gameStateId, it) }
 
@@ -69,6 +69,7 @@ class GameUpdater {
 
 
             // *** Update Loyalties ***
+            gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
@@ -78,6 +79,7 @@ class GameUpdater {
 
 
             // *** Update Movement ***
+            gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
@@ -99,6 +101,7 @@ class GameUpdater {
             }// sectors
 
             // *** Check for conflict flags ***
+            gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
@@ -147,14 +150,17 @@ class GameUpdater {
             while(attackPoints > 0 && shipsToHealthPoints.filterValues { it > 0 }.any()) {
                 val attackedShipWithUnits = defenseShipList.random()
                 val attackedShip = attackedShipWithUnits.ship
-                if (attackPoints > attackedShip.healthPoints) {
-                    attackPoints = attackPoints.minus(attackedShip.healthPoints)
-                    shipsToHealthPoints[attackedShip] = 0
-                } else {
-                    shipsToHealthPoints[attackedShip] = attackedShip.healthPoints - attackPoints
-                    attackPoints = attackPoints.minus(0)
+                val attackedShipHealthPoints = shipsToHealthPoints[attackedShip]
+                if(attackedShipHealthPoints!=null) {
+                    if (attackPoints > attackedShip.healthPoints) {
+                        attackPoints = attackPoints.minus(attackedShip.healthPoints)
+                        shipsToHealthPoints[attackedShip] = 0
+                    } else {
+                        shipsToHealthPoints[attackedShip] = attackedShipHealthPoints - attackPoints
+                        attackPoints = attackPoints.minus(0)
+                    }
+                    updatedShips.add(attackedShip)
                 }
-                updatedShips.add(attackedShip)
             }
 
             updatedShips.forEach { ship ->
