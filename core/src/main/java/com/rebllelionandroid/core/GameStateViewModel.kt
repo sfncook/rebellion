@@ -103,6 +103,7 @@ class GameStateViewModel @Inject constructor(
     fun endShipJourney(shipId: Long) = gameStateRepository.endShipJourney(shipId)
     fun setPlanetInConflict(planetId: Long, inConflict: Boolean) = gameStateRepository.setPlanetInConflict(planetId, inConflict)
     fun setShipDestroyed(shipId: Long, destroyed: Boolean) = gameStateRepository.setShipDestroyed(shipId, destroyed)
+    fun setShipHealthPoints(shipId: Long, healthPoints: Int) = gameStateRepository.setShipHealthPoints(shipId, healthPoints)
     fun deleteAllDestroyedShips() = gameStateRepository.deleteAllDestroyedShips()
 
 
@@ -124,7 +125,7 @@ class GameStateViewModel @Inject constructor(
             while (true) {
                 val updateEvents = GameUpdater.updateGameState(_this, gameStateId)
                 postUpdate(gameStateId)
-                updateEvents.forEach { println(it) }
+                updateEvents.forEach { println(it.getEventMessage()) }
                 delay(1500)
             }
         }
@@ -260,7 +261,8 @@ class GameStateViewModel @Inject constructor(
                             team = teamLoyalty,
                             attackStrength = shipType.attackStrength.toInt(),
                             defenseStrength = shipType.defenseStrength.toInt(),
-                            destroyed = false
+                            destroyed = false,
+                            healthPoints = shipType.defenseStrength.toInt()
                         )
                         gameStateRepository.insertNewShip(ship)
 

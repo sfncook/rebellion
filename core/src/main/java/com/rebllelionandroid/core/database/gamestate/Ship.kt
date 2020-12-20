@@ -23,5 +23,6 @@ data class Ship(
         val team: TeamLoyalty,
         val attackStrength: Int,
         val defenseStrength: Int,
-        val destroyed: Boolean
+        val destroyed: Boolean,
+        val healthPoints: Int
 )

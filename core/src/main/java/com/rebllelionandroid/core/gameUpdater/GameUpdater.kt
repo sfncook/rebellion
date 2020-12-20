@@ -4,6 +4,7 @@ import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.Ship
+import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.core.gameUpdater.events.*
 import kotlin.random.Random
@@ -42,7 +43,7 @@ class GameUpdater {
 
                         applyDamage(
                             _attackPoints = attackPointsTeamA,
-                            attackedShip = teamsToShips[TeamLoyalty.TeamB]?.random()?.ship!!,
+                            defenseShipList = teamsToShips[TeamLoyalty.TeamB] ?: error("Null teamToShips for TeamB"),
                             gameStateViewModel,
                             planet,
                             updateEvents
@@ -50,7 +51,7 @@ class GameUpdater {
 
                         applyDamage(
                             _attackPoints = attackPointsTeamB,
-                            attackedShip = teamsToShips[TeamLoyalty.TeamA]?.random()?.ship!!,
+                            defenseShipList = teamsToShips[TeamLoyalty.TeamA] ?: error("Null teamToShips for TeamA"),
                             gameStateViewModel,
                             planet,
                             updateEvents
@@ -132,26 +133,47 @@ class GameUpdater {
             return updateEvents
         }// updateGameState
 
-        fun applyDamage(
+        private fun applyDamage(
             _attackPoints: Int,
-            attackedShip: Ship,
+            defenseShipList: List<ShipWithUnits>,
             gameStateViewModel: GameStateViewModel,
             planet: Planet,
             updateEvents: MutableList<UpdateEvent>
         ) {
             var attackPoints = _attackPoints
-            while(attackPoints > 0) {
-                if(attackPoints> attackedShip.defenseStrength) {
-                    if(!attackedShip.destroyed) {
-                        gameStateViewModel.setShipDestroyed(
-                            attackedShip.id,
-                            true
+            val updatedShips = mutableSetOf<Ship>()
+            val shipsToHealthPoints =
+                defenseShipList.map { it.ship }.associateBy({ it }, { it.healthPoints }).toMutableMap()
+            while(attackPoints > 0 && shipsToHealthPoints.filterValues { it > 0 }.any()) {
+                val attackedShipWithUnits = defenseShipList.random()
+                val attackedShip = attackedShipWithUnits.ship
+                if (attackPoints > attackedShip.healthPoints) {
+                    attackPoints = attackPoints.minus(attackedShip.healthPoints)
+                    shipsToHealthPoints[attackedShip] = 0
+                } else {
+                    shipsToHealthPoints[attackedShip] = attackedShip.healthPoints - attackPoints
+                    attackPoints = attackPoints.minus(0)
+                }
+                updatedShips.add(attackedShip)
+            }
+
+            updatedShips.forEach { ship ->
+                shipsToHealthPoints[ship]?.let { newHealthPoints ->
+                    run {
+                        if (newHealthPoints <= 0) {
+                            gameStateViewModel.setShipDestroyed(
+                                ship.id,
+                                true
+                            )
+                            updateEvents.add(ShipDestroyedEvent(ship, planet))
+                        }
+                        gameStateViewModel.setShipHealthPoints(
+                            ship.id,
+                            newHealthPoints
                         )
-                        updateEvents.add(ShipDestroyedEvent(attackedShip, planet))
                     }
                 }
-                attackPoints = attackPoints.minus(attackedShip.defenseStrength)
             }
-        }
-    }
+        }// applyDamage
+    }// component
 }

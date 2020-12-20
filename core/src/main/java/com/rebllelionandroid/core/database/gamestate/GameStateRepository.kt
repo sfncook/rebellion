@@ -41,6 +41,7 @@ class GameStateRepository @Inject constructor(
     fun endShipJourney(shipId: Long) = gameStateDao.endShipJourney(shipId)
     fun setPlanetInConflict(planetId: Long, inConflict: Boolean) = gameStateDao.setPlanetInConflict(planetId, inConflict)
     fun setShipDestroyed(shipId: Long, destroyed: Boolean) = gameStateDao.setShipDestroyed(shipId, destroyed)
+    fun setShipHealthPoints(shipId: Long, healthPoints: Int) = gameStateDao.setShipHealthPoints(shipId, healthPoints)
     fun deleteAllDestroyedShips() = gameStateDao.deleteAllDestroyedShips()
 
 }
