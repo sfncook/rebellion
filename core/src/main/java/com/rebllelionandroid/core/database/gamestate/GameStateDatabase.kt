@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import com.rebllelionandroid.core.database.Converters
 import com.rebllelionandroid.core.database.staticTypes.PlanetType
 import com.rebllelionandroid.core.database.staticTypes.SectorType
+import com.rebllelionandroid.core.database.staticTypes.StaticShipType
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesDao
 
 @Database(
@@ -18,7 +19,8 @@ import com.rebllelionandroid.core.database.staticTypes.StaticTypesDao
         Factory::class,
         DefenseStructure::class,
         SectorType::class,
-        PlanetType::class
+        PlanetType::class,
+        StaticShipType::class
     ],
     exportSchema = false,
     version = 4

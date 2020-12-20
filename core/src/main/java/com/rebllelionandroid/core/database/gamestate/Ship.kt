@@ -6,6 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import org.jetbrains.annotations.NotNull
 
 @Entity(
         tableName = "ships",
@@ -19,5 +20,8 @@ data class Ship(
         val shipType: ShipType,
         val isTraveling: Boolean,
         val dayArrival: Long,
-        val team: TeamLoyalty
+        val team: TeamLoyalty,
+        val attackStrength: Int,
+        val defenseStrength: Int,
+        val destroyed: Boolean
 )

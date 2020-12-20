@@ -151,6 +151,8 @@ class GameStateViewModel @Inject constructor(
                 TeamLoyalty.TeamB to ArrayList<Planet>(),
             )
 
+            val allShipTypes = staticTypesRepository.getAllShipTypes()
+
             val allSectorTypes = staticTypesRepository.getAllSectorTypes()
             for (sectorType in allSectorTypes) {
                 val sector = Sector(Random.nextLong(), sectorType.name, gameState.id)
@@ -243,13 +245,17 @@ class GameStateViewModel @Inject constructor(
                     val manyInitShips = 5
                     val manyInitUnitsPerShip = 4
                     for (u in 1..manyInitShips) {
+                        var shipType = allShipTypes.random()
                         val ship = Ship(
                             id = Random.nextLong(),
                             locationPlanetId = planetForTeam.id,
-                            shipType = ShipType.values().random(),
+                            shipType = shipType.shipType,
                             isTraveling = false,
                             dayArrival = 0,
-                            teamLoyalty
+                            team = teamLoyalty,
+                            attackStrength = shipType.attackStrength.toInt(),
+                            defenseStrength = shipType.defenseStrength.toInt(),
+                            destroyed = false
                         )
                         gameStateRepository.insertNewShip(ship)
 
