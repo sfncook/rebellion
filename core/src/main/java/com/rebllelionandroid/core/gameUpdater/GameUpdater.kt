@@ -70,6 +70,27 @@ class GameUpdater {
                 }// planets
             }// sectors
 
+            // *** Check for conflict flags ***
+            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+                // planets
+                sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    val planet = planetWithUnits.planet
+
+                    // ships
+                    val teamsToShips = Utilities.getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
+                    gameStateViewModel.setPlanetInConflict(
+                        planet.id,
+                        teamsToShips[TeamLoyalty.TeamA]?.any { !it.ship.isTraveling } == true &&
+                                teamsToShips[TeamLoyalty.TeamB]?.any { !it.ship.isTraveling } == true
+                    )
+
+                    // units on surface
+                    planetWithUnits.units.forEach { unit ->
+
+                    }
+                }// planets
+            }// sectors
+
             return updateEvents
         }
     }

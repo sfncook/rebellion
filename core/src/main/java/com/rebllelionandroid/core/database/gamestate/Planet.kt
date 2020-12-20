@@ -18,5 +18,6 @@ data class Planet(
         val teamALoyalty: Int,
         val teamBLoyalty: Int,
         val isExplored: Boolean,
-        val energyCap: Int
+        val energyCap: Int,
+        val inConflict: Boolean
 )

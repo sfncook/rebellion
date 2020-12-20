@@ -101,6 +101,7 @@ class GameStateViewModel @Inject constructor(
     fun updateGameTime(gameStateId: Long, gameTime: Int) = gameStateRepository.updateGameTime(gameStateId, gameTime)
     fun updatePlanetLoyalty(planetId:Long, loyalty: Int) = gameStateRepository.updatePlanetLoyalty(planetId, loyalty)
     fun endShipJourney(shipId: Long) = gameStateRepository.endShipJourney(shipId)
+    fun setPlanetInConflict(planetId: Long, inConflict: Boolean) = gameStateRepository.setPlanetInConflict(planetId, inConflict)
 
 
     fun toggleTimer(gameStateId: Long) {
@@ -173,13 +174,14 @@ class GameStateViewModel @Inject constructor(
                         loyaltyMaxTeamB = 50
                     }
                     val planet = Planet(
-                            id = Random.nextLong(),
-                            name = planetType.name,
-                            sectorId = sector.id,
-                            teamALoyalty = Random.nextInt(loyaltyMinTeamA, loyaltyMaxTeamA),
-                            teamBLoyalty = Random.nextInt(loyaltyMinTeamB, loyaltyMaxTeamB),
-                            isExplored = sectorType.initTeamLoyalty == gameState.myTeam,
-                            energyCap = Random.nextInt(10)
+                        id = Random.nextLong(),
+                        name = planetType.name,
+                        sectorId = sector.id,
+                        teamALoyalty = Random.nextInt(loyaltyMinTeamA, loyaltyMaxTeamA),
+                        teamBLoyalty = Random.nextInt(loyaltyMinTeamB, loyaltyMaxTeamB),
+                        isExplored = sectorType.initTeamLoyalty == gameState.myTeam,
+                        energyCap = Random.nextInt(10),
+                        inConflict = false
                     )
                     gameStateRepository.insertNewPlanet(planet)
                     teamsToPlanets[sectorType.initTeamLoyalty]?.add(planet)

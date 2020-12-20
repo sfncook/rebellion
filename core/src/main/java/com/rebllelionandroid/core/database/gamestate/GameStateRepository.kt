@@ -39,5 +39,6 @@ class GameStateRepository @Inject constructor(
     fun moveUnitToPlanet(unitId: Long, planetId: Long) = gameStateDao.moveUnitToPlanet(unitId, planetId)
     fun startShipJourneyToPlanet(shipId: Long, planetId: Long, dayArrival: Int) = gameStateDao.startShipJourneyToPlanet(shipId, planetId, dayArrival)
     fun endShipJourney(shipId: Long) = gameStateDao.endShipJourney(shipId)
+    fun setPlanetInConflict(planetId: Long, inConflict: Boolean) = gameStateDao.setPlanetInConflict(planetId, inConflict)
 
 }

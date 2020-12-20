@@ -95,5 +95,8 @@ interface GameStateDao {
     @Query("UPDATE ships SET dayArrival = 0, isTraveling = 0 WHERE id = :shipId")
     fun endShipJourney(shipId: Long): Int
 
+    @Query("UPDATE planets SET inConflict = :inConflict WHERE id = :planetId")
+    fun setPlanetInConflict(planetId: Long, inConflict: Boolean): Int
+
 
 }
