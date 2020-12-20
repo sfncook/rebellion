@@ -1,4 +1,4 @@
-package com.rebllelionandroid.core.gameUpdater
+package com.rebllelionandroid.core.gameUpdater.events
 
 import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.Ship

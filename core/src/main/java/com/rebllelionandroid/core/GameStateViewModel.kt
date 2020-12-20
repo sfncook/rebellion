@@ -102,6 +102,8 @@ class GameStateViewModel @Inject constructor(
     fun updatePlanetLoyalty(planetId:Long, loyalty: Int) = gameStateRepository.updatePlanetLoyalty(planetId, loyalty)
     fun endShipJourney(shipId: Long) = gameStateRepository.endShipJourney(shipId)
     fun setPlanetInConflict(planetId: Long, inConflict: Boolean) = gameStateRepository.setPlanetInConflict(planetId, inConflict)
+    fun setShipDestroyed(shipId: Long, destroyed: Boolean) = gameStateRepository.setShipDestroyed(shipId, destroyed)
+    fun deleteAllDestroyedShips() = gameStateRepository.deleteAllDestroyedShips()
 
 
     fun toggleTimer(gameStateId: Long) {
@@ -120,8 +122,9 @@ class GameStateViewModel @Inject constructor(
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
-                GameUpdater.updateGameState(_this, gameStateId)
+                val updateEvents = GameUpdater.updateGameState(_this, gameStateId)
                 postUpdate(gameStateId)
+                updateEvents.forEach { println(it) }
                 delay(1500)
             }
         }

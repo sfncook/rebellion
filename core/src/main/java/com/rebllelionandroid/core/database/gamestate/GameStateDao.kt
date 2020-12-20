@@ -98,5 +98,11 @@ interface GameStateDao {
     @Query("UPDATE planets SET inConflict = :inConflict WHERE id = :planetId")
     fun setPlanetInConflict(planetId: Long, inConflict: Boolean): Int
 
+    @Query("UPDATE ships SET destroyed = :destroyed WHERE id = :shipId")
+    fun setShipDestroyed(shipId: Long, destroyed: Boolean): Int
+
+    @Query("DELETE FROM ships WHERE destroyed = 1")
+    fun deleteAllDestroyedShips()
+
 
 }
