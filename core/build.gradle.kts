@@ -14,6 +14,7 @@ dependencies {
     implementation(Dependencies.CORE_KTX)
     implementation(Dependencies.APPCOMPAT)
     implementation(Dependencies.DAGGER)
+    implementation(Dependencies.JUNIT)
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")

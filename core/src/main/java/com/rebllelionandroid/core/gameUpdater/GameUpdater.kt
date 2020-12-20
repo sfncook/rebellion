@@ -27,6 +27,7 @@ class GameUpdater {
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
                     val planet = planetWithUnits.planet
+                    planet.name = "Hello World"
 
                     if(planet.inConflict) {
                         // ships

@@ -12,12 +12,12 @@ import androidx.room.PrimaryKey
                 childColumns = arrayOf("sector_id"),
                 onDelete = ForeignKey.CASCADE)])
 data class Planet(
-        @PrimaryKey val id: Long,
-        @ColumnInfo(name = "name") val name: String,
-        @ColumnInfo(name = "sector_id", index = true) val sectorId: Long,
-        val teamALoyalty: Int,
-        val teamBLoyalty: Int,
-        val isExplored: Boolean,
-        val energyCap: Int,
-        val inConflict: Boolean
+    @PrimaryKey val id: Long,
+    @ColumnInfo(name = "name") var name: String,
+    @ColumnInfo(name = "sector_id", index = true) val sectorId: Long,
+    val teamALoyalty: Int,
+    val teamBLoyalty: Int,
+    val isExplored: Boolean,
+    val energyCap: Int,
+    val inConflict: Boolean
 )
