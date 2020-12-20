@@ -1,6 +1,8 @@
 package com.rebllelionandroid.core.gameUpdater
 
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.Utilities
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class GameUpdater {
 
@@ -20,9 +22,15 @@ class GameUpdater {
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
                     val planet = planetWithUnits.planet
+
                     // ships
-                    planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
-                    }// ships
+                    val teamsToShips = Utilities.getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
+                    if(
+                        teamsToShips[TeamLoyalty.TeamA]?.any { !it.ship.isTraveling } == true &&
+                        teamsToShips[TeamLoyalty.TeamB]?.any { !it.ship.isTraveling } == true
+                    ) {
+                        println("Planet ${planet.name} is in conflict")
+                    }
 
                     // units on surface
                     planetWithUnits.units.forEach { unit ->

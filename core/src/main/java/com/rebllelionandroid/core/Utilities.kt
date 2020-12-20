@@ -2,6 +2,9 @@ package com.rebllelionandroid.core
 
 import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.gamestate.Ship
+import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class Utilities {
     companion object {
@@ -36,6 +39,10 @@ class Utilities {
                 p1.planet.name.compareTo(p2.planet.name)
             })
             return ArrayList(sortedPlanets)
+        }
+
+        fun getTeamsToShipsForList(shipsWithUnits: List<ShipWithUnits>): Map<TeamLoyalty, List<ShipWithUnits>> {
+            return shipsWithUnits.groupBy { it.ship.team }
         }
     }
 }

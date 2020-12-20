@@ -27,13 +27,13 @@ class EnemyShipsListAdapter(private val enemyShipsWithUnits: List<ShipWithUnits>
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val enemyShipWithUnits = enemyShipsWithUnits[position]
         val imgSrc  = when(enemyShipWithUnits.ship.shipType) {
-            ShipType.Biremes -> R.drawable.ship_2
-            ShipType.Triremes -> R.drawable.ship_3
-            ShipType.Quadriremes -> R.drawable.ship_4
-            ShipType.Quinqueremes -> R.drawable.ship_5
-            ShipType.Hexaremes -> R.drawable.ship_6
-            ShipType.Septiremes -> R.drawable.ship_7
-            ShipType.Octeres -> R.drawable.ship_8
+            ShipType.Bireme -> R.drawable.ship_2
+            ShipType.Trireme -> R.drawable.ship_3
+            ShipType.Quadrireme -> R.drawable.ship_4
+            ShipType.Quinquereme -> R.drawable.ship_5
+            ShipType.Hexareme -> R.drawable.ship_6
+            ShipType.Septireme -> R.drawable.ship_7
+            ShipType.Octere -> R.drawable.ship_8
             else -> R.drawable.ship_2
         }
         viewHolder.imgView.setImageResource(imgSrc)

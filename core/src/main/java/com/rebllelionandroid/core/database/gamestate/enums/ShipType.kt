@@ -1,11 +1,11 @@
 package com.rebllelionandroid.core.database.gamestate.enums
 
 enum class ShipType(val value: String) {
-    Biremes("Bireme"),
-    Triremes("Trireme"),
-    Quadriremes("Quadrireme"),
-    Quinqueremes("Quinquereme"),
-    Hexaremes("Hexareme"),
-    Septiremes("Septireme"),
-    Octeres("Octere")
+    Bireme("Bireme"),
+    Trireme("Trireme"),
+    Quadrireme("Quadrireme"),
+    Quinquereme("Quinquereme"),
+    Hexareme("Hexareme"),
+    Septireme("Septireme"),
+    Octere("Octere")
 }
