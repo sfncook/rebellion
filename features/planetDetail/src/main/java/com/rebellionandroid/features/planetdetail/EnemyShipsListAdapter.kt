@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
@@ -15,7 +16,8 @@ class EnemyShipsListAdapter(private val enemyShipsWithUnits: List<ShipWithUnits>
 
     class ViewHolder(view: View)
         : RecyclerView.ViewHolder(view) {
-        val imgView: ImageView = view.findViewById(R.id.img)
+        val imgView: ImageView = view.findViewById(R.id.item_img)
+        val healthPtsText: TextView = view.findViewById(R.id.item_healthpoints)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -37,6 +39,8 @@ class EnemyShipsListAdapter(private val enemyShipsWithUnits: List<ShipWithUnits>
             else -> R.drawable.ship_2
         }
         viewHolder.imgView.setImageResource(imgSrc)
+
+        viewHolder.healthPtsText.text = enemyShipWithUnits.ship.healthPoints.toString()
 
         val enemyColor = when(enemyShipWithUnits.ship.team) {
             TeamLoyalty.TeamA -> R.color.loyalty_team_a

@@ -23,6 +23,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.2.6")
     implementation("com.google.code.gson:gson:2.8.6")
     api("androidx.room:room-runtime:2.2.6")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     kapt(Dependencies.DAGGER_COMPILER)
     kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
     kapt("androidx.room:room-compiler:2.2.0")

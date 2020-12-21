@@ -6,12 +6,35 @@
     android:layout_margin="5dp"
     >
     <ImageView
-        android:id="@+id/img"
+        android:id="@+id/item_img"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/personelle_garrison"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        />
+    <ImageView
+        android:id="@+id/item_healthpoints_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/item_img"
+        app:layout_constraintStart_toStartOf="@+id/item_img"
+        app:layout_constraintTop_toBottomOf="@+id/item_img"
+        android:src="@drawable/heart"
+        app:tint="@android:color/secondary_text_dark"
+        />
+    <TextView
+        android:id="@+id/item_healthpoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/item_healthpoints_icon"
+        app:layout_constraintStart_toStartOf="@+id/item_healthpoints_icon"
+        app:layout_constraintTop_toTopOf="@+id/item_healthpoints_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/item_healthpoints_icon"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
