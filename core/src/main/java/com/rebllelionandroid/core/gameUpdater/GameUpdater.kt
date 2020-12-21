@@ -28,29 +28,31 @@ class GameUpdater {
                     if(planet.inConflict) {
                         // ships
                         val teamsToShips = Utilities.getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
+                        applyDamage(teamsToShips[TeamLoyalty.TeamA]!!, teamsToShips[TeamLoyalty.TeamB]!!)
+                        applyDamage(teamsToShips[TeamLoyalty.TeamB]!!, teamsToShips[TeamLoyalty.TeamA]!!)
 
-                        val atkStrengthTeamA: Int? = teamsToShips[TeamLoyalty.TeamA]?.sumBy { it.ship.attackStrength }
-                        val defStrengthTeamA: Int? = teamsToShips[TeamLoyalty.TeamA]?.sumBy { it.ship.defenseStrength }
-
-                        val atkStrengthTeamB: Int? = teamsToShips[TeamLoyalty.TeamB]?.sumBy { it.ship.attackStrength }
-                        val defStrengthTeamB: Int? = teamsToShips[TeamLoyalty.TeamB]?.sumBy { it.ship.defenseStrength }
-
-                        val attackPointsTeamA: Int = Random.nextInt(0, atkStrengthTeamA!!) - defStrengthTeamB!!
-                        val attackPointsTeamB: Int = Random.nextInt(0, atkStrengthTeamB!!) - defStrengthTeamA!!
-
-                        applyDamage(
-                            _attackPoints = attackPointsTeamA,
-                            defenseShipList = teamsToShips[TeamLoyalty.TeamB] ?: error("Null teamToShips for TeamB"),
-                            planet,
-                            updateEvents
-                        )
-
-                        applyDamage(
-                            _attackPoints = attackPointsTeamB,
-                            defenseShipList = teamsToShips[TeamLoyalty.TeamA] ?: error("Null teamToShips for TeamA"),
-                            planet,
-                            updateEvents
-                        )
+//                        val atkStrengthTeamA: Int? = teamsToShips[TeamLoyalty.TeamA]?.sumBy { it.ship.attackStrength }
+//                        val defStrengthTeamA: Int? = teamsToShips[TeamLoyalty.TeamA]?.sumBy { it.ship.defenseStrength }
+//
+//                        val atkStrengthTeamB: Int? = teamsToShips[TeamLoyalty.TeamB]?.sumBy { it.ship.attackStrength }
+//                        val defStrengthTeamB: Int? = teamsToShips[TeamLoyalty.TeamB]?.sumBy { it.ship.defenseStrength }
+//
+//                        val attackPointsTeamA: Int = Random.nextInt(0, atkStrengthTeamA!!) - defStrengthTeamB!!
+//                        val attackPointsTeamB: Int = Random.nextInt(0, atkStrengthTeamB!!) - defStrengthTeamA!!
+//
+//                        applyDamage(
+//                            _attackPoints = attackPointsTeamA,
+//                            defenseShipList = teamsToShips[TeamLoyalty.TeamB] ?: error("Null teamToShips for TeamB"),
+//                            planet,
+//                            updateEvents
+//                        )
+//
+//                        applyDamage(
+//                            _attackPoints = attackPointsTeamB,
+//                            defenseShipList = teamsToShips[TeamLoyalty.TeamA] ?: error("Null teamToShips for TeamA"),
+//                            planet,
+//                            updateEvents
+//                        )
 
 
 
@@ -128,6 +130,22 @@ class GameUpdater {
 
             return Pair(gameStateWithSectors, updateEvents)
         }// updateGameState
+
+        private fun applyDamage(
+            offensiveShips: List<ShipWithUnits>,
+            defensiveShips: List<ShipWithUnits>
+        ) {
+            offensiveShips.forEach { shipWithUnits ->
+                val ofShip = shipWithUnits.ship
+                if(Random.nextBoolean()) {
+                    val defShipWithUnits = defensiveShips.random()
+                    val defShip = defShipWithUnits.ship
+                    val attackPoints = Random.nextInt(1, ofShip.attackStrength)
+                    defShip.healthPoints = defShip.healthPoints - attackPoints
+                    defShip.healthPoints.coerceAtLeast(0)
+                }
+            }
+        }
 
         private fun applyDamage(
             _attackPoints: Int,
