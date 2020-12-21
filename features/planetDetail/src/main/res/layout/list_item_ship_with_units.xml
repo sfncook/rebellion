@@ -21,6 +21,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/ship_with_units_healthpoints_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toEndOf="@+id/ship_with_units_label"
+        app:layout_constraintTop_toTopOf="@+id/ship_with_units_label"
+        app:layout_constraintBottom_toBottomOf="@+id/ship_with_units_label"
+        android:src="@drawable/heart"
+        app:tint="@android:color/secondary_text_dark"
+        />
+    <TextView
+        android:id="@+id/ship_with_units_healthpoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="00"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/ship_with_units_healthpoints_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/ship_with_units_healthpoints_icon"
+        app:layout_constraintTop_toTopOf="@+id/ship_with_units_healthpoints_icon"
+        app:layout_constraintEnd_toEndOf="@+id/ship_with_units_healthpoints_icon"
+        />
+
     <TextView
         android:id="@+id/ship_with_units_eta_label"
         android:layout_width="wrap_content"

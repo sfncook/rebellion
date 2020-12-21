@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,6 +35,7 @@ class PlanetUnitsFragment : Fragment() {
     private lateinit var textLoyaltyPercTeamA: TextView
     private lateinit var textLoyaltyPercTeamB: TextView
     private lateinit var planetLoyaltyImg: ImageView
+    private lateinit var inConflictText: TextView
     private lateinit var listUnitsOnPlanetSurface: RecyclerView
     private lateinit var listShipsWithUnits: RecyclerView
     private lateinit var listEnemyShips: RecyclerView
@@ -54,6 +57,7 @@ class PlanetUnitsFragment : Fragment() {
         textLoyaltyPercTeamA = root.findViewById(R.id.units_text_loyalty_perc_team_a)
         textLoyaltyPercTeamB = root.findViewById(R.id.units_text_loyalty_perc_team_b)
         planetLoyaltyImg = root.findViewById(R.id.units_planet_loyalty)
+        inConflictText = root.findViewById(R.id.units_inconflict_text)
         listUnitsOnPlanetSurface = root.findViewById(R.id.list_units_on_planet_surface)
         listShipsWithUnits = root.findViewById(R.id.list_ships_with_units)
         listEnemyShips = root.findViewById(R.id.list_enemy_ships)
@@ -78,6 +82,7 @@ class PlanetUnitsFragment : Fragment() {
 
                     textLoyaltyPercTeamA.text = "${planet.teamALoyalty.toString()}%"
                     textLoyaltyPercTeamB.text = "${planet.teamBLoyalty.toString()}%"
+                    inConflictText.visibility = if(planet.inConflict) VISIBLE else GONE
                     val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
                     planetLoyaltyImg.setImageResource(imgId)
                     planetLoyaltyImg.setColorFilter(

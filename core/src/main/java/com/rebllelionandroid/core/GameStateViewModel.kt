@@ -141,10 +141,16 @@ class GameStateViewModel @Inject constructor(
         gameStateRepository.update(gameStateWithSectors.gameState)
         gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
             sectorWithPlanets.planets.forEach { planetWithUnits ->
-                if(planetWithUnits.planet.updated) gameStateRepository.update(planetWithUnits.planet)
+                if(planetWithUnits.planet.updated) {
+                    planetWithUnits.planet.updated = false
+                    gameStateRepository.update(planetWithUnits.planet)
+                }
                 planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
                     if(shipWithUnits.ship.destroyed) gameStateRepository.delete(shipWithUnits.ship)
-                    else if(shipWithUnits.ship.updated) gameStateRepository.update(shipWithUnits.ship)
+                    else if(shipWithUnits.ship.updated) {
+                        shipWithUnits.ship.updated = false
+                        gameStateRepository.update(shipWithUnits.ship)
+                    }
                 }
             }
         }
