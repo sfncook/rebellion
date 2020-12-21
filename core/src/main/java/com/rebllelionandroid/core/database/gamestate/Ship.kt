@@ -1,9 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import org.jetbrains.annotations.NotNull
@@ -15,14 +12,17 @@ import org.jetbrains.annotations.NotNull
                 childColumns = arrayOf("planet_id"),
                 onDelete = ForeignKey.CASCADE)])
 data class Ship(
-        @PrimaryKey val id: Long,
-        @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long,
-        val shipType: ShipType,
-        val isTraveling: Boolean,
-        val dayArrival: Long,
-        val team: TeamLoyalty,
-        val attackStrength: Int,
-        val defenseStrength: Int,
-        val destroyed: Boolean,
-        val healthPoints: Int
+        @PrimaryKey var id: Long = 0,
+        var shipType: ShipType = ShipType.Bireme,
+        var team: TeamLoyalty = TeamLoyalty.Neutral,
+        var attackStrength: Int = 0,
+        var defenseStrength: Int = 0,
+
+        @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long = 0,
+        var isTraveling: Boolean = false,
+        var dayArrival: Long = 0,
+        var destroyed: Boolean = false,
+        var healthPoints: Int = 0,
+
+        @Ignore var updated: Boolean = false
 )

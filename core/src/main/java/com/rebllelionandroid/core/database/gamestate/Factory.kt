@@ -1,10 +1,7 @@
 package com.rebllelionandroid.core.database.gamestate
 
 import androidx.annotation.Nullable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 
@@ -18,11 +15,14 @@ import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
         ]
 )
 data class Factory(
-        @PrimaryKey val id: Long,
-        val factoryType: FactoryType,
-        @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long,
-        val buildTargetType: FactoryBuildTargetType?,
-        val dayBuildComplete: Long,
-        val isTravelling: Boolean, // Travelling for delivery
-        val dayArrival: Long
+        @PrimaryKey var id: Long = 0,
+        var factoryType: FactoryType = FactoryType.TrainingFaciliy,
+        @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long = 0,
+
+        var buildTargetType: FactoryBuildTargetType? = FactoryBuildTargetType.ConstructionYard,
+        var dayBuildComplete: Long = 0,
+        var isTravelling: Boolean = false, // Travelling for delivery
+        var dayArrival: Long = 0,
+
+        @Ignore var updated: Boolean = false
 )

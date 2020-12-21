@@ -1,10 +1,7 @@
 package com.rebllelionandroid.core.database.gamestate
 
 import androidx.annotation.Nullable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.rebllelionandroid.core.database.gamestate.enums.Mission
 import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
@@ -24,13 +21,16 @@ import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
         ]
 )
 data class Unit(
-        @PrimaryKey val id: Long,
-        val unitType: UnitType,
-        @Nullable @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long?,
-        @Nullable @ColumnInfo(name = "ship_id", index = true) val locationShip: Long?,
-        @Nullable val mission: Mission?,
-        val dayMissionComplete: Long,
-        @Nullable val missionTargetType: MissionTargetType?,
-        @Nullable val missionTargetId: Long?,
-        val team: TeamLoyalty
+        @PrimaryKey var id: Long = 0,
+        var unitType: UnitType = UnitType.Garrison,
+        var team: TeamLoyalty = TeamLoyalty.Neutral,
+
+        @Nullable @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long? = 0,
+        @Nullable @ColumnInfo(name = "ship_id", index = true) var locationShip: Long? = 0,
+        @Nullable var mission: Mission? = Mission.Assassination,
+        var dayMissionComplete: Long = 0,
+        @Nullable var missionTargetType: MissionTargetType? = MissionTargetType.Factory,
+        @Nullable var missionTargetId: Long? = 0,
+
+        @Ignore var updated: Boolean = false
 )

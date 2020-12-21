@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Ignore
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 @Entity(
         tableName = "planets",
@@ -12,12 +14,15 @@ import androidx.room.PrimaryKey
                 childColumns = arrayOf("sector_id"),
                 onDelete = ForeignKey.CASCADE)])
 data class Planet(
-    @PrimaryKey val id: Long,
-    @ColumnInfo(name = "name") var name: String,
-    @ColumnInfo(name = "sector_id", index = true) val sectorId: Long,
-    val teamALoyalty: Int,
-    val teamBLoyalty: Int,
-    val isExplored: Boolean,
-    val energyCap: Int,
-    val inConflict: Boolean
+    @PrimaryKey var id: Long = 0,
+    @ColumnInfo(name = "name") var name: String = "",
+    @ColumnInfo(name = "sector_id", index = true) var sectorId: Long = 0,
+    var teamALoyalty: Int = 0,
+    var teamBLoyalty: Int = 0,
+
+    var isExplored: Boolean = false,
+    var energyCap: Int = 0,
+    var inConflict: Boolean = false,
+
+    @Ignore var updated: Boolean = false
 )

@@ -185,7 +185,8 @@ class GameStateViewModel @Inject constructor(
                         teamBLoyalty = Random.nextInt(loyaltyMinTeamB, loyaltyMaxTeamB),
                         isExplored = sectorType.initTeamLoyalty == gameState.myTeam,
                         energyCap = Random.nextInt(10),
-                        inConflict = false
+                        inConflict = false,
+                        updated = false
                     )
                     gameStateRepository.insertNewPlanet(planet)
                     teamsToPlanets[sectorType.initTeamLoyalty]?.add(planet)
@@ -276,7 +277,8 @@ class GameStateViewModel @Inject constructor(
                                 dayMissionComplete = 0,
                                 missionTargetType = null,
                                 missionTargetId = null,
-                                teamLoyalty
+                                team = teamLoyalty,
+                                updated = false
                             )
                             gameStateRepository.insertNewUnit(unit)
                         }
