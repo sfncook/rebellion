@@ -2,6 +2,7 @@ package com.rebllelionandroid.core.gameUpdater
 
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
+import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.Ship
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
@@ -12,17 +13,11 @@ import kotlin.random.Random
 class GameUpdater {
 
     companion object {
-        fun updateGameState(
-            gameStateViewModel: GameStateViewModel,
-            gameStateId: Long
-        ): List<UpdateEvent> {
+        fun updateGameState(gameStateWithSectors: GameStateWithSectors): List<UpdateEvent> {
             val updateEvents = mutableListOf<UpdateEvent>()
 
-            var gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
-            var gameStateWithSectors2 = gameStateWithSectors.deepCopy()
-
-            val timeDay = gameStateWithSectors.gameState.gameTime.plus(1)
-            timeDay.let { gameStateViewModel.updateGameTime(gameStateId, it) }
+            gameStateWithSectors.gameState.gameTime = gameStateWithSectors.gameState.gameTime.plus(1)
+            val timeDay = gameStateWithSectors.gameState.gameTime
 
             // *** Update Conflict Results ***
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
@@ -46,7 +41,6 @@ class GameUpdater {
                         applyDamage(
                             _attackPoints = attackPointsTeamA,
                             defenseShipList = teamsToShips[TeamLoyalty.TeamB] ?: error("Null teamToShips for TeamB"),
-                            gameStateViewModel,
                             planet,
                             updateEvents
                         )
@@ -54,7 +48,6 @@ class GameUpdater {
                         applyDamage(
                             _attackPoints = attackPointsTeamB,
                             defenseShipList = teamsToShips[TeamLoyalty.TeamA] ?: error("Null teamToShips for TeamA"),
-                            gameStateViewModel,
                             planet,
                             updateEvents
                         )
@@ -71,7 +64,6 @@ class GameUpdater {
 
 
             // *** Update Loyalties ***
-            gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
@@ -81,7 +73,6 @@ class GameUpdater {
 
 
             // *** Update Movement ***
-            gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
@@ -90,7 +81,9 @@ class GameUpdater {
                     planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
                         val ship = shipWithUnits.ship
                         if(ship.isTraveling && timeDay >= ship.dayArrival ) {
-                            gameStateViewModel.endShipJourney(ship.id)
+                            ship.isTraveling = false
+                            ship.dayArrival = 0
+                            ship.updated = true
                             updateEvents.add(ShipArrivalEvent(ship, planet))
                         }
                     }// ships
@@ -103,7 +96,6 @@ class GameUpdater {
             }// sectors
 
             // *** Check for conflict flags ***
-            gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(gameStateId)
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
@@ -115,14 +107,16 @@ class GameUpdater {
                         teamsToShips[TeamLoyalty.TeamA]?.any { !it.ship.isTraveling && !it.ship.destroyed } == true &&
                         teamsToShips[TeamLoyalty.TeamB]?.any { !it.ship.isTraveling && !it.ship.destroyed } == true
                     ) {
-                        gameStateViewModel.setPlanetInConflict(planet.id, true)
+                        planet.inConflict = true
+                        planet.updated = true
                         if(!planet.inConflict) {
                             updateEvents.add(PlanetConflictStartsEvent(planet))
                         } else {
                             updateEvents.add(PlanetConflictContinuesEvent(planet))
                         }
                     } else {
-                        gameStateViewModel.setPlanetInConflict(planet.id, false)
+                        planet.inConflict = false
+                        planet.updated = true
                     }
 
                     // units on surface
@@ -133,7 +127,7 @@ class GameUpdater {
             }// sectors
 
             // Cleanup
-            gameStateViewModel.deleteAllDestroyedShips()
+//            gameStateViewModel.deleteAllDestroyedShips()
 
             return updateEvents
         }// updateGameState
@@ -141,7 +135,6 @@ class GameUpdater {
         private fun applyDamage(
             _attackPoints: Int,
             defenseShipList: List<ShipWithUnits>,
-            gameStateViewModel: GameStateViewModel,
             planet: Planet,
             updateEvents: MutableList<UpdateEvent>
         ) {
@@ -169,16 +162,11 @@ class GameUpdater {
                 shipsToHealthPoints[ship]?.let { newHealthPoints ->
                     run {
                         if (newHealthPoints <= 0) {
-                            gameStateViewModel.setShipDestroyed(
-                                ship.id,
-                                true
-                            )
+                            ship.destroyed = true
                             updateEvents.add(ShipDestroyedEvent(ship, planet))
                         }
-                        gameStateViewModel.setShipHealthPoints(
-                            ship.id,
-                            newHealthPoints
-                        )
+                        ship.healthPoints = newHealthPoints
+                        ship.updated = true
                     }
                 }
             }

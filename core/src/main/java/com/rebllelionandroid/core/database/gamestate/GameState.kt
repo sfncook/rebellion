@@ -8,9 +8,9 @@ import java.util.*
 
 @Entity(tableName = "game_state")
 data class GameState(
-    @PrimaryKey val id: Long,
-    @ColumnInfo(name = "gameInProgress") val gameInProgress: Boolean,
-    @ColumnInfo(name = "gameTime") val gameTime: Int,
-    val myTeam: TeamLoyalty,
-    val gameStartedTime: Date
+    @PrimaryKey var id: Long,
+    @ColumnInfo(name = "gameInProgress") var gameInProgress: Boolean,
+    @ColumnInfo(name = "gameTime") var gameTime: Int,
+    var myTeam: TeamLoyalty,
+    var gameStartedTime: Date
 )

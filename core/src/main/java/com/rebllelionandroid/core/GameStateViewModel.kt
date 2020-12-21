@@ -119,11 +119,11 @@ class GameStateViewModel @Inject constructor(
     }
 
     fun startTimer(gameStateId: Long) {
-        val _this = this
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
-                val updateEvents = GameUpdater.updateGameState(_this, gameStateId)
+                val gameStateWithSectors = getGameStateWithSectors(gameStateId)
+                val updateEvents = GameUpdater.updateGameState(gameStateWithSectors.deepCopy())
                 postUpdate(gameStateId)
                 updateEvents.forEach { println(it.getEventMessage()) }
                 delay(1500)
