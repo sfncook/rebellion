@@ -29,19 +29,9 @@ class GameStateRepository @Inject constructor(
 
 
     // Updates
-    fun updateGameTime(gameStateId: Long, gameTime: Int) = gameStateDao.updateGameTime(gameStateId, gameTime)
     fun setGameInProgress(gameStateId: Long, gameInProgress: Int) = gameStateDao.setGameInProgress(gameStateId, gameInProgress)
-    fun updatePlanetLoyalty(planetId:Long, loyalty: Int): Int {
-        return gameStateDao.updatePlanetLoyalty(planetId, loyalty)
-    }
-
     fun moveUnitToShip(unitId: Long, shipId: Long) = gameStateDao.moveUnitToShip(unitId, shipId)
     fun moveUnitToPlanet(unitId: Long, planetId: Long) = gameStateDao.moveUnitToPlanet(unitId, planetId)
     fun startShipJourneyToPlanet(shipId: Long, planetId: Long, dayArrival: Int) = gameStateDao.startShipJourneyToPlanet(shipId, planetId, dayArrival)
-    fun endShipJourney(shipId: Long) = gameStateDao.endShipJourney(shipId)
-    fun setPlanetInConflict(planetId: Long, inConflict: Boolean) = gameStateDao.setPlanetInConflict(planetId, inConflict)
-    fun setShipDestroyed(shipId: Long, destroyed: Boolean) = gameStateDao.setShipDestroyed(shipId, destroyed)
-    fun setShipHealthPoints(shipId: Long, healthPoints: Int) = gameStateDao.setShipHealthPoints(shipId, healthPoints)
-    fun deleteAllDestroyedShips() = gameStateDao.deleteAllDestroyedShips()
 
 }

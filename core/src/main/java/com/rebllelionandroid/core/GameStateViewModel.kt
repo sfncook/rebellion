@@ -8,7 +8,6 @@ import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.gamestate.enums.DefenseStructureType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
-import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
@@ -96,15 +95,6 @@ class GameStateViewModel @Inject constructor(
             postUpdate(gameStateId)
         }
     }
-
-    // Thin updates to be executed on background thread and update posted afterware
-    fun updateGameTime(gameStateId: Long, gameTime: Int) = gameStateRepository.updateGameTime(gameStateId, gameTime)
-    fun updatePlanetLoyalty(planetId:Long, loyalty: Int) = gameStateRepository.updatePlanetLoyalty(planetId, loyalty)
-    fun endShipJourney(shipId: Long) = gameStateRepository.endShipJourney(shipId)
-    fun setPlanetInConflict(planetId: Long, inConflict: Boolean) = gameStateRepository.setPlanetInConflict(planetId, inConflict)
-    fun setShipDestroyed(shipId: Long, destroyed: Boolean) = gameStateRepository.setShipDestroyed(shipId, destroyed)
-    fun setShipHealthPoints(shipId: Long, healthPoints: Int) = gameStateRepository.setShipHealthPoints(shipId, healthPoints)
-    fun deleteAllDestroyedShips() = gameStateRepository.deleteAllDestroyedShips()
 
 
     fun toggleTimer(gameStateId: Long) {

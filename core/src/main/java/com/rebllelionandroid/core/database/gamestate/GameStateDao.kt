@@ -1,6 +1,5 @@
 package com.rebllelionandroid.core.database.gamestate
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 /**
@@ -39,7 +38,6 @@ interface GameStateDao {
     @Query("SELECT * FROM sectors WHERE game_state_id = :gameStateId")
     fun getAllSectorsForGameStateId(gameStateId: Long): List<Sector>
 
-
     @Query("SELECT * FROM planets")
     fun getAllPlanets(): List<Planet>
 
@@ -71,9 +69,6 @@ interface GameStateDao {
 
 
     // Updates
-    @Query("UPDATE game_state SET gameTime = :gameTime WHERE id = :id")
-    fun updateGameTime(id: Long, gameTime: Int): Int
-
     @Query("UPDATE game_state SET gameInProgress = :gameInProgress WHERE id = :id")
     fun setGameInProgress(id: Long, gameInProgress: Int): Int
 
@@ -91,21 +86,5 @@ interface GameStateDao {
 
     @Query("UPDATE ships SET planet_id = :planetId, dayArrival = :dayArrival, isTraveling = 1 WHERE id = :shipId")
     fun startShipJourneyToPlanet(shipId: Long, planetId: Long, dayArrival: Int): Int
-
-    @Query("UPDATE ships SET dayArrival = 0, isTraveling = 0 WHERE id = :shipId")
-    fun endShipJourney(shipId: Long): Int
-
-    @Query("UPDATE planets SET inConflict = :inConflict WHERE id = :planetId")
-    fun setPlanetInConflict(planetId: Long, inConflict: Boolean): Int
-
-    @Query("UPDATE ships SET destroyed = :destroyed WHERE id = :shipId")
-    fun setShipDestroyed(shipId: Long, destroyed: Boolean): Int
-
-    @Query("UPDATE ships SET healthPoints = :healthPoints WHERE id = :shipId")
-    fun setShipHealthPoints(shipId: Long, healthPoints: Int): Int
-
-    @Query("DELETE FROM ships WHERE destroyed = 1")
-    fun deleteAllDestroyedShips()
-
 
 }
