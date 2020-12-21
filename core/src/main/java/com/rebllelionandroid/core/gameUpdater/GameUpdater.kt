@@ -13,7 +13,7 @@ import kotlin.random.Random
 class GameUpdater {
 
     companion object {
-        fun updateGameState(gameStateWithSectors: GameStateWithSectors): List<UpdateEvent> {
+        fun updateGameState(gameStateWithSectors: GameStateWithSectors): Pair<GameStateWithSectors, List<UpdateEvent>> {
             val updateEvents = mutableListOf<UpdateEvent>()
 
             gameStateWithSectors.gameState.gameTime = gameStateWithSectors.gameState.gameTime.plus(1)
@@ -126,10 +126,7 @@ class GameUpdater {
                 }// planets
             }// sectors
 
-            // Cleanup
-//            gameStateViewModel.deleteAllDestroyedShips()
-
-            return updateEvents
+            return Pair(gameStateWithSectors, updateEvents)
         }// updateGameState
 
         private fun applyDamage(

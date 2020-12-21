@@ -108,12 +108,13 @@ class GameStateViewModel @Inject constructor(
         }
     }
 
-    fun startTimer(gameStateId: Long) {
+    private fun startTimer(gameStateId: Long) {
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
                 val gameStateWithSectors = getGameStateWithSectors(gameStateId)
-                val updateEvents = GameUpdater.updateGameState(gameStateWithSectors.deepCopy())
+                val (newGameStateWithSectors, updateEvents) = GameUpdater.updateGameState(gameStateWithSectors.deepCopy())
+                deepUpdateGameState(newGameStateWithSectors)
                 postUpdate(gameStateId)
                 updateEvents.forEach { println(it.getEventMessage()) }
                 delay(1500)
@@ -121,7 +122,7 @@ class GameStateViewModel @Inject constructor(
         }
     }
 
-    fun stopTimer(gameStateId: Long) {
+    private fun stopTimer(gameStateId: Long) {
         if(this::timerJob.isInitialized) {
             timerJob.cancel()
         }
@@ -134,6 +135,19 @@ class GameStateViewModel @Inject constructor(
     private fun postUpdate(gameStateId: Long) {
         val newGameStateWithSectors = gameStateRepository.getGameStateWithSectors(gameStateId)
         _gameState.postValue(newGameStateWithSectors)
+    }
+
+    private fun deepUpdateGameState(gameStateWithSectors: GameStateWithSectors) {
+        gameStateRepository.update(gameStateWithSectors.gameState)
+        gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+            sectorWithPlanets.planets.forEach { planetWithUnits ->
+                if(planetWithUnits.planet.updated) gameStateRepository.update(planetWithUnits.planet)
+                planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
+                    if(shipWithUnits.ship.destroyed) gameStateRepository.delete(shipWithUnits.ship)
+                    else if(shipWithUnits.ship.updated) gameStateRepository.update(shipWithUnits.ship)
+                }
+            }
+        }
     }
 
     fun createNewGameState(callback: () -> kotlin.Unit) {
