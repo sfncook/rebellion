@@ -31,31 +31,6 @@ class GameUpdater {
                         applyDamage(teamsToShips[TeamLoyalty.TeamA]!!, teamsToShips[TeamLoyalty.TeamB]!!)
                         applyDamage(teamsToShips[TeamLoyalty.TeamB]!!, teamsToShips[TeamLoyalty.TeamA]!!)
 
-//                        val atkStrengthTeamA: Int? = teamsToShips[TeamLoyalty.TeamA]?.sumBy { it.ship.attackStrength }
-//                        val defStrengthTeamA: Int? = teamsToShips[TeamLoyalty.TeamA]?.sumBy { it.ship.defenseStrength }
-//
-//                        val atkStrengthTeamB: Int? = teamsToShips[TeamLoyalty.TeamB]?.sumBy { it.ship.attackStrength }
-//                        val defStrengthTeamB: Int? = teamsToShips[TeamLoyalty.TeamB]?.sumBy { it.ship.defenseStrength }
-//
-//                        val attackPointsTeamA: Int = Random.nextInt(0, atkStrengthTeamA!!) - defStrengthTeamB!!
-//                        val attackPointsTeamB: Int = Random.nextInt(0, atkStrengthTeamB!!) - defStrengthTeamA!!
-//
-//                        applyDamage(
-//                            _attackPoints = attackPointsTeamA,
-//                            defenseShipList = teamsToShips[TeamLoyalty.TeamB] ?: error("Null teamToShips for TeamB"),
-//                            planet,
-//                            updateEvents
-//                        )
-//
-//                        applyDamage(
-//                            _attackPoints = attackPointsTeamB,
-//                            defenseShipList = teamsToShips[TeamLoyalty.TeamA] ?: error("Null teamToShips for TeamA"),
-//                            planet,
-//                            updateEvents
-//                        )
-
-
-
                         // units on surface
                         planetWithUnits.units.forEach { unit ->
 
@@ -148,45 +123,5 @@ class GameUpdater {
                 }
             }
         }
-
-        private fun applyDamage(
-            _attackPoints: Int,
-            defenseShipList: List<ShipWithUnits>,
-            planet: Planet,
-            updateEvents: MutableList<UpdateEvent>
-        ) {
-            var attackPoints = _attackPoints
-            val updatedShips = mutableSetOf<Ship>()
-            val shipsToHealthPoints =
-                defenseShipList.map { it.ship }.associateBy({ it }, { it.healthPoints }).toMutableMap()
-            while(attackPoints > 0 && shipsToHealthPoints.filterValues { it > 0 }.any()) {
-                val attackedShipWithUnits = defenseShipList.random()
-                val attackedShip = attackedShipWithUnits.ship
-                val attackedShipHealthPoints = shipsToHealthPoints[attackedShip]
-                if(attackedShipHealthPoints!=null) {
-                    if (attackPoints > attackedShip.healthPoints) {
-                        attackPoints = attackPoints.minus(attackedShip.healthPoints)
-                        shipsToHealthPoints[attackedShip] = 0
-                    } else {
-                        shipsToHealthPoints[attackedShip] = attackedShipHealthPoints - attackPoints
-                        attackPoints = attackPoints.minus(0)
-                    }
-                    updatedShips.add(attackedShip)
-                }
-            }
-
-            updatedShips.forEach { ship ->
-                shipsToHealthPoints[ship]?.let { newHealthPoints ->
-                    run {
-                        if (newHealthPoints <= 0) {
-                            ship.destroyed = true
-                            updateEvents.add(ShipDestroyedEvent(ship, planet))
-                        }
-                        ship.healthPoints = newHealthPoints
-                        ship.updated = true
-                    }
-                }
-            }
-        }// applyDamage
     }// component
 }
