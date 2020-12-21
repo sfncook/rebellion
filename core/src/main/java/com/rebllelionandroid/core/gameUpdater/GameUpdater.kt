@@ -143,7 +143,8 @@ class GameUpdater {
                     val attackPoints = Random.nextInt(1, ofShip.attackStrength)
                     defShip.healthPoints = defShip.healthPoints - attackPoints
                     println("Ship takes damage: ${defShip.team} damage:${attackPoints} healthPoints:${defShip.healthPoints}")
-                    defShip.healthPoints.coerceAtLeast(0)
+                    if(defShip.healthPoints<=0) defShip.destroyed = true
+                    defShip.updated = true
                 }
             }
         }
