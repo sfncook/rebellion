@@ -1,11 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-import androidx.room.Ignore
-import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import androidx.room.*
 
 @Entity(
         tableName = "planets",

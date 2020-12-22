@@ -1,13 +1,13 @@
 package com.rebllelionandroid.core.gameUpdater
 
-import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
-import com.rebllelionandroid.core.database.gamestate.Planet
-import com.rebllelionandroid.core.database.gamestate.Ship
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
-import com.rebllelionandroid.core.gameUpdater.events.*
+import com.rebllelionandroid.core.gameUpdater.events.PlanetConflictContinuesEvent
+import com.rebllelionandroid.core.gameUpdater.events.PlanetConflictStartsEvent
+import com.rebllelionandroid.core.gameUpdater.events.ShipArrivalEvent
+import com.rebllelionandroid.core.gameUpdater.events.UpdateEvent
 import kotlin.random.Random
 
 class GameUpdater {
@@ -45,6 +45,11 @@ class GameUpdater {
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
                     val planet = planetWithUnits.planet
+
+                    val uprisingRank = UprisingEval.getUprisingRank(
+                        planet.teamALoyalty,
+                        planetWithUnits.units.size
+                    )
                 }// planets
             }// sectors
 
