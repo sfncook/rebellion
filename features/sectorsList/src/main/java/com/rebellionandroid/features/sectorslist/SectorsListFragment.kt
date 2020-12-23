@@ -30,22 +30,23 @@ class SectorsListFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_sectors_list, container, false)
-
-        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Galactic Detail"
-        (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "All galactic sectors"
-
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         gameStateWithSectors = gameStateViewModel.gameState
+        return inflater.inflate(R.layout.fragment_sectors_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         gameStateWithSectors.observe(viewLifecycleOwner , {
             updateSectorsList(it)
         })
-
-        return root
     }
 
     override fun onResume() {
         super.onResume()
+
+        (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Galactic Detail"
+        (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "All galactic sectors"
 
         val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
         val keyCurrentGameId = getString(R.string.keyCurrentGameId)

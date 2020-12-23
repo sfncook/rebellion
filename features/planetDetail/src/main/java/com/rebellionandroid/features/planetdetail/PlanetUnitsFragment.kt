@@ -68,25 +68,56 @@ class PlanetUnitsFragment : Fragment() {
         manyEnemyUnitsGarisonTxt = root.findViewById(R.id.many_enemy_units_garison_on_planet)
 
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-        val gameStateWithSectors = gameStateViewModel.gameState
-        gameStateWithSectors.observe(viewLifecycleOwner , { gameStateWithSectors ->
+
+        val dragListen = View.OnDragListener { v, event ->
+            when (event.action) {
+                DragEvent.ACTION_DRAG_ENTERED -> {
+                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(Color.GREEN)
+                    v.invalidate()
+                    true
+                }
+                DragEvent.ACTION_DRAG_EXITED -> {
+                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(
+                        ContextCompat.getColor(v.context, R.color.list_item_bg)
+                    )
+                    v.invalidate()
+                    true
+                }
+                DragEvent.ACTION_DROP -> {
+                    val item: ClipData.Item = event.clipData.getItemAt(0)
+                    val dragData = item.text
+                    gameStateViewModel.moveUnitToPlanet(dragData.toString().toLong(), selectedPlanetId, currentGameStateId)
+                    true
+                }
+                DragEvent.ACTION_DRAG_ENDED -> {
+                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(
+                        ContextCompat.getColor(v.context, R.color.list_item_bg)
+                    )
+                    v.invalidate()
+                    true
+                }
+                else -> true
+            }
+        }
+        listUnitsOnPlanetSurface.setOnDragListener(dragListen)
+
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
             val myTeam = gameStateWithSectors.gameState.myTeam
             gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
                 val planet = planetWithUnits.planet
                 viewLifecycleOwner.lifecycleScope.launch {
-                    val planetName = planet.name
-                    val selectedSectorWithPlanets = gameStateWithSectors.sectors.find { sectorWithPlanets -> sectorWithPlanets.sector.id == planet.sectorId}
-                    val sectorName = selectedSectorWithPlanets?.sector?.name
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Planet: $planetName"
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "Sector: $sectorName"
-
                     textLoyaltyPercTeamA.text = "${planet.teamALoyalty.toString()}%"
                     textLoyaltyPercTeamB.text = "${planet.teamBLoyalty.toString()}%"
                     inConflictText.visibility = if(planet.inConflict) VISIBLE else GONE
                     val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
                     planetLoyaltyImg.setImageResource(imgId)
                     planetLoyaltyImg.setColorFilter(
-                        ContextCompat.getColor(root.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
+                        ContextCompat.getColor(view.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
                     )
 
                     // **** Enemy Units ****
@@ -129,44 +160,23 @@ class PlanetUnitsFragment : Fragment() {
                 updateUnitsOnPlanetSurface(myUnits)
             }
         })
-
-        val dragListen = View.OnDragListener { v, event ->
-            when (event.action) {
-                DragEvent.ACTION_DRAG_ENTERED -> {
-                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(Color.GREEN)
-                    v.invalidate()
-                    true
-                }
-                DragEvent.ACTION_DRAG_EXITED -> {
-                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(
-                        ContextCompat.getColor(v.context, R.color.list_item_bg)
-                    )
-                    v.invalidate()
-                    true
-                }
-                DragEvent.ACTION_DROP -> {
-                    val item: ClipData.Item = event.clipData.getItemAt(0)
-                    val dragData = item.text
-                    gameStateViewModel.moveUnitToPlanet(dragData.toString().toLong(), selectedPlanetId, currentGameStateId)
-                    true
-                }
-                DragEvent.ACTION_DRAG_ENDED -> {
-                    v.findViewById<View>(R.id.list_units_on_planet_surface).setBackgroundColor(
-                        ContextCompat.getColor(v.context, R.color.list_item_bg)
-                    )
-                    v.invalidate()
-                    true
-                }
-                else -> true
-            }
-        }
-        listUnitsOnPlanetSurface.setOnDragListener(dragListen)
-
-        return root
     }
 
     override fun onResume() {
         super.onResume()
+
+        gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
+            val planet = planetWithUnits.planet
+            val sectorId = planet.sectorId
+            val sector = gameStateViewModel.getSector(sectorId)
+            viewLifecycleOwner.lifecycleScope.launch {
+                val planetName = planet.name
+                val sectorName = sector.name
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Planet: $planetName"
+                (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle =
+                    "Sector: $sectorName"
+            }
+        }
 
         val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
         val keyCurrentGameId = getString(R.string.keyCurrentGameId)

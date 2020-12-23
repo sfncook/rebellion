@@ -28,19 +28,13 @@ class SectorDetailFragment: Fragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_sector_detail, container, false)
         selectedSectorId = arguments?.getLong("sectorId")!!
-
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-        val gameStateWithSectors = gameStateViewModel.gameState
-        gameStateWithSectors.observe(viewLifecycleOwner, { _gameStateWithSectors ->
+        gameStateViewModel.gameState.observe(viewLifecycleOwner, { _gameStateWithSectors ->
             val selectedSector = _gameStateWithSectors.sectors.find { sectorWithPlanets ->
                 sectorWithPlanets.sector.id == selectedSectorId
             }
             if (selectedSector != null) {
                 updateSectorDetail(selectedSector)
-                val sectorName = selectedSector.sector.name
-                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Sector: $sectorName"
-                (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "Sector Detail"
-
             }
         })
 
@@ -49,6 +43,14 @@ class SectorDetailFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        gameStateViewModel.getSector(selectedSectorId) { sector ->
+            val sectorName = sector.name
+            viewLifecycleOwner.lifecycleScope.launch {
+                (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Sector: $sectorName"
+                (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "Sector Detail"
+            }
+        }
 
         val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
         val keyCurrentGameId = getString(R.string.keyCurrentGameId)

@@ -8,7 +8,7 @@ class GameStateRepository @Inject constructor(
 
     fun getAllGameStates() = gameStateDao.getAllGameStates()
     fun getGameStateWithSectors(gameStateId: Long) = gameStateDao.getGameStateWithSectors(gameStateId)
-    fun getSectorWithPlanets(sectorId: Long) = gameStateDao.getSectorWithPlanets(sectorId)
+    fun getSector(sectorId: Long) = gameStateDao.getSector(sectorId)
     fun getPlanetWithUnits(planetId: Long) = gameStateDao.getPlanetWithUnits(planetId)
     fun getShipWithUnits(shipId: Long) = gameStateDao.getShipWithUnits(shipId)
     fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long) = gameStateDao.getAllUnitsOnTheSurfaceOfPlanet(planetId)
