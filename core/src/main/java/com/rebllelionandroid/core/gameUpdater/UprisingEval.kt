@@ -1,5 +1,9 @@
 package com.rebllelionandroid.core.gameUpdater
 
+import com.rebllelionandroid.core.Utilities
+import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+
 class UprisingEval {
     companion object {
         private val garrToUpris_0_24: Map<Int, Pair<UprisingRank, Int>> = mapOf(

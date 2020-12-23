@@ -99,8 +99,8 @@ class GameStateViewModel @Inject constructor(
 
     fun toggleTimer(gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            val _gameState = gameStateRepository.getGameState(gameStateId)
-            if(_gameState.gameInProgress) {
+            val gameState2 = gameStateRepository.getGameState(gameStateId)
+            if(gameState2.gameInProgress) {
                 stopTimer(gameStateId)
             } else {
                 startTimer(gameStateId)
@@ -243,8 +243,8 @@ class GameStateViewModel @Inject constructor(
 
                     val manyInitShips = 5
                     val manyInitUnitsPerShip = 4
-                    for (u in 1..manyInitShips) {
-                        var shipType = allShipTypes.random()
+                    for (s in 1..manyInitShips) {
+                        val shipType = allShipTypes.random()
                         val ship = Ship(
                             id = Random.nextLong(),
                             locationPlanetId = planetForTeam.id,
@@ -259,7 +259,7 @@ class GameStateViewModel @Inject constructor(
                         )
                         gameStateRepository.insertNewShip(ship)
 
-                        for (u in 1..manyInitUnitsPerShip) {
+                        for (uPs in 1..manyInitUnitsPerShip) {
                             val unit = Unit(
                                 id = Random.nextLong(),
                                 unitType = UnitType.values().random(),
