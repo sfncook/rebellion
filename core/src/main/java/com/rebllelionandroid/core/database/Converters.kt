@@ -3,6 +3,7 @@ package com.rebllelionandroid.core.database
 import androidx.room.TypeConverter
 import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import com.rebllelionandroid.core.gameUpdater.UprisingRank
 import java.util.*
 
 class Converters {
@@ -50,4 +51,9 @@ class Converters {
     fun toTeamLoyalty(value: String?) = value?.let { enumValueOf<TeamLoyalty>(it) }
     @TypeConverter
     fun fromTeamLoyalty(value: TeamLoyalty?) = value?.name
+
+    @TypeConverter
+    fun toUprisingRank(value: String?) = value?.let { enumValueOf<UprisingRank>(it) }
+    @TypeConverter
+    fun fromUprisingRank(value: UprisingRank?) = value?.name
 }

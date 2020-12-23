@@ -162,7 +162,7 @@ class GameStateViewModel @Inject constructor(
             gameStateRepository.createNewGameState(gameState)
 
             val teamsToPlanets = mapOf(
-                TeamLoyalty.TeamA to ArrayList<Planet>(),
+                TeamLoyalty.TeamA to ArrayList(),
                 TeamLoyalty.TeamB to ArrayList<Planet>(),
             )
 
@@ -179,13 +179,13 @@ class GameStateViewModel @Inject constructor(
                     var loyaltyMinTeamB = 0
                     var loyaltyMaxTeamB = 20
                     if (sectorType.initTeamLoyalty == TeamLoyalty.TeamA) {
-                        loyaltyMinTeamA = 10
-                        loyaltyMaxTeamA = 50
+                        loyaltyMinTeamA = 25
+                        loyaltyMaxTeamA = 100
                         loyaltyMaxTeamB = 10
                     } else if (sectorType.initTeamLoyalty == TeamLoyalty.TeamB) {
                         loyaltyMaxTeamA = 10
-                        loyaltyMinTeamB = 10
-                        loyaltyMaxTeamB = 50
+                        loyaltyMinTeamB = 25
+                        loyaltyMaxTeamB = 100
                     }
                     val planet = Planet(
                         id = Random.nextLong(),
@@ -195,27 +195,9 @@ class GameStateViewModel @Inject constructor(
                         teamBLoyalty = Random.nextInt(loyaltyMinTeamB, loyaltyMaxTeamB),
                         isExplored = sectorType.initTeamLoyalty == gameState.myTeam,
                         energyCap = Random.nextInt(10),
-                        inConflict = false,
-                        updated = false
                     )
                     gameStateRepository.insertNewPlanet(planet)
                     teamsToPlanets[sectorType.initTeamLoyalty]?.add(planet)
-
-//                    val manyInitUnitsPerPlanet = 5
-//                    for (u in 1..manyInitUnitsPerPlanet) {
-//                        val unit = Unit(
-//                            id = Random.nextLong(),
-//                            unitType = UnitType.values().random(),
-//                            locationPlanetId = planet.id,
-//                            locationShip = null,
-//                            mission = null,
-//                            dayMissionComplete = 0,
-//                            missionTargetType = null,
-//                            missionTargetId = null,
-//                            sectorType.initTeamLoyalty
-//                        )
-//                        gameStateRepository.insertNewUnit(unit)
-//                    }
                 }
             }
 
