@@ -100,6 +100,45 @@ class Utilities {
                 manyEnemyShips = manyEnemyShips.plus(teamsToShips[TeamLoyalty.TeamB]?.size ?: 0)
             }
 
+            populateShipsUi(
+                manyMyShips,
+                manyEnemyShips,
+                manyShipsInSectorTxt,
+                shipsInSectorImg,
+                manyEnemyShipsInSectorTxt,
+                enemyShipsInSectorImg
+            )
+        }
+
+        fun populateShipsAtPlanetUi(
+            planetWithUnits: PlanetWithUnits,
+            manyShipsInSectorTxt: TextView,
+            shipsInSectorImg: ImageView,
+            manyEnemyShipsInSectorTxt: TextView,
+            enemyShipsInSectorImg: ImageView
+        ) {
+            val teamsToShips = getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
+            val manyMyShips = teamsToShips[TeamLoyalty.TeamA]?.size ?: 0
+            val manyEnemyShips = teamsToShips[TeamLoyalty.TeamB]?.size ?: 0
+
+            populateShipsUi(
+                manyMyShips,
+                manyEnemyShips,
+                manyShipsInSectorTxt,
+                shipsInSectorImg,
+                manyEnemyShipsInSectorTxt,
+                enemyShipsInSectorImg
+            )
+        }
+
+        private fun populateShipsUi(
+            manyMyShips: Int,
+            manyEnemyShips: Int,
+            manyShipsInSectorTxt: TextView,
+            shipsInSectorImg: ImageView,
+            manyEnemyShipsInSectorTxt: TextView,
+            enemyShipsInSectorImg: ImageView
+        ) {
             if(manyMyShips>0) {
                 manyShipsInSectorTxt.visibility = View.VISIBLE
                 shipsInSectorImg.visibility = View.VISIBLE

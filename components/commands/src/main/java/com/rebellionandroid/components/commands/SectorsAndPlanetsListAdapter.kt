@@ -50,6 +50,13 @@ internal class SectorsAndPlanetsListAdapter(
             convertView2 = layoutInflater.inflate(R.layout.ship_move_list_item_planet, null)
         }
         val expandedListTextView = convertView2?.findViewById<TextView>(R.id.ship_move_planet_name)
+
+        val manyShipsInSectorTxt = convertView2?.findViewById<TextView>(com.rebellionandroid.components.entityUi.R.id.many_ships_in_sector_txt)
+        val shipsInSectorImg = convertView2?.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.ships_in_sector_img)
+
+        val manyEnemyShipsInSectorTxt = convertView2?.findViewById<TextView>(com.rebellionandroid.components.entityUi.R.id.many_enemy_ships_in_sector_txt)
+        val enemyShipsInSectorImg = convertView2?.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.enemy_ships_in_sector_img)
+
         if (expandedListTextView != null) {
             expandedListTextView.text = planetWithUnits.planet.name
         }
@@ -63,6 +70,22 @@ internal class SectorsAndPlanetsListAdapter(
                 android.graphics.PorterDuff.Mode.MULTIPLY
             )
         }
+
+        if (
+            manyShipsInSectorTxt != null &&
+            shipsInSectorImg != null &&
+            manyEnemyShipsInSectorTxt != null &&
+            enemyShipsInSectorImg != null
+        ) {
+            Utilities.populateShipsAtPlanetUi(
+                planetWithUnits,
+                manyShipsInSectorTxt,
+                shipsInSectorImg,
+                manyEnemyShipsInSectorTxt,
+                enemyShipsInSectorImg
+            )
+        }
+
         return convertView2
     }
 
