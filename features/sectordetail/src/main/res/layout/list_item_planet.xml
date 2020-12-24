@@ -34,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent" />
         <LinearLayout
             android:id="@+id/planet_energy_imgs_list"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginStart="10dp"
@@ -42,7 +42,6 @@
             android:focusableInTouchMode="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/planet_name"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
