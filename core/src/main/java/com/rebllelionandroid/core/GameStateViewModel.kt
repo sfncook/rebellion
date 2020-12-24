@@ -98,9 +98,18 @@ class GameStateViewModel @Inject constructor(
 
 
     // **** Updates *****
-    fun update(planet: Planet) = gameStateRepository.update(planet)
-    fun moveUnitToShip(unitId: Long, shipId: Long, gameStateId: Long) {
+    fun moveUnitToShip(
+        unitId: Long,
+        shipId: Long,
+        gameStateId: Long,
+        srcPlanetId: Long? = null,
+        newTeamALoyalty: Int? = null,
+        newTeamBLoyalty: Int? = null
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
+            if (srcPlanetId!=null && newTeamALoyalty!=null && newTeamBLoyalty!=null) {
+                gameStateRepository.updatePlanetLoyalty(srcPlanetId, newTeamALoyalty, newTeamBLoyalty)
+            }
             gameStateRepository.moveUnitToShip(unitId, shipId)
             postUpdate(gameStateId)
         }

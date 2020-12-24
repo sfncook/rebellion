@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.commands.CommandUtilities
 import com.rebellionandroid.components.commands.ShipMoveDialogFragment
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
@@ -70,11 +71,8 @@ class ShipsWithUnitListAdapter(
                     if(!shipWithUnits.ship.isTraveling) {
                         val item: ClipData.Item = event.clipData.getItemAt(0)
                         val dragData = item.text
-                        gameStateViewModel.moveUnitToShip(
-                            dragData.toString().toLong(),
-                            shipWithUnits.ship.id,
-                            currentGameStateId
-                        )
+                        val unitId = dragData.toString().toLong()
+                        CommandUtilities.moveUnitToShip(gameStateViewModel, unitId, shipWithUnits.ship.id, currentGameStateId)
                         true
                     } else {
                         false
