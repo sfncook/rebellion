@@ -149,35 +149,16 @@ class PlanetsListAdapter(
             viewHolder.manyFactories.text = planetWithUnit.factories.size.toString()
         }
 
-
-        viewHolder.energyList.removeAllViews()
-        val layoutParams = LinearLayout.LayoutParams(30, 30)
-        layoutParams.setMargins(3, 3, 3, 3)
         val manyFactories = planetWithUnit.factories.size
         val manyDefStructure = planetWithUnit.defenseStructures.size
-        val manyEmptyEnergies = planetWithUnit.planet.energyCap - (manyFactories + manyDefStructure)
-        for (eIndex in 1 .. (manyFactories + manyDefStructure)) {
-            val imgView = ImageView(viewHolder.itemView.context)
-            imgView.layoutParams = layoutParams
-            imgView.setImageResource(R.drawable.energy_used)
-            imgView.setColorFilter(
-                ContextCompat.getColor(viewHolder.itemView.context, R.color.black),
-                android.graphics.PorterDuff.Mode.MULTIPLY
-            )
-            viewHolder.energyList.addView(imgView)
-        }
-        for (eIndex in 1 .. manyEmptyEnergies) {
-            val imgView = ImageView(viewHolder.itemView.context)
-            imgView.layoutParams = layoutParams
-            imgView.paddingTop
-            imgView.setImageResource(R.drawable.energy_empty)
-            imgView.setColorFilter(
-                ContextCompat.getColor(viewHolder.itemView.context, R.color.black),
-                android.graphics.PorterDuff.Mode.MULTIPLY
-            )
-            viewHolder.energyList.addView(imgView)
-        }
-        
+        val manyEnergiesFull = manyFactories + manyDefStructure
+        val manyEnergiesEmpty = planetWithUnit.planet.energyCap - manyEnergiesFull
+        Utilities.populateEnergiesUi(
+            viewHolder.itemView.context,
+            viewHolder.energyList,
+            manyEnergiesFull,
+            manyEnergiesEmpty
+        )
 
         val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
         viewHolder.planetLoyaltyImg.setImageResource(imgId)

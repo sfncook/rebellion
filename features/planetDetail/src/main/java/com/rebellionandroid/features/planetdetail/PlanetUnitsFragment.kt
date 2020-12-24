@@ -12,6 +12,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +45,7 @@ class PlanetUnitsFragment : Fragment() {
     private lateinit var manyEnemyUnitsSpecOpsTxt: TextView
     private lateinit var enemyUnitsGarisonImg: ImageView
     private lateinit var manyEnemyUnitsGarisonTxt: TextView
+    private lateinit var energyList: LinearLayout
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     override fun onCreateView(
@@ -66,6 +68,8 @@ class PlanetUnitsFragment : Fragment() {
         manyEnemyUnitsSpecOpsTxt = root.findViewById(R.id.many_enemy_units_specops_on_planet)
         enemyUnitsGarisonImg = root.findViewById(R.id.enemy_units_garison_on_planet_img)
         manyEnemyUnitsGarisonTxt = root.findViewById(R.id.many_enemy_units_garison_on_planet)
+
+        energyList = root.findViewById(R.id.planet_energy_imgs_list)
 
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
 
@@ -151,6 +155,17 @@ class PlanetUnitsFragment : Fragment() {
                         ContextCompat.getColor(requireContext(), enemyColor), android.graphics.PorterDuff.Mode.MULTIPLY
                     )
                     // **** Enemy Units ****
+
+                    val manyFactories = planetWithUnits.factories.size
+                    val manyDefStructure = planetWithUnits.defenseStructures.size
+                    val manyEnergiesFull = manyFactories + manyDefStructure
+                    val manyEnergiesEmpty = planetWithUnits.planet.energyCap - manyEnergiesFull
+                    Utilities.populateEnergiesUi(
+                        view.context,
+                        energyList,
+                        manyEnergiesFull,
+                        manyEnergiesEmpty
+                    )
                 }
                 updateUnitsOnShips(planetWithUnits.shipsWithUnits, gameStateWithSectors.gameState.myTeam)
             }

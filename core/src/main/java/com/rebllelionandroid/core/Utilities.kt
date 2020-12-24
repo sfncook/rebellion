@@ -1,5 +1,9 @@
 package com.rebllelionandroid.core
 
+import android.content.Context
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
@@ -47,6 +51,38 @@ class Utilities {
 
         fun getTeamsToUnitsOnPlanet(planetsWithUnits: PlanetWithUnits): Map<TeamLoyalty, List<Unit>> {
             return planetsWithUnits.units.groupBy { it.team }
+        }
+
+        fun populateEnergiesUi(
+            context: Context,
+            energyList: LinearLayout,
+            manyEnergiesFull: Int,
+            manyEnergiesEmpty: Int
+        ) {
+            energyList.removeAllViews()
+            val layoutParams = LinearLayout.LayoutParams(30, 30)
+            layoutParams.setMargins(3, 3, 3, 3)
+            for (eIndex in 1 .. manyEnergiesFull) {
+                val imgView = ImageView(context)
+                imgView.layoutParams = layoutParams
+                imgView.setImageResource(R.drawable.energy_used)
+                imgView.setColorFilter(
+                    ContextCompat.getColor(context, R.color.black),
+                    android.graphics.PorterDuff.Mode.MULTIPLY
+                )
+                energyList.addView(imgView)
+            }
+            for (eIndex in 1 .. manyEnergiesEmpty) {
+                val imgView = ImageView(context)
+                imgView.layoutParams = layoutParams
+                imgView.paddingTop
+                imgView.setImageResource(R.drawable.energy_empty)
+                imgView.setColorFilter(
+                    ContextCompat.getColor(context, R.color.black),
+                    android.graphics.PorterDuff.Mode.MULTIPLY
+                )
+                energyList.addView(imgView)
+            }
         }
     }
 }
