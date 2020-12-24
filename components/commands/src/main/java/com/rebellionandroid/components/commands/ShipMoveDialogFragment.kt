@@ -42,7 +42,8 @@ class ShipMoveDialogFragment: DialogFragment() {
         sectorsAndPlanetsExpandableList = root.findViewById(R.id.ship_move_list_sector_and_planets) as ExpandableListView
 
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-        gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
+
+        gameStateViewModel.getGameStateWithSectors(currentGameStateId) { gameStateWithSectors ->
             currentGameTimeDay = gameStateWithSectors.gameState.gameTime
             gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
                 selectedShipWithUnits = shipWithUnits
@@ -53,7 +54,7 @@ class ShipMoveDialogFragment: DialogFragment() {
                     }
                 }
             }
-        })
+        }
 
         sectorsAndPlanetsExpandableList.setOnGroupExpandListener { groupPosition ->
             if (lastGroupExpandedPos != -1 && groupPosition != lastGroupExpandedPos) {
