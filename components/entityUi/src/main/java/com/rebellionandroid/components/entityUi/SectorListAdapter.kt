@@ -1,17 +1,13 @@
-package com.rebellionandroid.components.sectorWithPlanetsFragment
+package com.rebellionandroid.components.entityUi
 
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.rebllelionandroid.core.Utilities
-import com.rebllelionandroid.core.database.gamestate.GameState
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 

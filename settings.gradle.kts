@@ -7,6 +7,6 @@ include(
     ":features:planetDetail",
     ":components:commands",
     ":components:gamecontrols",
-    ":components:sectorWithPlanetsFragment"
+    ":components:entityUi"
 )
 rootProject.name = "Rebllelion Android"

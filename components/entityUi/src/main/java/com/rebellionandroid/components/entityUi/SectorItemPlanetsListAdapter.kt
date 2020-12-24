@@ -1,4 +1,4 @@
-package com.rebellionandroid.components.sectorWithPlanetsFragment
+package com.rebellionandroid.components.entityUi
 
 import android.view.LayoutInflater
 import android.view.View

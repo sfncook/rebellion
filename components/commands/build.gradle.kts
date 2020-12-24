@@ -22,8 +22,8 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":components:sectorWithPlanetsFragment"))
-    
+    implementation(project(":components:entityUi"))
+
     implementation(Dependencies.KOTLIN)
     implementation(Dependencies.CORE_KTX)
     implementation(Dependencies.APPCOMPAT)

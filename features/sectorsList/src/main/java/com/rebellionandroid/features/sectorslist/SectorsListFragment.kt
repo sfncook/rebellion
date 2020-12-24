@@ -12,7 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.rebellionandroid.components.sectorWithPlanetsFragment.SectorListAdapter
+import com.rebellionandroid.components.entityUi.SectorListAdapter
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
