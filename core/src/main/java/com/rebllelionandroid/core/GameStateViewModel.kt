@@ -65,6 +65,12 @@ class GameStateViewModel @Inject constructor(
             callback(planetWithUnits)
         }
     }
+    fun getPlanet(planetId: Long, callback: (planet: Planet) -> kotlin.Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val planet = gameStateRepository.getPlanet(planetId)
+            callback(planet)
+        }
+    }
     fun getShipWithUnits(shipId: Long, callback: (shipWithUnits: ShipWithUnits) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val shipWithUnits = gameStateRepository.getShipWithUnits(shipId)
@@ -77,27 +83,37 @@ class GameStateViewModel @Inject constructor(
             callback(units)
         }
     }
-    fun stopAllGameStates() {
-        viewModelScope.launch(Dispatchers.IO) {
-            gameStateRepository.stopAllGameStates()
-        }
-    }
-
     fun getAllPlanets(callback: (planets: List<Planet>) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val planets = gameStateRepository.getAllPlanets()
             callback(planets)
         }
     }
+    fun getUnit(unitId: Long, callback: (unit: Unit) -> kotlin.Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val unit = gameStateRepository.getUnit(unitId)
+            callback(unit)
+        }
+    }
 
+
+    // **** Updates *****
+    fun update(planet: Planet) = gameStateRepository.update(planet)
     fun moveUnitToShip(unitId: Long, shipId: Long, gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.moveUnitToShip(unitId, shipId)
             postUpdate(gameStateId)
         }
     }
-    fun moveUnitToPlanet(unitId: Long, planetId: Long, gameStateId: Long) {
+    fun moveUnitToPlanet(
+        unitId: Long,
+        planetId: Long,
+        gameStateId: Long,
+        newTeamALoyalty: Int,
+        newTeamBLoyalty: Int,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
+            gameStateRepository.updatePlanetLoyalty(planetId, newTeamALoyalty, newTeamBLoyalty)
             gameStateRepository.moveUnitToPlanet(unitId, planetId)
             postUpdate(gameStateId)
         }
@@ -109,6 +125,13 @@ class GameStateViewModel @Inject constructor(
         }
     }
 
+
+    // **** Game Play ****
+    fun stopAllGameStates() {
+        viewModelScope.launch(Dispatchers.IO) {
+            gameStateRepository.stopAllGameStates()
+        }
+    }
 
     fun toggleTimer(gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {

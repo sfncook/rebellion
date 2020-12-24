@@ -24,6 +24,12 @@ interface GameStateDao {
     @Query("SELECT * FROM planets WHERE id = :planetId")
     fun getPlanetWithUnits(planetId: Long): PlanetWithUnits
 
+    @Query("SELECT * FROM planets WHERE id = :planetId")
+    fun getPlanet(planetId: Long): Planet
+
+    @Query("SELECT * FROM units WHERE id = :unitId")
+    fun getUnit(unitId: Long): Unit
+
     @Transaction
     @Query("SELECT * FROM ships WHERE id = :shipId")
     fun getShipWithUnits(shipId: Long): ShipWithUnits
@@ -83,8 +89,8 @@ interface GameStateDao {
     @Query("UPDATE game_state SET gameInProgress = :gameInProgress WHERE id = :id")
     fun setGameInProgress(id: Long, gameInProgress: Int): Int
 
-    @Query("UPDATE planets SET teamALoyalty = :loyalty WHERE id = :planetId")
-    fun updatePlanetLoyalty(planetId:Long, loyalty: Int): Int
+    @Query("UPDATE planets SET teamALoyalty = :teamALoyalty, teamBLoyalty = :teamBLoyalty WHERE id = :planetId")
+    fun updatePlanetLoyalty(planetId: Long, teamALoyalty: Int, teamBLoyalty: Int): Int
 
     @Query("UPDATE game_state SET gameInProgress = 0")
     fun stopAllGameStates(): Int

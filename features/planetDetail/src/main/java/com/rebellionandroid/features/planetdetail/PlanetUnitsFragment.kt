@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.commands.CommandUtilities
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
@@ -90,7 +91,13 @@ class PlanetUnitsFragment : Fragment() {
                 DragEvent.ACTION_DROP -> {
                     val item: ClipData.Item = event.clipData.getItemAt(0)
                     val dragData = item.text
-                    gameStateViewModel.moveUnitToPlanet(dragData.toString().toLong(), selectedPlanetId, currentGameStateId)
+                    val unitId = dragData.toString().toLong()
+                    CommandUtilities.moveUnitToPlanetSurface(
+                        gameStateViewModel,
+                        unitId,
+                        selectedPlanetId,
+                        currentGameStateId
+                    )
                     true
                 }
                 DragEvent.ACTION_DRAG_ENDED -> {
