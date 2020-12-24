@@ -175,6 +175,8 @@ class PlanetUnitsFragment : Fragment() {
                 (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Planet: $planetName"
                 (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle =
                     "Sector: $sectorName"
+                (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayShowHomeEnabled(true)
             }
         }
 

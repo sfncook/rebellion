@@ -49,6 +49,8 @@ class SectorDetailFragment: Fragment() {
             viewLifecycleOwner.lifecycleScope.launch {
                 (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Sector: $sectorName"
                 (activity as AppCompatActivity?)!!.supportActionBar!!.subtitle = "Sector Detail"
+                (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                (activity as AppCompatActivity?)!!.supportActionBar!!.setDisplayShowHomeEnabled(true)
             }
         }
 
