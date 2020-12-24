@@ -213,14 +213,19 @@ class PlanetUnitsFragment : Fragment() {
     }
 
     private fun updateUnitsOnShips(shipsWithUnits: List<ShipWithUnits>, myTeam: TeamLoyalty) {
-        val myShipsWithUnits = shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team == myTeam }
-        val enemyShipsWithUnits = shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team != myTeam }
-
-        val myShipsViewAdapter = ShipsWithUnitListAdapter(myShipsWithUnits, gameStateViewModel, currentGameStateId)
-        val enemyShipsViewAdapter = EnemyShipsListAdapter(enemyShipsWithUnits)
         viewLifecycleOwner.lifecycleScope.launch {
+            val myShipsWithUnits = shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team == myTeam }
+            val myShipsViewAdapter = ShipsWithUnitListAdapter(myShipsWithUnits, gameStateViewModel, currentGameStateId)
             listShipsWithUnits.adapter = myShipsViewAdapter
-            listEnemyShips.adapter = enemyShipsViewAdapter
+
+            val enemyShipsWithUnits = shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team != myTeam }
+            if(enemyShipsWithUnits.isEmpty()) {
+                listEnemyShips.visibility = GONE
+            } else {
+                listEnemyShips.visibility = VISIBLE
+                val enemyShipsViewAdapter = EnemyShipsListAdapter(enemyShipsWithUnits)
+                listEnemyShips.adapter = enemyShipsViewAdapter
+            }
         }
     }
 }
