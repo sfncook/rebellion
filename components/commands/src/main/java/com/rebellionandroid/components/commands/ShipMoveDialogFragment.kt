@@ -21,6 +21,7 @@ class ShipMoveDialogFragment: DialogFragment() {
     private lateinit var sectorsAndPlanetsExpandableList: ExpandableListView
     private var lastGroupExpandedPos: Int = -1
     private var selectedShipId: Long = 0
+    private lateinit var selectedShipWithUnits: ShipWithUnits
     private var currentGameStateId: Long = 0
     private var currentGameTimeDay: Int = 0
 
@@ -43,7 +44,8 @@ class ShipMoveDialogFragment: DialogFragment() {
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
             currentGameTimeDay = gameStateWithSectors.gameState.gameTime
-            gameStateViewModel.getShipWithUnits(selectedShipId) { selectedShipWithUnits ->
+            gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
+                selectedShipWithUnits = shipWithUnits
                 gameStateViewModel.getPlanetWithUnits(selectedShipWithUnits.ship.locationPlanetId) { planetWithUnits ->
                     val selectedSectorId = planetWithUnits.planet.sectorId
                     viewLifecycleOwner.lifecycleScope.launch {
@@ -61,8 +63,10 @@ class ShipMoveDialogFragment: DialogFragment() {
         }
 
         sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, planetId ->
-            gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId, currentGameTimeDay.plus(10))
-            dismiss()
+            if(selectedShipWithUnits.ship.locationPlanetId != planetId) {
+                gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId, currentGameTimeDay.plus(10))
+                dismiss()
+            }
             true
         }
 
