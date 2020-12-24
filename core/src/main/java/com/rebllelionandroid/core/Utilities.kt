@@ -1,12 +1,12 @@
 package com.rebllelionandroid.core
 
 import android.content.Context
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.rebllelionandroid.core.database.gamestate.Planet
-import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
-import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
+import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
@@ -82,6 +82,48 @@ class Utilities {
                     android.graphics.PorterDuff.Mode.MULTIPLY
                 )
                 energyList.addView(imgView)
+            }
+        }
+
+        fun populateShipsInSectorUi(
+            sectorWithPlanets: SectorWithPlanets,
+            manyShipsInSectorTxt: TextView,
+            shipsInSectorImg: ImageView,
+            manyEnemyShipsInSectorTxt: TextView,
+            enemyShipsInSectorImg: ImageView
+        ) {
+            var manyMyShips = 0
+            var manyEnemyShips = 0
+            sectorWithPlanets.planets.forEach { planetWithUnits ->
+                val teamsToShips = getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
+                manyMyShips = manyMyShips.plus(teamsToShips[TeamLoyalty.TeamA]?.size ?: 0)
+                manyEnemyShips = manyEnemyShips.plus(teamsToShips[TeamLoyalty.TeamB]?.size ?: 0)
+            }
+
+            if(manyMyShips>0) {
+                manyShipsInSectorTxt.visibility = View.VISIBLE
+                shipsInSectorImg.visibility = View.VISIBLE
+                manyShipsInSectorTxt.text = manyMyShips.toString()
+                shipsInSectorImg.setColorFilter(
+                    ContextCompat.getColor(shipsInSectorImg.context, R.color.loyalty_team_a),
+                    android.graphics.PorterDuff.Mode.MULTIPLY
+                )
+            } else {
+                manyShipsInSectorTxt.visibility = View.GONE
+                shipsInSectorImg.visibility = View.GONE
+            }
+
+            if(manyEnemyShips>0) {
+                manyEnemyShipsInSectorTxt.visibility = View.VISIBLE
+                enemyShipsInSectorImg.visibility = View.VISIBLE
+                manyEnemyShipsInSectorTxt.text = manyEnemyShips.toString()
+                enemyShipsInSectorImg.setColorFilter(
+                    ContextCompat.getColor(enemyShipsInSectorImg.context, R.color.loyalty_team_b),
+                    android.graphics.PorterDuff.Mode.MULTIPLY
+                )
+            } else {
+                manyEnemyShipsInSectorTxt.visibility = View.GONE
+                enemyShipsInSectorImg.visibility = View.GONE
             }
         }
     }

@@ -105,8 +105,6 @@ internal class SectorsAndPlanetsListAdapter(
         val planetsList = convertView2?.findViewById<LinearLayout>(R.id.planets_list)
         planetsList.removeAllViews()
         val planetsWithUnits = sectorWithPlanets.planets
-        var manyMyShips = 0
-        var manyEnemyShips = 0
         Utilities.sortPlanets(planetsWithUnits).forEach { planetWithUnits ->
             val planet = planetWithUnits.planet
             val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
@@ -118,22 +116,14 @@ internal class SectorsAndPlanetsListAdapter(
                 android.graphics.PorterDuff.Mode.MULTIPLY
             )
             planetsList.addView(imgView)
-
-            val teamsToShips = Utilities.getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
-            manyMyShips = manyMyShips.plus(teamsToShips[TeamLoyalty.TeamA]?.size ?: 0)
-            manyEnemyShips = manyEnemyShips.plus(teamsToShips[TeamLoyalty.TeamB]?.size ?: 0)
         }
 
-        manyShipsInSectorTxt.text = manyMyShips.toString()
-        manyEnemyShipsInSectorTxt.text = manyEnemyShips.toString()
-
-        val myColor = R.color.loyalty_team_a
-        val enemyColor = R.color.loyalty_team_b
-        shipsInSectorImg.setColorFilter(
-            ContextCompat.getColor(shipsInSectorImg.context, myColor), android.graphics.PorterDuff.Mode.MULTIPLY
-        )
-        enemyShipsInSectorImg.setColorFilter(
-            ContextCompat.getColor(enemyShipsInSectorImg.context, enemyColor), android.graphics.PorterDuff.Mode.MULTIPLY
+        Utilities.populateShipsInSectorUi(
+            sectorWithPlanets,
+            manyShipsInSectorTxt,
+            shipsInSectorImg,
+            manyEnemyShipsInSectorTxt,
+            enemyShipsInSectorImg
         )
 
         return convertView2
