@@ -14,6 +14,7 @@ import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 
 internal class SectorsAndPlanetsListAdapter(
@@ -93,12 +94,19 @@ internal class SectorsAndPlanetsListAdapter(
             convertView2 = layoutInflater.inflate(R.layout.list_item_sector_2, parent, false)
         }
         val sectorNameTextView = convertView2?.findViewById(R.id.sector_name) as TextView
+        val manyShipsInSectorTxt: TextView = convertView2.findViewById(com.rebellionandroid.components.entityUi.R.id.many_ships_in_sector_txt)
+        val shipsInSectorImg: ImageView = convertView2.findViewById(com.rebellionandroid.components.entityUi.R.id.ships_in_sector_img)
+        val manyEnemyShipsInSectorTxt: TextView = convertView2.findViewById(com.rebellionandroid.components.entityUi.R.id.many_enemy_ships_in_sector_txt)
+        val enemyShipsInSectorImg: ImageView = convertView2.findViewById(com.rebellionandroid.components.entityUi.R.id.enemy_ships_in_sector_img)
+
         sectorNameTextView.setTypeface(null, Typeface.BOLD)
         sectorNameTextView.text = sectorWithPlanets.sector.name
 
         val planetsList = convertView2?.findViewById<LinearLayout>(R.id.planets_list)
         planetsList.removeAllViews()
         val planetsWithUnits = sectorWithPlanets.planets
+        var manyMyShips = 0
+        var manyEnemyShips = 0
         Utilities.sortPlanets(planetsWithUnits).forEach { planetWithUnits ->
             val planet = planetWithUnits.planet
             val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
@@ -110,7 +118,23 @@ internal class SectorsAndPlanetsListAdapter(
                 android.graphics.PorterDuff.Mode.MULTIPLY
             )
             planetsList.addView(imgView)
+
+            val teamsToShips = Utilities.getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
+            manyMyShips = manyMyShips.plus(teamsToShips[TeamLoyalty.TeamA]?.size ?: 0)
+            manyEnemyShips = manyEnemyShips.plus(teamsToShips[TeamLoyalty.TeamB]?.size ?: 0)
         }
+
+        manyShipsInSectorTxt.text = manyMyShips.toString()
+        manyEnemyShipsInSectorTxt.text = manyEnemyShips.toString()
+
+        val myColor = R.color.loyalty_team_a
+        val enemyColor = R.color.loyalty_team_b
+        shipsInSectorImg.setColorFilter(
+            ContextCompat.getColor(shipsInSectorImg.context, myColor), android.graphics.PorterDuff.Mode.MULTIPLY
+        )
+        enemyShipsInSectorImg.setColorFilter(
+            ContextCompat.getColor(enemyShipsInSectorImg.context, enemyColor), android.graphics.PorterDuff.Mode.MULTIPLY
+        )
 
         return convertView2
     }

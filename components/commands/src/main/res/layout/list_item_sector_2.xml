@@ -25,6 +25,47 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/enemy_ships_in_sector_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ship_5"
+            app:layout_constraintTop_toTopOf="@+id/many_ships_in_sector_txt"
+            app:layout_constraintBottom_toBottomOf="@+id/many_ships_in_sector_txt"
+            app:layout_constraintEnd_toStartOf="@+id/many_enemy_ships_in_sector_txt"
+            />
+        <TextView
+            android:id="@+id/many_enemy_ships_in_sector_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:layout_margin="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/ships_in_sector_img"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+        <ImageView
+            android:id="@+id/ships_in_sector_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ship_5"
+            app:layout_constraintTop_toTopOf="@+id/many_ships_in_sector_txt"
+            app:layout_constraintBottom_toBottomOf="@+id/many_ships_in_sector_txt"
+            app:layout_constraintEnd_toStartOf="@+id/many_ships_in_sector_txt"
+            />
+        <TextView
+            android:id="@+id/many_ships_in_sector_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:layout_margin="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
         <LinearLayout
             android:id="@+id/planets_list"
             android:layout_width="match_parent"
