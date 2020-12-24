@@ -16,19 +16,21 @@ class Utilities {
             val loyaltyDiff = planet.teamALoyalty - planet.teamBLoyalty
             val imgId: Int
             val colorId: Int
+            val LOYALTY_LIMIT = 50
+            val NEUTRALITY_LIMIT = 10
             /*if(!planet.isExplored) {
                 imgId = R.drawable.loyalty_sm
                 colorId = R.color.loyalty_unexplored
-            } else*/ if( 40 < loyaltyDiff) {
+            } else*/ if( loyaltyDiff > LOYALTY_LIMIT ) {
                 imgId = R.drawable.loyalty_lg
                 colorId = R.color.loyalty_team_a
-            } else if( 10 < loyaltyDiff) {
+            } else if( loyaltyDiff > NEUTRALITY_LIMIT) {
                 imgId = R.drawable.loyalty_sm
                 colorId = R.color.loyalty_team_a
-            } else if( -40 > loyaltyDiff) {
+            } else if( loyaltyDiff < -LOYALTY_LIMIT ) {
                 imgId = R.drawable.loyalty_lg
                 colorId = R.color.loyalty_team_b
-            } else if( -10 > loyaltyDiff) {
+            } else if( loyaltyDiff < -NEUTRALITY_LIMIT ) {
                 imgId = R.drawable.loyalty_sm
                 colorId = R.color.loyalty_team_b
             } else {
