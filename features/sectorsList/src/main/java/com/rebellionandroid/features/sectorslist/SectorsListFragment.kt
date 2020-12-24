@@ -61,9 +61,7 @@ class SectorsListFragment: Fragment() {
 
     private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors) {
         val sectors = gameStateWithSectors.sectors
-        val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
-            s1.sector.name.compareTo(s2.sector.name)
-        })
+        val sortedSectors = sectors.toSortedSet { s1, s2 -> s1.sector.name.compareTo(s2.sector.name) }
         val viewAdapter = SectorListAdapter(ArrayList(sortedSectors), gameStateWithSectors.gameState.myTeam) { sectorId ->
             val bundle = bundleOf("sectorId" to sectorId)
             this.view?.findNavController()?.navigate(R.id.sector_detail_graph, bundle)
