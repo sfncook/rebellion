@@ -6,6 +6,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -48,6 +49,8 @@ class PlanetsListAdapter(
 
         val planetHasUnitsImgTeamB: ImageView = view.findViewById(R.id.planet_has_units_team_b)
         val manyUnitsTeamB: TextView = view.findViewById(R.id.many_units_team_b)
+
+        val energyList: LinearLayout = view.findViewById(R.id.planet_energy_imgs_list)
 
         init {
             view.setOnClickListener {
@@ -146,6 +149,34 @@ class PlanetsListAdapter(
             viewHolder.manyFactories.text = planetWithUnit.factories.size.toString()
         }
 
+
+        viewHolder.energyList.removeAllViews()
+        val layoutParams = LinearLayout.LayoutParams(30, 30)
+        layoutParams.setMargins(3, 3, 3, 3)
+        val manyFactories = planetWithUnit.factories.size
+        val manyDefStructure = planetWithUnit.defenseStructures.size
+        val manyEmptyEnergies = planetWithUnit.planet.energyCap - (manyFactories + manyDefStructure)
+        for (eIndex in 1 .. (manyFactories + manyDefStructure)) {
+            val imgView = ImageView(viewHolder.itemView.context)
+            imgView.layoutParams = layoutParams
+            imgView.setImageResource(R.drawable.energy_used)
+            imgView.setColorFilter(
+                ContextCompat.getColor(viewHolder.itemView.context, R.color.black),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            )
+            viewHolder.energyList.addView(imgView)
+        }
+        for (eIndex in 1 .. manyEmptyEnergies) {
+            val imgView = ImageView(viewHolder.itemView.context)
+            imgView.layoutParams = layoutParams
+            imgView.paddingTop
+            imgView.setImageResource(R.drawable.energy_empty)
+            imgView.setColorFilter(
+                ContextCompat.getColor(viewHolder.itemView.context, R.color.black),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            )
+            viewHolder.energyList.addView(imgView)
+        }
         
 
         val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
