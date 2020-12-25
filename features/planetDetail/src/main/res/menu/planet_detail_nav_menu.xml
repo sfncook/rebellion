@@ -9,6 +9,6 @@
     <item
         android:id="@+id/navigation_planet_factories"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Factories" />
+        android:title="Structures" />
 
 </menu>

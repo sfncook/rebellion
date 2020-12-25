@@ -17,15 +17,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list_item_factory" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_empty_energy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_factories"
-        tools:listitem="@layout/list_item_empty_energy" />
 </androidx.constraintlayout.widget.ConstraintLayout>
