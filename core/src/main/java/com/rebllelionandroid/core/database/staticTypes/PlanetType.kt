@@ -15,5 +15,5 @@ data class PlanetType(
         @PrimaryKey val id: Long,
         @NotNull @ColumnInfo(name = "name") val name: String,
         @NotNull @ColumnInfo(name = "sector_id", index = true) val sectorId: Long,
-        @NotNull @ColumnInfo(name = "location_index") val locationIndx: Int
+        @NotNull @ColumnInfo(name = "location_index") val locationIndex: Int
 )

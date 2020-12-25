@@ -240,6 +240,8 @@ class GameStateViewModel @Inject constructor(
                         teamBLoyalty = Random.nextInt(loyaltyMinTeamB, loyaltyMaxTeamB),
                         isExplored = sectorType.initTeamLoyalty == gameState.myTeam,
                         energyCap = Random.nextInt(10),
+                        interSectorLocationIndex = sectorType.locationIndex,
+                        intraSectorLocationIndex = planetType.locationIndex
                     )
                     gameStateRepository.insertNewPlanet(planet)
                     teamsToPlanets[sectorType.initTeamLoyalty]?.add(planet)

@@ -11,5 +11,5 @@ data class SectorType(
         @PrimaryKey val id: Long,
         @NotNull @ColumnInfo(name = "name") val name: String,
         @NotNull @ColumnInfo(name = "init_team_loyalty") val initTeamLoyalty: TeamLoyalty,
-        @NotNull @ColumnInfo(name = "location_index") val locationIndx: Int
+        @NotNull @ColumnInfo(name = "location_index") val locationIndex: Int
 )
