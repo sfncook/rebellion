@@ -27,10 +27,10 @@ class PlanetFactoriesFragment : Fragment() {
         currentGameStateId = arguments?.getLong("currentGameStateId")!!
 
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-        val gameStateWithSectors = gameStateViewModel.gameState
-        gameStateWithSectors.observe(viewLifecycleOwner , {
+        gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
+            val myTeam = gameStateWithSectors.gameState.myTeam
             gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
-                val viewAdapter = StructureListAdapter(planetWithUnits, currentGameStateId)
+                val viewAdapter = StructureListAdapter(planetWithUnits, myTeam)
                 viewLifecycleOwner.lifecycleScope.launch {
                     listFactories.adapter = viewAdapter
                 }

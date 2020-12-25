@@ -12,12 +12,13 @@ import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class Utilities {
     companion object {
+        val LOYALTY_LIMIT = 50
+        val NEUTRALITY_LIMIT = 10
+
         fun getLoyaltyIconForPlanet(planet: Planet): Pair<Int, Int> {
             val loyaltyDiff = planet.teamALoyalty - planet.teamBLoyalty
             val imgId: Int
             val colorId: Int
-            val LOYALTY_LIMIT = 50
-            val NEUTRALITY_LIMIT = 10
             /*if(!planet.isExplored) {
                 imgId = R.drawable.loyalty_sm
                 colorId = R.color.loyalty_unexplored
@@ -38,6 +39,21 @@ class Utilities {
                 colorId = R.color.loyalty_neutral
             }
             return Pair(imgId, colorId)
+        }
+
+        fun getPlanetLoyalty(planet: Planet): TeamLoyalty {
+            val loyaltyDiff = planet.teamALoyalty - planet.teamBLoyalty
+            if( loyaltyDiff > LOYALTY_LIMIT ) {
+                return TeamLoyalty.TeamA
+            } else if( loyaltyDiff > NEUTRALITY_LIMIT) {
+                return TeamLoyalty.TeamA
+            } else if( loyaltyDiff < -LOYALTY_LIMIT ) {
+                return TeamLoyalty.TeamB
+            } else if( loyaltyDiff < -NEUTRALITY_LIMIT ) {
+                return TeamLoyalty.TeamB
+            } else {
+                return TeamLoyalty.Neutral
+            }
         }
 
         fun sortPlanets(planetsWithUnits: List<PlanetWithUnits>): List<PlanetWithUnits> {
