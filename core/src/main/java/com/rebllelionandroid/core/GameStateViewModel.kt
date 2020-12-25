@@ -255,11 +255,16 @@ class GameStateViewModel @Inject constructor(
                 }
             }
 
+            // Setup Team Head Quarters
             arrayListOf(TeamLoyalty.TeamA, TeamLoyalty.TeamB).forEach { teamLoyalty ->
                 val planetsForTeam = teamsToPlanets[teamLoyalty]
                 val planetForTeam = planetsForTeam?.get(Random.nextInt(planetsForTeam.size))
 
                 if(planetForTeam != null) {
+                    planetForTeam.teamALoyalty = if(teamLoyalty==TeamLoyalty.TeamA) 100 else 0
+                    planetForTeam.teamBLoyalty = if(teamLoyalty==TeamLoyalty.TeamB) 100 else 0
+                    gameStateRepository.update(planetForTeam)
+
                     // Orbital battery
                     val orbitalBattery = DefenseStructure(
                         id = Random.nextLong(),
