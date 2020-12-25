@@ -54,6 +54,7 @@ class ShipMoveDialogFragment: DialogFragment() {
             }
         }
 
+        // Only one group expanded at a time
         sectorsAndPlanetsExpandableList.setOnGroupExpandListener { groupPosition ->
             if (lastGroupExpandedPos != -1 && groupPosition != lastGroupExpandedPos) {
                 sectorsAndPlanetsExpandableList.collapseGroup(lastGroupExpandedPos);
@@ -61,6 +62,7 @@ class ShipMoveDialogFragment: DialogFragment() {
             lastGroupExpandedPos = groupPosition;
         }
 
+        // planet selection event
         sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, planetId ->
             if(selectedShipWithUnits.ship.locationPlanetId != planetId) {
                 gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId)

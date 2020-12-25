@@ -1,5 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import javax.inject.Inject
 
@@ -38,6 +39,7 @@ class GameStateRepository @Inject constructor(
     fun moveUnitToPlanet(unitId: Long, planetId: Long) = gameStateDao.moveUnitToPlanet(unitId, planetId)
     fun updatePlanetLoyalty(planetId: Long, teamALoyalty: Int, teamBLoyalty: Int) = gameStateDao.updatePlanetLoyalty(planetId, teamALoyalty, teamBLoyalty)
     fun startShipJourneyToPlanet(shipId: Long, planetId: Long, dayArrival: Int) = gameStateDao.startShipJourneyToPlanet(shipId, planetId, dayArrival)
+    fun setFactoryBuildOrder(factoryId: Long, dayBuildComplete: Int, buildTargetType: FactoryBuildTargetType) = gameStateDao.setFactoryBuildOrder(factoryId, dayBuildComplete, buildTargetType)
     fun update(gameState: GameState) = gameStateDao.update(gameState)
     fun update(planet: Planet) = gameStateDao.update(planet)
     fun update(ship: Ship) = gameStateDao.update(ship)

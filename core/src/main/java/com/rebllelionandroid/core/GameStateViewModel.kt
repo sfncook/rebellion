@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.gamestate.enums.DefenseStructureType
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
@@ -139,6 +140,18 @@ class GameStateViewModel @Inject constructor(
             val tripDurationDays = Math.abs(srcPlanet.locationIndex - dstPlanet.locationIndex)
             val gameState = getGameState(gameStateId)
             gameStateRepository.startShipJourneyToPlanet(shipId, destPlanetId, gameState.gameTime + tripDurationDays)
+            postUpdate(gameStateId)
+        }
+    }
+    fun setFactoryBuildOrder(factoryId: Long, destPlanetId: Long, buildTargetType: FactoryBuildTargetType, gameStateId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val factory = getFactory(factoryId)
+            val srcPlanet = getPlanet(factory.locationPlanetId)
+            val dstPlanet = getPlanet(destPlanetId)
+            val tripDurationDays = Math.abs(srcPlanet.locationIndex - dstPlanet.locationIndex)
+            val gameState = getGameState(gameStateId)
+            val dayBuildComplete = gameState.gameTime + 3
+            gameStateRepository.setFactoryBuildOrder(factoryId, dayBuildComplete, buildTargetType)
             postUpdate(gameStateId)
         }
     }

@@ -68,11 +68,27 @@ class FactoryBuildDialogFragment: DialogFragment() {
             }
         }
 
+        // Only one group expanded at a time
         sectorsAndPlanetsExpandableList.setOnGroupExpandListener { groupPosition ->
             if (lastGroupExpandedPos != -1 && groupPosition != lastGroupExpandedPos) {
                 sectorsAndPlanetsExpandableList.collapseGroup(lastGroupExpandedPos);
             }
             lastGroupExpandedPos = groupPosition;
+        }
+
+        // planet selection event
+        sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, planetId ->
+            val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
+            val keyCurrentGameId = getString(R.string.keyCurrentGameId)
+            val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+            if(sharedPref?.contains(keyCurrentGameId) == true) {
+                val currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
+                gameStateViewModel.setFactoryBuildOrder(selectedFactoryId, planetId, selectedBuildTargetType, currentGameStateId)
+            } else {
+                println("ERROR No current game ID found in shared preferences")
+            }
+            dismiss()
+            true
         }
 
         buildBtnConstructionYard = root.findViewById(R.id.factmove_build_constructionyard)

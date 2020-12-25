@@ -21,6 +21,7 @@ data class Factory(
 
         var buildTargetType: FactoryBuildTargetType? = FactoryBuildTargetType.ConstructionYard,
         var dayBuildComplete: Long = 0,
+
         var isTravelling: Boolean = false, // Travelling for delivery
         var dayArrival: Long = 0,
 
