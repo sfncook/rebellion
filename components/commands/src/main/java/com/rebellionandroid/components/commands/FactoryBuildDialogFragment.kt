@@ -14,6 +14,7 @@ import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.Factory
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -33,6 +34,10 @@ class FactoryBuildDialogFragment: DialogFragment() {
     private lateinit var buildBtnOrbitalBattery: MaterialButton
     private lateinit var buildBtnPlanetaryShield: MaterialButton
 
+    private lateinit var containerBtnsConstructionYard: View
+    private lateinit var containerBtnsShipYard: View
+    private lateinit var containerBtnsTrainingFacility: View
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +52,9 @@ class FactoryBuildDialogFragment: DialogFragment() {
         }
 
         sectorsAndPlanetsExpandableList = root.findViewById(R.id.factmove_list_sector_and_planets) as ExpandableListView
+        containerBtnsConstructionYard = root.findViewById(R.id.factmove_btns_constructionyard)
+        containerBtnsShipYard = root.findViewById(R.id.factmove_btns_shipyard)
+        containerBtnsTrainingFacility = root.findViewById(R.id.factmove_btns_trainingfacility)
 
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
 
@@ -62,6 +70,17 @@ class FactoryBuildDialogFragment: DialogFragment() {
                 val planet = gameStateViewModel.getPlanet(selectedFactory.locationPlanetId)
                 viewLifecycleOwner.lifecycleScope.launch {
                     updateSectorsList(gameStateWithSectors, planet.sectorId)
+
+                    // Update build buttons
+                    containerBtnsConstructionYard.visibility = View.GONE
+                    containerBtnsShipYard.visibility = View.GONE
+                    containerBtnsTrainingFacility.visibility = View.GONE
+                    when(selectedFactory.factoryType) {
+                        FactoryType.ConstructionYard -> containerBtnsConstructionYard.visibility = View.VISIBLE
+                        FactoryType.ShipYard -> containerBtnsShipYard.visibility = View.VISIBLE
+                        FactoryType.TrainingFaciliy -> containerBtnsTrainingFacility.visibility = View.VISIBLE
+                        else -> {}
+                    }
                 }
             } else {
                 println("ERROR No current game ID foudn in shared preferences")
@@ -71,9 +90,9 @@ class FactoryBuildDialogFragment: DialogFragment() {
         // Only one group expanded at a time
         sectorsAndPlanetsExpandableList.setOnGroupExpandListener { groupPosition ->
             if (lastGroupExpandedPos != -1 && groupPosition != lastGroupExpandedPos) {
-                sectorsAndPlanetsExpandableList.collapseGroup(lastGroupExpandedPos);
+                sectorsAndPlanetsExpandableList.collapseGroup(lastGroupExpandedPos)
             }
-            lastGroupExpandedPos = groupPosition;
+            lastGroupExpandedPos = groupPosition
         }
 
         // planet selection event
@@ -98,28 +117,18 @@ class FactoryBuildDialogFragment: DialogFragment() {
         buildBtnPlanetaryShield = root.findViewById(R.id.factmove_build_planetaryshield)
         updateBuildBtns(root.context)
 
-        buildBtnConstructionYard.setOnClickListener {
-            selectedBuildTargetType = FactoryBuildTargetType.ConstructionYard
-            updateBuildBtns(root.context)
-        }
-        buildBtnShipYard.setOnClickListener {
-            selectedBuildTargetType = FactoryBuildTargetType.ShipYard
-            updateBuildBtns(root.context)
-        }
-        buildBtnTrainingFacility.setOnClickListener {
-            selectedBuildTargetType = FactoryBuildTargetType.TrainingFacility
-            updateBuildBtns(root.context)
-        }
-        buildBtnOrbitalBattery.setOnClickListener {
-            selectedBuildTargetType = FactoryBuildTargetType.OrbitalBattery
-            updateBuildBtns(root.context)
-        }
-        buildBtnPlanetaryShield.setOnClickListener {
-            selectedBuildTargetType = FactoryBuildTargetType.PlanetaryShield
-            updateBuildBtns(root.context)
-        }
+        buildBtnConstructionYard.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ConstructionYard)}
+        buildBtnShipYard.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard)}
+        buildBtnTrainingFacility.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.TrainingFacility)}
+        buildBtnOrbitalBattery.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.OrbitalBattery)}
+        buildBtnPlanetaryShield.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.PlanetaryShield)}
 
         return root
+    }
+
+    private fun selectBuildTargetType(factoryBuildTargetType: FactoryBuildTargetType) {
+        selectedBuildTargetType = factoryBuildTargetType
+        view?.let { updateBuildBtns(it.context) }
     }
 
     override fun onStart() {
