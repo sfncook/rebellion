@@ -45,6 +45,7 @@ class GameStateViewModel @Inject constructor(
         }
     }
     private fun getGameStateWithSectors(gameStateId: Long) = gameStateRepository.getGameStateWithSectors(gameStateId)
+    private fun getGameState(gameStateId: Long) = gameStateRepository.getGameState(gameStateId)
     fun getGameStateWithSectors(gameStateId: Long, callback: (gameStateWithSectors: GameStateWithSectors) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val gameStateWithSectors = gameStateRepository.getGameStateWithSectors(gameStateId)
@@ -65,12 +66,14 @@ class GameStateViewModel @Inject constructor(
             callback(planetWithUnits)
         }
     }
+    fun getPlanet(planetId: Long) = gameStateRepository.getPlanet(planetId)
     fun getPlanet(planetId: Long, callback: (planet: Planet) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val planet = gameStateRepository.getPlanet(planetId)
             callback(planet)
         }
     }
+    fun getShip(shipId: Long) = gameStateRepository.getShip(shipId)
     fun getShipWithUnits(shipId: Long, callback: (shipWithUnits: ShipWithUnits) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val shipWithUnits = gameStateRepository.getShipWithUnits(shipId)
@@ -127,9 +130,14 @@ class GameStateViewModel @Inject constructor(
             postUpdate(gameStateId)
         }
     }
-    fun startShipJourneyToPlanet(shipId: Long, planetId: Long, gameStateId: Long, dayArrival: Int) {
+    fun startShipJourneyToPlanet(shipId: Long, destPlanetId: Long, gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            gameStateRepository.startShipJourneyToPlanet(shipId, planetId, dayArrival)
+            val ship = getShip(shipId)
+            val srcPlanet = getPlanet(ship.locationPlanetId)
+            val dstPlanet = getPlanet(destPlanetId)
+            val tripDurationDays = Math.abs(srcPlanet.locationIndex - dstPlanet.locationIndex)
+            val gameState = getGameState(gameStateId)
+            gameStateRepository.startShipJourneyToPlanet(shipId, destPlanetId, gameState.gameTime + tripDurationDays)
             postUpdate(gameStateId)
         }
     }
@@ -240,8 +248,7 @@ class GameStateViewModel @Inject constructor(
                         teamBLoyalty = Random.nextInt(loyaltyMinTeamB, loyaltyMaxTeamB),
                         isExplored = sectorType.initTeamLoyalty == gameState.myTeam,
                         energyCap = Random.nextInt(10),
-                        interSectorLocationIndex = sectorType.locationIndex,
-                        intraSectorLocationIndex = planetType.locationIndex
+                        locationIndex = planetType.locationIndex
                     )
                     gameStateRepository.insertNewPlanet(planet)
                     teamsToPlanets[sectorType.initTeamLoyalty]?.add(planet)

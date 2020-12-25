@@ -23,7 +23,6 @@ class ShipMoveDialogFragment: DialogFragment() {
     private var selectedShipId: Long = 0
     private lateinit var selectedShipWithUnits: ShipWithUnits
     private var currentGameStateId: Long = 0
-    private var currentGameTimeDay: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +43,6 @@ class ShipMoveDialogFragment: DialogFragment() {
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
 
         gameStateViewModel.getGameStateWithSectors(currentGameStateId) { gameStateWithSectors ->
-            currentGameTimeDay = gameStateWithSectors.gameState.gameTime
             gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
                 selectedShipWithUnits = shipWithUnits
                 gameStateViewModel.getPlanetWithUnits(selectedShipWithUnits.ship.locationPlanetId) { planetWithUnits ->
@@ -63,9 +61,9 @@ class ShipMoveDialogFragment: DialogFragment() {
             lastGroupExpandedPos = groupPosition;
         }
 
-        sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, planetId ->
+        sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, planetId ->
             if(selectedShipWithUnits.ship.locationPlanetId != planetId) {
-                gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId, currentGameTimeDay.plus(10))
+                gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId)
                 dismiss()
             }
             true

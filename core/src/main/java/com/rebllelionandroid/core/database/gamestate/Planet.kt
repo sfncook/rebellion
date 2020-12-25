@@ -13,8 +13,7 @@ data class Planet(
     @PrimaryKey var id: Long = 0,
     @ColumnInfo(name = "name") var name: String = "",
     @ColumnInfo(name = "sector_id", index = true) var sectorId: Long = 0,
-    var interSectorLocationIndex: Int = 0,
-    var intraSectorLocationIndex: Int = 0,
+    var locationIndex: Int = 0,
     var teamALoyalty: Int = 0,
     var teamBLoyalty: Int = 0,
 
