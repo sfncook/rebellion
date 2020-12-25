@@ -145,13 +145,9 @@ class GameStateViewModel @Inject constructor(
     }
     fun setFactoryBuildOrder(factoryId: Long, destPlanetId: Long, buildTargetType: FactoryBuildTargetType, gameStateId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            val factory = getFactory(factoryId)
-            val srcPlanet = getPlanet(factory.locationPlanetId)
-            val dstPlanet = getPlanet(destPlanetId)
-            val tripDurationDays = Math.abs(srcPlanet.locationIndex - dstPlanet.locationIndex)
             val gameState = getGameState(gameStateId)
             val dayBuildComplete = gameState.gameTime + 3
-            gameStateRepository.setFactoryBuildOrder(factoryId, dayBuildComplete, buildTargetType)
+            gameStateRepository.setFactoryBuildOrder(factoryId, dayBuildComplete, buildTargetType, destPlanetId)
             postUpdate(gameStateId)
         }
     }

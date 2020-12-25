@@ -108,14 +108,14 @@ class FactoryBuildDialogFragment: DialogFragment() {
         }
 
         // planet selection event
-        sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, planetId ->
+        sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, destPlanetId ->
             if(selectedBuildTargetType!=null) {
                 val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
                 val keyCurrentGameId = getString(R.string.keyCurrentGameId)
                 val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
                 if(sharedPref?.contains(keyCurrentGameId) == true) {
                     val currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
-                    gameStateViewModel.setFactoryBuildOrder(selectedFactoryId, planetId, selectedBuildTargetType!!, currentGameStateId)
+                    gameStateViewModel.setFactoryBuildOrder(selectedFactoryId, destPlanetId, selectedBuildTargetType!!, currentGameStateId)
                 } else {
                     println("ERROR No current game ID found in shared preferences")
                 }
