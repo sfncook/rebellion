@@ -51,6 +51,7 @@ class StructureListAdapter(
     ) : RecyclerView.ViewHolder(view) {
         val factoryLabel: TextView = view.findViewById(R.id.factory_label)
         val factoryImg: ImageView = view.findViewById(R.id.factory_img)
+        val buildTargetTypeText: TextView = view.findViewById(R.id.factory_buildTargetType)
 
         init {
             val planetTeam = Utilities.getPlanetLoyalty(planetWithUnits.planet)
@@ -121,6 +122,7 @@ class StructureListAdapter(
                     FactoryType.TrainingFaciliy -> R.drawable.factory_training_facility
                 }
                 factoryViewHolder.factoryImg.setImageResource(imgSrc)
+                factoryViewHolder.buildTargetTypeText.text = factory.buildTargetType?.value
             }
             DefenseStructure::class -> {
                 val defenseStructure = structure as DefenseStructure
