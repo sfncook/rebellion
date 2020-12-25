@@ -22,7 +22,7 @@ data class Factory(
     var factoryType: FactoryType = FactoryType.TrainingFaciliy,
     @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long = 0,
 
-    var buildTargetType: FactoryBuildTargetType? = FactoryBuildTargetType.ConstructionYard_ConstructionYard,
+    var buildTargetType: FactoryBuildTargetType? = null,
     var dayBuildComplete: Long = 0,
     @ColumnInfo(name = "deliver_built_structure_to_planet_id", index = true) var deliverBuiltStructureToPlanetId: Long? = null,
 
