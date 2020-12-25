@@ -26,13 +26,25 @@ class FactoryBuildDialogFragment: DialogFragment() {
     private var lastGroupExpandedPos: Int = -1
     private var selectedFactoryId: Long = 0
     private lateinit var selectedFactory: Factory
-    private var selectedBuildTargetType = FactoryBuildTargetType.ConstructionYard
+    private lateinit var selectedBuildTargetType: FactoryBuildTargetType
 
+    // Structures
     private lateinit var buildBtnConstructionYard: MaterialButton
     private lateinit var buildBtnShipYard: MaterialButton
     private lateinit var buildBtnTrainingFacility: MaterialButton
     private lateinit var buildBtnOrbitalBattery: MaterialButton
     private lateinit var buildBtnPlanetaryShield: MaterialButton
+    // Ships
+    private lateinit var buildBtnShip2: MaterialButton
+    private lateinit var buildBtnShip3: MaterialButton
+    private lateinit var buildBtnShip4: MaterialButton
+    private lateinit var buildBtnShip5: MaterialButton
+    private lateinit var buildBtnShip6: MaterialButton
+    private lateinit var buildBtnShip7: MaterialButton
+    private lateinit var buildBtnShip8: MaterialButton
+    // Personelle
+    private lateinit var buildBtnShipGarrison: MaterialButton
+    private lateinit var buildBtnShipSpecOps: MaterialButton
 
     private lateinit var containerBtnsConstructionYard: View
     private lateinit var containerBtnsShipYard: View
@@ -115,13 +127,36 @@ class FactoryBuildDialogFragment: DialogFragment() {
         buildBtnTrainingFacility = root.findViewById(R.id.factmove_build_trainingfacility)
         buildBtnOrbitalBattery = root.findViewById(R.id.factmove_build_orbitalbattery)
         buildBtnPlanetaryShield = root.findViewById(R.id.factmove_build_planetaryshield)
+
+        buildBtnShip2 = root.findViewById(R.id.factmove_build_2)
+        buildBtnShip3 = root.findViewById(R.id.factmove_build_3)
+        buildBtnShip4 = root.findViewById(R.id.factmove_build_4)
+        buildBtnShip5 = root.findViewById(R.id.factmove_build_5)
+        buildBtnShip6 = root.findViewById(R.id.factmove_build_6)
+        buildBtnShip7 = root.findViewById(R.id.factmove_build_7)
+        buildBtnShip8 = root.findViewById(R.id.factmove_build_8)
+
+        buildBtnShipGarrison = root.findViewById(R.id.factmove_build_garrison)
+        buildBtnShipSpecOps = root.findViewById(R.id.factmove_build_specops)
+
         updateBuildBtns(root.context)
 
-        buildBtnConstructionYard.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ConstructionYard)}
-        buildBtnShipYard.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard)}
-        buildBtnTrainingFacility.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.TrainingFacility)}
-        buildBtnOrbitalBattery.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.OrbitalBattery)}
-        buildBtnPlanetaryShield.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.PlanetaryShield)}
+        buildBtnConstructionYard.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ConstructionYard_ConstructionYard)}
+        buildBtnShipYard.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ConstructionYard_ShipYard)}
+        buildBtnTrainingFacility.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ConstructionYard_TrainingFacility)}
+        buildBtnOrbitalBattery.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ConstructionYard_OrbitalBattery)}
+        buildBtnPlanetaryShield.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ConstructionYard_PlanetaryShield)}
+
+        buildBtnShip2.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard_Bireme)}
+        buildBtnShip3.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard_Trireme)}
+        buildBtnShip4.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard_Quadrireme)}
+        buildBtnShip5.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard_Quinquereme)}
+        buildBtnShip6.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard_Hexareme)}
+        buildBtnShip7.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard_Septireme)}
+        buildBtnShip8.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.ShipYard_Octere)}
+
+        buildBtnShipGarrison.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.TrainingFac_Garrison)}
+        buildBtnShipSpecOps.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.TrainingFac_SpecOps)}
 
         return root
     }
@@ -158,29 +193,70 @@ class FactoryBuildDialogFragment: DialogFragment() {
         buildBtnTrainingFacility.setBackgroundColor(unselectedColor)
         buildBtnOrbitalBattery.setBackgroundColor(unselectedColor)
         buildBtnPlanetaryShield.setBackgroundColor(unselectedColor)
+        buildBtnShip2.setBackgroundColor(unselectedColor)
+        buildBtnShip3.setBackgroundColor(unselectedColor)
+        buildBtnShip4.setBackgroundColor(unselectedColor)
+        buildBtnShip5.setBackgroundColor(unselectedColor)
+        buildBtnShip6.setBackgroundColor(unselectedColor)
+        buildBtnShip7.setBackgroundColor(unselectedColor)
+        buildBtnShip8.setBackgroundColor(unselectedColor)
+        buildBtnShipGarrison.setBackgroundColor(unselectedColor)
+        buildBtnShipSpecOps.setBackgroundColor(unselectedColor)
+
 
         buildBtnConstructionYard.setTextColor(unselectedTextColor)
         buildBtnShipYard.setTextColor(unselectedTextColor)
         buildBtnTrainingFacility.setTextColor(unselectedTextColor)
         buildBtnOrbitalBattery.setTextColor(unselectedTextColor)
         buildBtnPlanetaryShield.setTextColor(unselectedTextColor)
+        buildBtnShip2.setTextColor(unselectedTextColor)
+        buildBtnShip3.setTextColor(unselectedTextColor)
+        buildBtnShip4.setTextColor(unselectedTextColor)
+        buildBtnShip5.setTextColor(unselectedTextColor)
+        buildBtnShip6.setTextColor(unselectedTextColor)
+        buildBtnShip7.setTextColor(unselectedTextColor)
+        buildBtnShip8.setTextColor(unselectedTextColor)
+        buildBtnShipGarrison.setTextColor(unselectedTextColor)
+        buildBtnShipSpecOps.setTextColor(unselectedTextColor)
 
         val selectedColor = ContextCompat.getColor(context, R.color.purple_200)
         val selectedTextColor = ContextCompat.getColor(context, R.color.white)
         when(selectedBuildTargetType) {
-            FactoryBuildTargetType.ConstructionYard -> buildBtnConstructionYard.setBackgroundColor(selectedColor)
-            FactoryBuildTargetType.ShipYard -> buildBtnShipYard.setBackgroundColor(selectedColor)
-            FactoryBuildTargetType.TrainingFacility -> buildBtnTrainingFacility.setBackgroundColor(selectedColor)
-            FactoryBuildTargetType.OrbitalBattery -> buildBtnOrbitalBattery.setBackgroundColor(selectedColor)
-            FactoryBuildTargetType.PlanetaryShield -> buildBtnPlanetaryShield.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ConstructionYard_ConstructionYard -> buildBtnConstructionYard.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ConstructionYard_ShipYard -> buildBtnShipYard.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ConstructionYard_TrainingFacility -> buildBtnTrainingFacility.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ConstructionYard_OrbitalBattery -> buildBtnOrbitalBattery.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ConstructionYard_PlanetaryShield -> buildBtnPlanetaryShield.setBackgroundColor(selectedColor)
+
+            FactoryBuildTargetType.ShipYard_Bireme -> buildBtnShip2.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ShipYard_Trireme -> buildBtnShip3.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ShipYard_Quadrireme -> buildBtnShip4.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ShipYard_Quinquereme -> buildBtnShip5.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ShipYard_Hexareme -> buildBtnShip6.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ShipYard_Septireme -> buildBtnShip7.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.ShipYard_Octere -> buildBtnShip8.setBackgroundColor(selectedColor)
+
+            FactoryBuildTargetType.TrainingFac_Garrison -> buildBtnShipGarrison.setBackgroundColor(selectedColor)
+            FactoryBuildTargetType.TrainingFac_SpecOps -> buildBtnShipSpecOps.setBackgroundColor(selectedColor)
             else -> {}
         }
         when(selectedBuildTargetType) {
-            FactoryBuildTargetType.ConstructionYard -> buildBtnConstructionYard.setTextColor(selectedTextColor)
-            FactoryBuildTargetType.ShipYard -> buildBtnShipYard.setTextColor(selectedTextColor)
-            FactoryBuildTargetType.TrainingFacility -> buildBtnTrainingFacility.setTextColor(selectedTextColor)
-            FactoryBuildTargetType.OrbitalBattery -> buildBtnOrbitalBattery.setTextColor(selectedTextColor)
-            FactoryBuildTargetType.PlanetaryShield -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ConstructionYard_ConstructionYard -> buildBtnConstructionYard.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ConstructionYard_ShipYard -> buildBtnShipYard.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ConstructionYard_TrainingFacility -> buildBtnTrainingFacility.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ConstructionYard_OrbitalBattery -> buildBtnOrbitalBattery.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ConstructionYard_PlanetaryShield -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+
+            FactoryBuildTargetType.ShipYard_Bireme -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ShipYard_Trireme -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ShipYard_Quadrireme -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ShipYard_Quinquereme -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ShipYard_Hexareme -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ShipYard_Septireme -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.ShipYard_Octere -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+
+            FactoryBuildTargetType.TrainingFac_Garrison -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
+            FactoryBuildTargetType.TrainingFac_SpecOps -> buildBtnPlanetaryShield.setTextColor(selectedTextColor)
             else -> {}
         }
     }
