@@ -5,7 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.commands.ShipMoveDialogFragment
+import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.DefenseStructure
 import com.rebllelionandroid.core.database.gamestate.Factory
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
@@ -13,7 +17,8 @@ import com.rebllelionandroid.core.database.gamestate.enums.DefenseStructureType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 
 class StructureListAdapter(
-    planetWithUnits: PlanetWithUnits
+    planetWithUnits: PlanetWithUnits,
+    private val currentGameStateId: Long
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val structuresList = mutableListOf<Any>()
@@ -36,17 +41,40 @@ class StructureListAdapter(
         }
     }
 
-    class FactoryViewHolder(view: View, structureList: List<Any>) : RecyclerView.ViewHolder(view) {
+    class FactoryViewHolder(
+        view: View,
+        structureList: List<Any>,
+        private val currentGameStateId: Long
+    ) : RecyclerView.ViewHolder(view) {
         val factoryLabel: TextView = view.findViewById(R.id.factory_label)
         val factoryImg: ImageView = view.findViewById(R.id.factory_img)
+
+        init {
+            view.setOnClickListener {
+                val structureObj = structureList[adapterPosition]
+                if(structureObj::class == Factory::class) {
+                    val factory = structureObj as Factory
+                    val bundle = bundleOf(
+                        "factoryId" to factory.id,
+                        "currentGameStateId" to currentGameStateId
+                    )
+                    val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
+                    val shipMoveDialogFragment = ShipMoveDialogFragment()
+                    shipMoveDialogFragment.arguments = bundle
+                    shipMoveDialogFragment.show(fm, "shipMoveDialogFragment")
+                } else {
+                    println("Whoops! the FactoryViewHolder got a click event for an object that is not of type Factory: ${structureObj::class.qualifiedName}")
+                }
+            }
+        }
     }
 
-    class DefenseViewHolder(view: View, structureList: List<Any>) : RecyclerView.ViewHolder(view) {
+    class DefenseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val label: TextView = view.findViewById(R.id.unit_label)
         val img: ImageView = view.findViewById(R.id.unit_img)
     }
 
-    class EmptyViewHolder(view: View, structureList: List<Any>) : RecyclerView.ViewHolder(view)
+    class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     override fun getItemViewType(position: Int): Int {
         val structure = structuresList[position]
@@ -67,9 +95,9 @@ class StructureListAdapter(
         val view = LayoutInflater.from(viewGroup.context).inflate(layoutId, viewGroup, false)
 
         return when(viewType) {
-            StructureType.Factory.value -> FactoryViewHolder(view, structuresList)
-            StructureType.Defense.value -> DefenseViewHolder(view, structuresList)
-            else -> EmptyViewHolder(view, structuresList)
+            StructureType.Factory.value -> FactoryViewHolder(view, structuresList, currentGameStateId)
+            StructureType.Defense.value -> DefenseViewHolder(view)
+            else -> EmptyViewHolder(view)
         }
     }
 

@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class PlanetFactoriesFragment : Fragment() {
     private var selectedPlanetId: Long = 0
     private lateinit var listFactories: RecyclerView
+    private var currentGameStateId: Long = 0
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -23,12 +24,13 @@ class PlanetFactoriesFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_planet_factories, container, false)
         selectedPlanetId = arguments?.getLong("planetId")!!
         listFactories = root.findViewById(R.id.list_factories)
+        currentGameStateId = arguments?.getLong("currentGameStateId")!!
 
         val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
         val gameStateWithSectors = gameStateViewModel.gameState
         gameStateWithSectors.observe(viewLifecycleOwner , {
             gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
-                val viewAdapter = StructureListAdapter(planetWithUnits)
+                val viewAdapter = StructureListAdapter(planetWithUnits, currentGameStateId)
                 viewLifecycleOwner.lifecycleScope.launch {
                     listFactories.adapter = viewAdapter
                 }
