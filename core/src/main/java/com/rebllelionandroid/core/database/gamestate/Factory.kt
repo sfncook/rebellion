@@ -10,6 +10,10 @@ import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
                 ForeignKey(entity = Planet::class,
                         parentColumns = arrayOf("id"),
                         childColumns = arrayOf("planet_id"),
+                        onDelete = ForeignKey.CASCADE),
+                ForeignKey(entity = Planet::class,
+                        parentColumns = arrayOf("id"),
+                        childColumns = arrayOf("deliver_built_structure_to_planet_id"),
                         onDelete = ForeignKey.CASCADE)
         ]
 )
@@ -20,8 +24,10 @@ data class Factory(
 
     var buildTargetType: FactoryBuildTargetType? = FactoryBuildTargetType.ConstructionYard_ConstructionYard,
     var dayBuildComplete: Long = 0,
+    @ColumnInfo(name = "deliver_built_structure_to_planet_id", index = true) var deliverBuiltStructureToPlanetId: Long? = null,
 
-    var isTravelling: Boolean = false, // Travelling for delivery
+    // Once the structure is built then it may need to travel to the 'locationPlanetId' above
+    var isTravelling: Boolean = false,
     var dayArrival: Long = 0,
 
     @Ignore var updated: Boolean = false

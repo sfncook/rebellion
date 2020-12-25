@@ -26,7 +26,7 @@ class FactoryBuildDialogFragment: DialogFragment() {
     private var lastGroupExpandedPos: Int = -1
     private var selectedFactoryId: Long = 0
     private lateinit var selectedFactory: Factory
-    private lateinit var selectedBuildTargetType: FactoryBuildTargetType
+    private var selectedBuildTargetType: FactoryBuildTargetType? = null
 
     // Structures
     private lateinit var buildBtnConstructionYard: MaterialButton
@@ -109,16 +109,18 @@ class FactoryBuildDialogFragment: DialogFragment() {
 
         // planet selection event
         sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, planetId ->
-            val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
-            val keyCurrentGameId = getString(R.string.keyCurrentGameId)
-            val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
-            if(sharedPref?.contains(keyCurrentGameId) == true) {
-                val currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
-                gameStateViewModel.setFactoryBuildOrder(selectedFactoryId, planetId, selectedBuildTargetType, currentGameStateId)
-            } else {
-                println("ERROR No current game ID found in shared preferences")
+            if(selectedBuildTargetType!=null) {
+                val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
+                val keyCurrentGameId = getString(R.string.keyCurrentGameId)
+                val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+                if(sharedPref?.contains(keyCurrentGameId) == true) {
+                    val currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
+                    gameStateViewModel.setFactoryBuildOrder(selectedFactoryId, planetId, selectedBuildTargetType!!, currentGameStateId)
+                } else {
+                    println("ERROR No current game ID found in shared preferences")
+                }
+                dismiss()
             }
-            dismiss()
             true
         }
 
