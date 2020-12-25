@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.commands.FactoryBuildDialogFragment
 import com.rebellionandroid.components.commands.ShipMoveDialogFragment
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.DefenseStructure
@@ -59,9 +60,9 @@ class StructureListAdapter(
                         "currentGameStateId" to currentGameStateId
                     )
                     val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
-                    val shipMoveDialogFragment = ShipMoveDialogFragment()
-                    shipMoveDialogFragment.arguments = bundle
-                    shipMoveDialogFragment.show(fm, "shipMoveDialogFragment")
+                    val factoryBuildDialogFragment = FactoryBuildDialogFragment()
+                    factoryBuildDialogFragment.arguments = bundle
+                    factoryBuildDialogFragment.show(fm, "shipMoveDialogFragment")
                 } else {
                     println("Whoops! the FactoryViewHolder got a click event for an object that is not of type Factory: ${structureObj::class.qualifiedName}")
                 }

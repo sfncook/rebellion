@@ -48,7 +48,7 @@ class ShipMoveDialogFragment: DialogFragment() {
                 gameStateViewModel.getPlanetWithUnits(selectedShipWithUnits.ship.locationPlanetId) { planetWithUnits ->
                     val selectedSectorId = planetWithUnits.planet.sectorId
                     viewLifecycleOwner.lifecycleScope.launch {
-                        updateSectorsList(gameStateWithSectors, selectedSectorId, selectedShipWithUnits)
+                        updateSectorsList(gameStateWithSectors, selectedSectorId)
                     }
                 }
             }
@@ -77,20 +77,12 @@ class ShipMoveDialogFragment: DialogFragment() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
-    private fun updateSectorsList(
-        gameStateWithSectors: GameStateWithSectors,
-        selectedSectorId: Long,
-        selectedShipWithUnits: ShipWithUnits
-    ) {
+    private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors, selectedSectorId: Long) {
         val sectors = gameStateWithSectors.sectors
         val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
             s1.sector.name.compareTo(s2.sector.name)
         })
-        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(
-            rootContext,
-            sortedSectors.toList(),
-            selectedShipWithUnits
-        )
+        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList())
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
 
         // Expand selected sector

@@ -18,7 +18,7 @@ class GameStateRepository @Inject constructor(
     fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long) = gameStateDao.getAllUnitsOnTheSurfaceOfPlanet(planetId)
     fun getUnit(unitId: Long) = gameStateDao.getUnit(unitId)
     fun getAllPlanets() = gameStateDao.getAllPlanets()
-    fun stopAllGameStates() = gameStateDao.stopAllGameStates()
+    fun getFactory(factoryId: Long) = gameStateDao.getFactory(factoryId)
 
 
     // Inserts
@@ -32,6 +32,7 @@ class GameStateRepository @Inject constructor(
 
 
     // Updates
+    fun stopAllGameStates() = gameStateDao.stopAllGameStates()
     fun setGameInProgress(gameStateId: Long, gameInProgress: Int) = gameStateDao.setGameInProgress(gameStateId, gameInProgress)
     fun moveUnitToShip(unitId: Long, shipId: Long) = gameStateDao.moveUnitToShip(unitId, shipId)
     fun moveUnitToPlanet(unitId: Long, planetId: Long) = gameStateDao.moveUnitToPlanet(unitId, planetId)

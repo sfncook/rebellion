@@ -19,8 +19,7 @@ import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 internal class SectorsAndPlanetsListAdapter(
     private val context: Context,
-    private val sectorsWithPlanets: List<SectorWithPlanets>,
-    private val selectedShipWithUnits: ShipWithUnits
+    private val sectorsWithPlanets: List<SectorWithPlanets>
 ) : BaseExpandableListAdapter() {
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {

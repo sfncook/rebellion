@@ -50,6 +50,9 @@ interface GameStateDao {
     @Query("SELECT * FROM planets")
     fun getAllPlanets(): List<Planet>
 
+    @Query("SELECT * FROM factories WHERE id = :factoryId")
+    fun getFactory(factoryId: Long): Factory
+
 
 
     // Inserts
