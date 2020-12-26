@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:paddingBottom="20dp"
     >
     <ImageView
         android:id="@+id/factory_img"
@@ -69,6 +70,7 @@
             android:layout_height="wrap_content"
             android:text="Deliver To:"
             android:textSize="12sp"
+            android:textColor="@color/purple_500"
             android:layout_marginStart="20dp"
             />
         <TextView
@@ -77,6 +79,7 @@
             android:layout_height="wrap_content"
             android:text="XXX"
             android:textSize="12sp"
+            android:textColor="@color/purple_500"
             android:layout_marginStart="3dp"
             android:textStyle="bold" />
     </LinearLayout>

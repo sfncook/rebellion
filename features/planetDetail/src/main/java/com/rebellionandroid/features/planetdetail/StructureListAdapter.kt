@@ -41,8 +41,8 @@ class StructureListAdapter(
     }
 
     class DefenseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val label: TextView = view.findViewById(R.id.unit_label)
-        val img: ImageView = view.findViewById(R.id.unit_img)
+        val label: TextView = view.findViewById(R.id.label)
+        val img: ImageView = view.findViewById(R.id.img)
     }
 
     class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view)
