@@ -62,7 +62,6 @@ class SectorDetailFragment: Fragment() {
         )
         if(sharedPref?.contains(keyCurrentGameId) == true) {
             currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
-            gameStateViewModel.loadAllGameStateWithSectors(currentGameStateId)
         } else {
             println("ERROR No current game ID foudn in shared preferences")
         }

@@ -76,7 +76,6 @@ class FactoryBuildDialogFragment: DialogFragment() {
             val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
             if(sharedPref?.contains(keyCurrentGameId) == true) {
                 val currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
-                gameStateViewModel.loadAllGameStateWithSectors(currentGameStateId)
                 val gameStateWithSectors = gameStateViewModel.getGameStateWithSectors(currentGameStateId)
                 selectedFactory = gameStateViewModel.getFactory(selectedFactoryId)
                 val planet = gameStateViewModel.getPlanet(selectedFactory.locationPlanetId)

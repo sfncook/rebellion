@@ -11,6 +11,7 @@ import com.rebellionandroid.features.planetdetail.R
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.Factory
+import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
@@ -26,6 +27,7 @@ class FactoryViewHolder(
     val buildInfoContainer: View = view.findViewById(R.id.factory_buildinfo_container)
     val buildTargetTypeText: TextView = view.findViewById(R.id.factory_buildTargetType)
     val buildTargetDueDateText: TextView = view.findViewById(R.id.factory_buildTarget_duedate)
+    val buildTargetDeliverText: TextView = view.findViewById(R.id.factory_buildTarget_deliver)
 
     init {
         val planetTeam = Utilities.getPlanetLoyalty(planetWithUnits.planet)
@@ -49,7 +51,7 @@ class FactoryViewHolder(
         }// if
     }// init
 
-    fun bindViewHolder(factory: Factory) {
+    fun bindViewHolder(factory: Factory, deliverToPlanet: Planet?) {
         factoryLabel.text = factory.factoryType.value
         val imgSrc  = when(factory.factoryType) {
             FactoryType.ConstructionYard -> R.drawable.factory_ctor_yard
@@ -61,6 +63,9 @@ class FactoryViewHolder(
             buildInfoContainer.visibility = View.VISIBLE
             buildTargetDueDateText.text = factory.dayBuildComplete.toString()
             buildTargetTypeText.text = factory.buildTargetType?.value
+            if (deliverToPlanet != null) {
+                buildTargetDeliverText.text = deliverToPlanet.name
+            }
         } else {
             buildInfoContainer.visibility = View.GONE
         }

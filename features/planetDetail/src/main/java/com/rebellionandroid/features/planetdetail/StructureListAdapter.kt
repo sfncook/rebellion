@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.features.planetdetail.viewHolders.FactoryViewHolder
 import com.rebllelionandroid.core.database.gamestate.DefenseStructure
 import com.rebllelionandroid.core.database.gamestate.Factory
+import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.DefenseStructureType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class StructureListAdapter(
     private val planetWithUnits: PlanetWithUnits,
-    private val myTeam: TeamLoyalty
+    private val myTeam: TeamLoyalty,
+    private val planetIdsToPlanets: Map<Long, Planet>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val structuresList = mutableListOf<Any>()
@@ -77,7 +79,7 @@ class StructureListAdapter(
             Factory::class -> {
                 val factory = structure as Factory
                 val factoryViewHolder = viewHolder as FactoryViewHolder
-                factoryViewHolder.bindViewHolder(factory)
+                factoryViewHolder.bindViewHolder(factory, planetIdsToPlanets[factory.deliverBuiltStructureToPlanetId])
             }
             DefenseStructure::class -> {
                 val defenseStructure = structure as DefenseStructure

@@ -30,7 +30,7 @@ class PlanetFactoriesFragment : Fragment() {
         gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
             val myTeam = gameStateWithSectors.gameState.myTeam
             gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
-                val viewAdapter = StructureListAdapter(planetWithUnits, myTeam)
+                val viewAdapter = StructureListAdapter(planetWithUnits, myTeam, gameStateViewModel.planetIdsToPlanets)
                 viewLifecycleOwner.lifecycleScope.launch {
                     listFactories.adapter = viewAdapter
                 }

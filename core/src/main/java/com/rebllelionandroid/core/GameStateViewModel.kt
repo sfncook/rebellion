@@ -32,10 +32,20 @@ class GameStateViewModel @Inject constructor(
     val gameState: LiveData<GameStateWithSectors>
         get() = _gameState
 
+    private val _planetIdsToPlanets = mutableMapOf<Long, Planet>()
+    val planetIdsToPlanets: Map<Long, Planet>
+        get() = _planetIdsToPlanets
+
 
     fun loadAllGameStateWithSectors(gameId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val gameState = gameStateRepository.getGameStateWithSectors(gameId)
+            _planetIdsToPlanets.clear()
+            for(sectorWithPlanets in gameState.sectors) {
+                for(planetWithUnits in sectorWithPlanets.planets) {
+                    _planetIdsToPlanets.put(planetWithUnits.planet.id, planetWithUnits.planet)
+                }
+            }
             _gameState.postValue(gameState)
         }
     }

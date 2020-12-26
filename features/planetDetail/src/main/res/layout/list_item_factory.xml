@@ -37,7 +37,6 @@
             android:text="Building:"
             android:textSize="12sp"
             />
-
         <TextView
             android:id="@+id/factory_buildTargetType"
             android:layout_width="wrap_content"
@@ -46,6 +45,7 @@
             android:text="XXX"
             android:textSize="12sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/factory_buildTarget_duedate_label"
             android:layout_width="wrap_content"
@@ -56,6 +56,23 @@
             />
         <TextView
             android:id="@+id/factory_buildTarget_duedate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XXX"
+            android:textSize="12sp"
+            android:layout_marginStart="3dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/factory_buildTarget_deliver_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deliver To:"
+            android:textSize="12sp"
+            android:layout_marginStart="20dp"
+            />
+        <TextView
+            android:id="@+id/factory_buildTarget_deliver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="XXX"
