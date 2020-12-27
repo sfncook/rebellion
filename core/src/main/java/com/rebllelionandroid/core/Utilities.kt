@@ -71,15 +71,28 @@ class Utilities {
             return planetsWithUnits.units.groupBy { it.team }
         }
 
+        fun getPlanetEnergiesFull(planetWithUnit: PlanetWithUnits): Int {
+            val manyFactories = planetWithUnit.factories.size
+            val manyDefStructure = planetWithUnit.defenseStructures.size
+            val manyEnergiesFull = manyFactories + manyDefStructure
+            return manyEnergiesFull
+        }
+
+        fun getPlanetEnergiesEmpty(planetWithUnit: PlanetWithUnits): Int {
+            val manyFactories = planetWithUnit.factories.size
+            val manyDefStructure = planetWithUnit.defenseStructures.size
+            val manyEnergiesFull = manyFactories + manyDefStructure
+            val manyEnergiesEmpty = planetWithUnit.planet.energyCap - manyEnergiesFull
+            return manyEnergiesEmpty
+        }
+
         fun populateEnergiesUi(
             context: Context,
             energyList: LinearLayout,
             planetWithUnit: PlanetWithUnits
         ) {
-            val manyFactories = planetWithUnit.factories.size
-            val manyDefStructure = planetWithUnit.defenseStructures.size
-            val manyEnergiesFull = manyFactories + manyDefStructure
-            val manyEnergiesEmpty = planetWithUnit.planet.energyCap - manyEnergiesFull
+            val manyEnergiesFull = getPlanetEnergiesFull(planetWithUnit)
+            val manyEnergiesEmpty = getPlanetEnergiesEmpty(planetWithUnit)
 
             energyList.removeAllViews()
             val layoutParams = LinearLayout.LayoutParams(30, 30)

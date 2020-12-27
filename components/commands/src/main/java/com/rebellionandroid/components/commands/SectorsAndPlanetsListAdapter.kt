@@ -1,6 +1,7 @@
 package com.rebellionandroid.components.commands
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +20,7 @@ import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 internal class SectorsAndPlanetsListAdapter(
     private val context: Context,
     private val sectorsWithPlanets: List<SectorWithPlanets>,
-    private var planetFilter: (planet: Planet) -> Boolean = {true}
+    private var filterPlanet: (planetWithUnits: PlanetWithUnits) -> Boolean = {true}
 ) : BaseExpandableListAdapter() {
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
@@ -56,6 +57,7 @@ internal class SectorsAndPlanetsListAdapter(
         val manyEnemyShipsInSectorTxt = convertView2.findViewById<TextView>(com.rebellionandroid.components.entityUi.R.id.many_enemy_ships_in_sector_txt)
         val enemyShipsInSectorImg = convertView2.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.enemy_ships_in_sector_img)
         val energyList: LinearLayout = convertView2.findViewById(R.id.ship_move_planet_energy_imgs_list)
+        val shipMoveBg: View = convertView2.findViewById(R.id.ship_move_bg)
 
         if (expandedListTextView != null) {
             expandedListTextView.text = planetWithUnits.planet.name
@@ -87,6 +89,12 @@ internal class SectorsAndPlanetsListAdapter(
         }
 
         Utilities.populateEnergiesUi(convertView2.context, energyList, planetWithUnits)
+
+        if(filterPlanet(planetWithUnits)) {
+            shipMoveBg.setBackgroundColor(Color.WHITE)
+        } else {
+            shipMoveBg.setBackgroundColor(Color.GRAY)
+        }
 
         return convertView2
     }

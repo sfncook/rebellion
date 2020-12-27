@@ -15,6 +15,7 @@ import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.Factory
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.core.database.gamestate.Planet
+import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
@@ -114,7 +115,7 @@ class FactoryBuildDialogFragment: DialogFragment() {
         sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, destPlanetId ->
             if(selectedBuildTargetType!=null) {
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                    gameStateViewModel.getPlanet(destPlanetId) { destPlanet ->
+                    gameStateViewModel.getPlanetWithUnits(destPlanetId) { destPlanet ->
                         if(filterPlanet(destPlanet)) {
                             gameStateViewModel.setFactoryBuildOrder(
                                 selectedFactoryId,
@@ -191,9 +192,10 @@ class FactoryBuildDialogFragment: DialogFragment() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
-    private fun filterPlanet(planet: Planet): Boolean {
-        val planetLoyalty = Utilities.getPlanetLoyalty(planet)
-        return planetLoyalty == TeamLoyalty.TeamA
+    private fun filterPlanet(planetWithUnit: PlanetWithUnits): Boolean {
+        val planetLoyalty = Utilities.getPlanetLoyalty(planetWithUnit.planet)
+        return planetLoyalty == TeamLoyalty.TeamA &&
+            Utilities.getPlanetEnergiesEmpty(planetWithUnit)>0
     }
 
     private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors, selectedSectorId: Long) {
