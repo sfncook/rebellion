@@ -74,9 +74,13 @@ class Utilities {
         fun populateEnergiesUi(
             context: Context,
             energyList: LinearLayout,
-            manyEnergiesFull: Int,
-            manyEnergiesEmpty: Int
+            planetWithUnit: PlanetWithUnits
         ) {
+            val manyFactories = planetWithUnit.factories.size
+            val manyDefStructure = planetWithUnit.defenseStructures.size
+            val manyEnergiesFull = manyFactories + manyDefStructure
+            val manyEnergiesEmpty = planetWithUnit.planet.energyCap - manyEnergiesFull
+
             energyList.removeAllViews()
             val layoutParams = LinearLayout.LayoutParams(30, 30)
             layoutParams.setMargins(3, 3, 3, 3)

@@ -87,6 +87,8 @@ internal class SectorsAndPlanetsListAdapter(
             )
         }
 
+        Utilities.populateEnergiesUi(convertView2.context, energyList, planetWithUnits)
+
         return convertView2
     }
 

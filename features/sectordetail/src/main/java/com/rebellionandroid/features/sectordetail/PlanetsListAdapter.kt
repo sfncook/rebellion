@@ -149,16 +149,7 @@ class PlanetsListAdapter(
             viewHolder.manyFactories.text = planetWithUnit.factories.size.toString()
         }
 
-        val manyFactories = planetWithUnit.factories.size
-        val manyDefStructure = planetWithUnit.defenseStructures.size
-        val manyEnergiesFull = manyFactories + manyDefStructure
-        val manyEnergiesEmpty = planetWithUnit.planet.energyCap - manyEnergiesFull
-        Utilities.populateEnergiesUi(
-            viewHolder.itemView.context,
-            viewHolder.energyList,
-            manyEnergiesFull,
-            manyEnergiesEmpty
-        )
+        Utilities.populateEnergiesUi(viewHolder.itemView.context, viewHolder.energyList, planetWithUnit)
 
         val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
         viewHolder.planetLoyaltyImg.setImageResource(imgId)

@@ -163,16 +163,7 @@ class PlanetUnitsFragment : Fragment() {
                     )
                     // **** Enemy Units ****
 
-                    val manyFactories = planetWithUnits.factories.size
-                    val manyDefStructure = planetWithUnits.defenseStructures.size
-                    val manyEnergiesFull = manyFactories + manyDefStructure
-                    val manyEnergiesEmpty = planetWithUnits.planet.energyCap - manyEnergiesFull
-                    Utilities.populateEnergiesUi(
-                        view.context,
-                        energyList,
-                        manyEnergiesFull,
-                        manyEnergiesEmpty
-                    )
+                    Utilities.populateEnergiesUi(view.context, energyList, planetWithUnits)
                 }
                 updateUnitsOnShips(planetWithUnits.shipsWithUnits, gameStateWithSectors.gameState.myTeam)
             }
