@@ -19,7 +19,8 @@ import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 internal class SectorsAndPlanetsListAdapter(
     private val context: Context,
-    private val sectorsWithPlanets: List<SectorWithPlanets>
+    private val sectorsWithPlanets: List<SectorWithPlanets>,
+    private var factoryBuildView: Boolean = false
 ) : BaseExpandableListAdapter() {
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
@@ -55,6 +56,7 @@ internal class SectorsAndPlanetsListAdapter(
         val shipsInSectorImg = convertView2.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.ships_in_sector_img)
         val manyEnemyShipsInSectorTxt = convertView2.findViewById<TextView>(com.rebellionandroid.components.entityUi.R.id.many_enemy_ships_in_sector_txt)
         val enemyShipsInSectorImg = convertView2.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.enemy_ships_in_sector_img)
+        val energyList: LinearLayout = convertView2.findViewById(R.id.ship_move_planet_energy_imgs_list)
 
         if (expandedListTextView != null) {
             expandedListTextView.text = planetWithUnits.planet.name

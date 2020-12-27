@@ -177,7 +177,7 @@ class FactoryBuildDialogFragment: DialogFragment() {
         val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
             s1.sector.name.compareTo(s2.sector.name)
         })
-        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList())
+        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList(), factoryBuildView = true)
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
 
         // Expand selected sector
