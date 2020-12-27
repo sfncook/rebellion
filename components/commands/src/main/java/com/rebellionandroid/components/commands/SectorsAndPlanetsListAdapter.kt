@@ -13,8 +13,6 @@ import androidx.core.content.ContextCompat
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
-import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
-import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 
 internal class SectorsAndPlanetsListAdapter(
