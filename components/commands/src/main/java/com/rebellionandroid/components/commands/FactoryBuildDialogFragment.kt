@@ -11,10 +11,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.rebllelionandroid.core.BaseActivity
+import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.Factory
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
+import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,6 +26,7 @@ class FactoryBuildDialogFragment: DialogFragment() {
 
     private lateinit var rootContext: Context
     private lateinit var sectorsAndPlanetsExpandableList: ExpandableListView
+    private var currentGameStateId: Long = 0
     private var lastGroupExpandedPos: Int = -1
     private var selectedFactoryId: Long = 0
     private lateinit var selectedFactory: Factory
@@ -109,16 +113,19 @@ class FactoryBuildDialogFragment: DialogFragment() {
         // planet selection event
         sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, destPlanetId ->
             if(selectedBuildTargetType!=null) {
-                val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
-                val keyCurrentGameId = getString(R.string.keyCurrentGameId)
-                val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
-                if(sharedPref?.contains(keyCurrentGameId) == true) {
-                    val currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
-                    gameStateViewModel.setFactoryBuildOrder(selectedFactoryId, destPlanetId, selectedBuildTargetType!!, currentGameStateId)
-                } else {
-                    println("ERROR No current game ID found in shared preferences")
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                    gameStateViewModel.getPlanet(destPlanetId) { destPlanet ->
+                        if(filterPlanet(destPlanet)) {
+                            gameStateViewModel.setFactoryBuildOrder(
+                                selectedFactoryId,
+                                destPlanetId,
+                                selectedBuildTargetType!!,
+                                currentGameStateId
+                            )
+                            dismiss()
+                        }
+                    }
                 }
-                dismiss()
             }
             true
         }
@@ -160,6 +167,18 @@ class FactoryBuildDialogFragment: DialogFragment() {
         buildBtnShipSpecOps.setOnClickListener {selectBuildTargetType(FactoryBuildTargetType.TrainingFac_SpecOps)}
 
         return root
+    } // onCreate
+
+    override fun onResume() {
+        super.onResume()
+        val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
+        val keyCurrentGameId = getString(R.string.keyCurrentGameId)
+        val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+        if(sharedPref?.contains(keyCurrentGameId) == true) {
+            currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
+        } else {
+            println("ERROR No current game ID found in shared preferences")
+        }
     }
 
     private fun selectBuildTargetType(factoryBuildTargetType: FactoryBuildTargetType) {
@@ -172,12 +191,17 @@ class FactoryBuildDialogFragment: DialogFragment() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
+    private fun filterPlanet(planet: Planet): Boolean {
+        val planetLoyalty = Utilities.getPlanetLoyalty(planet)
+        return planetLoyalty == TeamLoyalty.TeamA
+    }
+
     private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors, selectedSectorId: Long) {
         val sectors = gameStateWithSectors.sectors
         val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
             s1.sector.name.compareTo(s2.sector.name)
         })
-        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList(), factoryBuildView = true)
+        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList()) {p -> filterPlanet(p)}
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
 
         // Expand selected sector

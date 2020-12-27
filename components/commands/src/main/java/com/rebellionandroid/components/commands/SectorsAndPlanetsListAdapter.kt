@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.rebllelionandroid.core.Utilities
+import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 
@@ -18,7 +19,7 @@ import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 internal class SectorsAndPlanetsListAdapter(
     private val context: Context,
     private val sectorsWithPlanets: List<SectorWithPlanets>,
-    private var factoryBuildView: Boolean = false
+    private var planetFilter: (planet: Planet) -> Boolean = {true}
 ) : BaseExpandableListAdapter() {
 
     override fun getChild(listPosition: Int, expandedListPosition: Int): Any {
