@@ -1,13 +1,14 @@
 package com.rebllelionandroid.core.gameUpdater
 
 import com.rebllelionandroid.core.Utilities
+import com.rebllelionandroid.core.database.gamestate.Factory
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
+import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
-import com.rebllelionandroid.core.gameUpdater.events.PlanetConflictContinuesEvent
-import com.rebllelionandroid.core.gameUpdater.events.PlanetConflictStartsEvent
-import com.rebllelionandroid.core.gameUpdater.events.ShipArrivalEvent
-import com.rebllelionandroid.core.gameUpdater.events.UpdateEvent
+import com.rebllelionandroid.core.gameUpdater.events.*
 import com.rebllelionandroid.core.gameUpdater.uprising.UprisingEval
 import kotlin.random.Random
 
@@ -18,7 +19,7 @@ class GameUpdater {
             val updateEvents = mutableListOf<UpdateEvent>()
 
             gameStateWithSectors.gameState.gameTime = gameStateWithSectors.gameState.gameTime.plus(1)
-            val timeDay = gameStateWithSectors.gameState.gameTime
+            val gameTime = gameStateWithSectors.gameState.gameTime
 
             // *** Update Conflict Results ***
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
@@ -55,28 +56,8 @@ class GameUpdater {
             }// sectors
 
 
-            // *** Update Movement ***
-            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
-                // planets
-                sectorWithPlanets.planets.forEach { planetWithUnits ->
-                    val planet = planetWithUnits.planet
-                    // ships
-                    planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
-                        val ship = shipWithUnits.ship
-                        if(ship.isTraveling && timeDay >= ship.dayArrival ) {
-                            ship.isTraveling = false
-                            ship.dayArrival = 0
-                            ship.updated = true
-                            updateEvents.add(ShipArrivalEvent(ship, planet))
-                        }
-                    }// ships
+            updateEntityMovement(gameStateWithSectors, updateEvents)
 
-                    // units on surface
-                    planetWithUnits.units.forEach { unit ->
-
-                    }
-                }// planets
-            }// sectors
 
             // *** Check for conflict flags ***
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
@@ -109,13 +90,12 @@ class GameUpdater {
                 }// planets
             }// sectors
 
+            updateFactoryBuildOrders(gameStateWithSectors, updateEvents)
+
             return Pair(gameStateWithSectors, updateEvents)
         }// updateGameState
 
-        private fun applyDamage(
-            offensiveShips: List<ShipWithUnits>,
-            defensiveShips: List<ShipWithUnits>
-        ) {
+        private fun applyDamage(offensiveShips: List<ShipWithUnits>, defensiveShips: List<ShipWithUnits>) {
             offensiveShips.forEach { shipWithUnits ->
                 val ofShip = shipWithUnits.ship
                 if(Random.nextBoolean()) {
@@ -128,6 +108,54 @@ class GameUpdater {
                     defShip.updated = true
                 }
             }
+        }
+
+        private fun updateEntityMovement(gameStateWithSectors: GameStateWithSectors, updateEvents: MutableList<UpdateEvent>) {
+            val gameTime = gameStateWithSectors.gameState.gameTime
+            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+                // planets
+                sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    val planet = planetWithUnits.planet
+
+                    planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
+                        val ship = shipWithUnits.ship
+                        if(ship.isTraveling && gameTime >= ship.dayArrival ) {
+                            ship.isTraveling = false
+                            ship.dayArrival = 0
+                            ship.updated = true
+                            updateEvents.add(ShipArrivalEvent(ship, planet))
+                        }
+                    }
+
+                    planetWithUnits.factories.forEach { factory ->
+                        if(factory.isTravelling && gameTime >= factory.dayArrival ) {
+                            factory.isTravelling = false
+                            factory.dayArrival = 0
+                            factory.updated = true
+                            updateEvents.add(FactoryArrivalEvent(factory, planetWithUnits.planet))
+                        }
+                    }
+                }// planets
+            }// sectors
+        }
+
+        private fun updateFactoryBuildOrders(gameStateWithSectors: GameStateWithSectors, updateEvents: MutableList<UpdateEvent>) {
+            val gameTime = gameStateWithSectors.gameState.gameTime
+            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+                // planets
+                sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    planetWithUnits.factories.forEach { factory ->
+                        if(factory.buildTargetType != null && gameTime >= factory.dayBuildComplete) {
+                            when(factory.buildTargetType) {
+                                FactoryBuildTargetType.ConstructionYard_ConstructionYard -> createNewFactory(planetWithUnits, FactoryType.ConstructionYard)
+                            }
+                        }
+                    }
+                }// planets
+            }// sectors
+        }
+
+        private fun createNewFactory(planetWithUnits: PlanetWithUnits, factoryType: FactoryType, updateEvents: MutableList<UpdateEvent>) {
         }
     }// component
 }

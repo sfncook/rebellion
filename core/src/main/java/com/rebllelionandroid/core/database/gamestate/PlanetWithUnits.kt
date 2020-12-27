@@ -9,24 +9,24 @@ data class PlanetWithUnits(
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
-        val units: List<Unit>,
+        val units: MutableList<Unit>,
 
         @Relation(
                 entity = Ship::class,
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
-        val shipsWithUnits: List<ShipWithUnits>,
+        val shipsWithUnits: MutableList<ShipWithUnits>,
 
         @Relation(
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
-        val defenseStructures: List<DefenseStructure>,
+        val defenseStructures: MutableList<DefenseStructure>,
 
         @Relation(
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
-        val factories: List<Factory>
+        val factories: MutableList<Factory>
 )
