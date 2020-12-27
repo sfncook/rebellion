@@ -8,6 +8,7 @@ import com.rebllelionandroid.core.gameUpdater.events.PlanetConflictContinuesEven
 import com.rebllelionandroid.core.gameUpdater.events.PlanetConflictStartsEvent
 import com.rebllelionandroid.core.gameUpdater.events.ShipArrivalEvent
 import com.rebllelionandroid.core.gameUpdater.events.UpdateEvent
+import com.rebllelionandroid.core.gameUpdater.uprising.UprisingEval
 import kotlin.random.Random
 
 class GameUpdater {

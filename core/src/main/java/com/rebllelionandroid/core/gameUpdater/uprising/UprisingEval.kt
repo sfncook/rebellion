@@ -1,8 +1,4 @@
-package com.rebllelionandroid.core.gameUpdater
-
-import com.rebllelionandroid.core.Utilities
-import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
-import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+package com.rebllelionandroid.core.gameUpdater.uprising
 
 class UprisingEval {
     companion object {
@@ -37,10 +33,10 @@ class UprisingEval {
         )
 
         private val loytaltyToGarrisonToUprisingRank: Array<Map<Int, Pair<UprisingRank, Int>>> = arrayOf(
-            *Array(25) {garrToUpris_0_24},
-            *Array(25) {garrToUpris_25_49},
-            *Array(25) {garrToUpris_50_74},
-            *Array(25) {garrToUpris_75_100}
+            *Array(25) { garrToUpris_0_24 },
+            *Array(25) { garrToUpris_25_49 },
+            *Array(25) { garrToUpris_50_74 },
+            *Array(25) { garrToUpris_75_100 }
         )
 
 

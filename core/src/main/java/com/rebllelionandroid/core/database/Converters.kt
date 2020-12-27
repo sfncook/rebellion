@@ -3,7 +3,7 @@ package com.rebllelionandroid.core.database
 import androidx.room.TypeConverter
 import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
-import com.rebllelionandroid.core.gameUpdater.UprisingRank
+import com.rebllelionandroid.core.gameUpdater.uprising.UprisingRank
 import java.util.*
 
 class Converters {

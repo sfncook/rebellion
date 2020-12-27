@@ -1,7 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
 import androidx.room.*
-import com.rebllelionandroid.core.gameUpdater.UprisingRank
 
 @Entity(
         tableName = "planets",
