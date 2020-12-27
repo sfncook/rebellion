@@ -40,28 +40,28 @@ internal class SectorsAndPlanetsListAdapter(
         isLastChild: Boolean,
         convertView: View?,
         parent: ViewGroup?
-    ): View? {
+    ): View {
         val planetWithUnits = getChild(listPosition, expandedListPosition) as PlanetWithUnits
-        var convertView2: View? = convertView
-        if (convertView2 == null) {
+        val convertView2: View
+        if (convertView == null) {
             val layoutInflater = context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             convertView2 = layoutInflater.inflate(R.layout.ship_move_list_item_planet, null)
+        } else {
+            convertView2 = convertView
         }
-        val expandedListTextView = convertView2?.findViewById<TextView>(R.id.ship_move_planet_name)
-
-        val manyShipsInSectorTxt = convertView2?.findViewById<TextView>(com.rebellionandroid.components.entityUi.R.id.many_ships_in_sector_txt)
-        val shipsInSectorImg = convertView2?.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.ships_in_sector_img)
-
-        val manyEnemyShipsInSectorTxt = convertView2?.findViewById<TextView>(com.rebellionandroid.components.entityUi.R.id.many_enemy_ships_in_sector_txt)
-        val enemyShipsInSectorImg = convertView2?.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.enemy_ships_in_sector_img)
+        val expandedListTextView = convertView2.findViewById<TextView>(R.id.ship_move_planet_name)
+        val manyShipsInSectorTxt = convertView2.findViewById<TextView>(com.rebellionandroid.components.entityUi.R.id.many_ships_in_sector_txt)
+        val shipsInSectorImg = convertView2.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.ships_in_sector_img)
+        val manyEnemyShipsInSectorTxt = convertView2.findViewById<TextView>(com.rebellionandroid.components.entityUi.R.id.many_enemy_ships_in_sector_txt)
+        val enemyShipsInSectorImg = convertView2.findViewById<ImageView>(com.rebellionandroid.components.entityUi.R.id.enemy_ships_in_sector_img)
 
         if (expandedListTextView != null) {
             expandedListTextView.text = planetWithUnits.planet.name
         }
 
         val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planetWithUnits.planet)
-        val loyaltyImg = convertView2?.findViewById<ImageView>(R.id.ship_move_planet_loyalty_img)
+        val loyaltyImg = convertView2.findViewById<ImageView>(R.id.ship_move_planet_loyalty_img)
         if(loyaltyImg != null) {
             loyaltyImg.setImageResource(imgId)
             loyaltyImg.setColorFilter(
