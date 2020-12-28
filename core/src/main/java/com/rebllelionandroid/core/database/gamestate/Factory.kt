@@ -3,6 +3,7 @@ package com.rebllelionandroid.core.database.gamestate
 import androidx.room.*
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 @Entity(
         tableName = "factories",
@@ -21,6 +22,7 @@ data class Factory(
     @PrimaryKey var id: Long = 0,
     var factoryType: FactoryType = FactoryType.TrainingFaciliy,
     @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long = 0,
+    var team: TeamLoyalty = TeamLoyalty.Neutral,
 
     var buildTargetType: FactoryBuildTargetType? = null,
     var dayBuildComplete: Long? = null,

@@ -24,5 +24,6 @@ data class Ship(
         var destroyed: Boolean = false,
         var healthPoints: Int = 0,
 
-        @Ignore var updated: Boolean = false
+        @Ignore var updated: Boolean = false,
+        @Ignore var created: Boolean = false
 )
