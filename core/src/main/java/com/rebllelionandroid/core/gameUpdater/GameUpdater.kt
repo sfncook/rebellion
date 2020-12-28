@@ -185,6 +185,7 @@ class GameUpdater {
                             factory.buildTargetType = null
                             factory.dayBuildComplete = null
                             factory.deliverBuiltStructureToPlanetId = null
+                            factory.updated = true
                         }
                     }
                 }// planets

@@ -44,6 +44,7 @@ class GameStateRepository @Inject constructor(
     fun update(gameState: GameState) = gameStateDao.update(gameState)
     fun update(planet: Planet) = gameStateDao.update(planet)
     fun update(ship: Ship) = gameStateDao.update(ship)
+    fun update(factory: Factory) = gameStateDao.update(factory)
     fun delete(ship: Ship) = gameStateDao.delete(ship)
 
 }

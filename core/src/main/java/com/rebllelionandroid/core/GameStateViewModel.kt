@@ -226,6 +226,12 @@ class GameStateViewModel @Inject constructor(
                         gameStateRepository.update(shipWithUnits.ship)
                     }
                 }
+                planetWithUnits.factories.forEach { factory ->
+                    if(factory.updated) {
+                        factory.updated = false
+                        gameStateRepository.update(factory)
+                    }
+                }
             }
         }
     }

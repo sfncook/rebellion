@@ -91,6 +91,9 @@ interface GameStateDao {
     @Update
     fun update(ship: Ship)
 
+    @Update
+    fun update(factory: Factory)
+
     @Delete
     fun delete(ship: Ship)
 
