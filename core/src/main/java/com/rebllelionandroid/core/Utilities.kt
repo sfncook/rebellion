@@ -200,5 +200,21 @@ class Utilities {
                 enemyShipsInSectorImg.visibility = View.GONE
             }
         }
+
+        fun getPlanetWithId(gameStateWithSectors: GameStateWithSectors, planetId: Long): PlanetWithUnits? {
+            var respPlanetWithUnits: PlanetWithUnits? = null
+            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+                sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    if(planetWithUnits.planet.id == planetId)
+                        respPlanetWithUnits = planetWithUnits
+                }
+            }
+            return respPlanetWithUnits
+        }
+
+        fun getTravelArrivalDay(srcPlanet: Planet, dstPlanet: Planet, gameTime: Int): Int {
+            val tripDurationDays = Math.abs(srcPlanet.locationIndex - dstPlanet.locationIndex)
+            return gameTime + tripDurationDays
+        }
     }
 }

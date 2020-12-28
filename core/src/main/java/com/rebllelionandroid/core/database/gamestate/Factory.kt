@@ -23,7 +23,7 @@ data class Factory(
     @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long = 0,
 
     var buildTargetType: FactoryBuildTargetType? = null,
-    var dayBuildComplete: Long = 0,
+    var dayBuildComplete: Long? = null,
     @ColumnInfo(name = "deliver_built_structure_to_planet_id", index = true) var deliverBuiltStructureToPlanetId: Long? = null,
 
     // Once the structure is built then it may need to travel to the 'locationPlanetId' above

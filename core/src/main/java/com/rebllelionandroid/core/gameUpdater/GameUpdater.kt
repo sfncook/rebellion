@@ -3,7 +3,6 @@ package com.rebllelionandroid.core.gameUpdater
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.Factory
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
-import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
@@ -15,8 +14,9 @@ import kotlin.random.Random
 class GameUpdater {
 
     companion object {
-        fun updateGameState(gameStateWithSectors: GameStateWithSectors): Pair<GameStateWithSectors, List<UpdateEvent>> {
+        fun updateGameState(gameStateWithSectors: GameStateWithSectors): GameUpdateResponse {
             val updateEvents = mutableListOf<UpdateEvent>()
+            val newFactories = mutableListOf<Factory>()
 
             gameStateWithSectors.gameState.gameTime = gameStateWithSectors.gameState.gameTime.plus(1)
             val gameTime = gameStateWithSectors.gameState.gameTime
@@ -90,9 +90,9 @@ class GameUpdater {
                 }// planets
             }// sectors
 
-            updateFactoryBuildOrders(gameStateWithSectors, updateEvents)
+            updateFactoryBuildOrders(gameStateWithSectors, updateEvents, newFactories)
 
-            return Pair(gameStateWithSectors, updateEvents)
+            return GameUpdateResponse(gameStateWithSectors, updateEvents, newFactories)
         }// updateGameState
 
         private fun applyDamage(offensiveShips: List<ShipWithUnits>, defensiveShips: List<ShipWithUnits>) {
@@ -139,23 +139,39 @@ class GameUpdater {
             }// sectors
         }
 
-        private fun updateFactoryBuildOrders(gameStateWithSectors: GameStateWithSectors, updateEvents: MutableList<UpdateEvent>) {
+        private fun updateFactoryBuildOrders(gameStateWithSectors: GameStateWithSectors, updateEvents: MutableList<UpdateEvent>, newFactories: MutableList<Factory>) {
             val gameTime = gameStateWithSectors.gameState.gameTime
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
                     planetWithUnits.factories.forEach { factory ->
-                        if(factory.buildTargetType != null && gameTime >= factory.dayBuildComplete) {
-                            when(factory.buildTargetType) {
-                                FactoryBuildTargetType.ConstructionYard_ConstructionYard -> createNewFactory(planetWithUnits, FactoryType.ConstructionYard)
+                        if(factory.buildTargetType != null && gameTime >= factory.dayBuildComplete!!) {
+                            val dstPlanetWithUnits = Utilities.getPlanetWithId(gameStateWithSectors, factory.deliverBuiltStructureToPlanetId!!)
+                            if(dstPlanetWithUnits!=null) {
+                                when(factory.buildTargetType) {
+                                    FactoryBuildTargetType.ConstructionYard_ConstructionYard -> {
+                                        val tripArrivalDay = Utilities.getTravelArrivalDay(planetWithUnits.planet, dstPlanetWithUnits.planet, gameTime)
+                                        val factory_ = Factory(
+                                            id = Random.nextLong(),
+                                            factoryType = FactoryType.ConstructionYard,
+                                            locationPlanetId = dstPlanetWithUnits.planet.id,
+                                            isTravelling = true,
+                                            dayArrival = tripArrivalDay.toLong(),
+                                            created = true
+                                        )
+                                        newFactories.add(factory_)
+                                    }
+                                }
+                            } else {
+                                println("updateFactoryBuildOrders ERROR! Could not find a planet with id: ${factory.deliverBuiltStructureToPlanetId}")
                             }
+                            factory.buildTargetType = null
+                            factory.dayBuildComplete = null
+                            factory.deliverBuiltStructureToPlanetId = null
                         }
                     }
                 }// planets
             }// sectors
-        }
-
-        private fun createNewFactory(planetWithUnits: PlanetWithUnits, factoryType: FactoryType, updateEvents: MutableList<UpdateEvent>) {
         }
     }// component
 }

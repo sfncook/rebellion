@@ -148,9 +148,9 @@ class GameStateViewModel @Inject constructor(
             val ship = getShip(shipId)
             val srcPlanet = getPlanet(ship.locationPlanetId)
             val dstPlanet = getPlanet(destPlanetId)
-            val tripDurationDays = Math.abs(srcPlanet.locationIndex - dstPlanet.locationIndex)
             val gameState = getGameState(gameStateId)
-            gameStateRepository.startShipJourneyToPlanet(shipId, destPlanetId, gameState.gameTime + tripDurationDays)
+            val tripArrivalDay = Utilities.getTravelArrivalDay(srcPlanet, dstPlanet, gameState.gameTime)
+            gameStateRepository.startShipJourneyToPlanet(shipId, destPlanetId, tripArrivalDay)
             postUpdate(gameStateId)
         }
     }
