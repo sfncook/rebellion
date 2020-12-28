@@ -3,6 +3,7 @@ package com.rebllelionandroid.core.gameUpdater
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.Factory
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
+import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
@@ -149,18 +150,34 @@ class GameUpdater {
                             val dstPlanetWithUnits = Utilities.getPlanetWithId(gameStateWithSectors, factory.deliverBuiltStructureToPlanetId!!)
                             if(dstPlanetWithUnits!=null) {
                                 when(factory.buildTargetType) {
-                                    FactoryBuildTargetType.ConstructionYard_ConstructionYard -> {
-                                        val tripArrivalDay = Utilities.getTravelArrivalDay(planetWithUnits.planet, dstPlanetWithUnits.planet, gameTime)
-                                        val factory_ = Factory(
-                                            id = Random.nextLong(),
-                                            factoryType = FactoryType.ConstructionYard,
-                                            locationPlanetId = dstPlanetWithUnits.planet.id,
-                                            isTravelling = true,
-                                            dayArrival = tripArrivalDay.toLong(),
-                                            created = true
+                                    FactoryBuildTargetType.ConstructionYard_ConstructionYard ->
+                                        createFactory(
+                                            FactoryType.ConstructionYard,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            gameTime,
+                                            newFactories,
+                                            updateEvents
                                         )
-                                        newFactories.add(factory_)
-                                    }
+                                    FactoryBuildTargetType.ConstructionYard_ShipYard ->
+                                        createFactory(
+                                            FactoryType.ShipYard,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            gameTime,
+                                            newFactories,
+                                            updateEvents
+                                        )
+                                    FactoryBuildTargetType.ConstructionYard_TrainingFacility ->
+                                        createFactory(
+                                            FactoryType.ShipYard,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            gameTime,
+                                            newFactories,
+                                            updateEvents
+                                        )
+                                    else -> println("updateFactoryBuildOrders Warning: Unhandled buildTargetType:${factory.buildTargetType}")
                                 }
                             } else {
                                 println("updateFactoryBuildOrders ERROR! Could not find a planet with id: ${factory.deliverBuiltStructureToPlanetId}")
@@ -172,6 +189,43 @@ class GameUpdater {
                     }
                 }// planets
             }// sectors
+        }
+
+        private fun createFactory(
+            factoryType: FactoryType,
+            srcPlanetWithUnits: PlanetWithUnits,
+            dstPlanetWithUnits: PlanetWithUnits,
+            gameTime: Int,
+            newFactories: MutableList<Factory>,
+            updateEvents: MutableList<UpdateEvent>
+        ) {
+            val newFactory: Factory
+            val needsDelivery = srcPlanetWithUnits.planet.id != dstPlanetWithUnits.planet.id
+            if(needsDelivery) {
+                val tripArrivalDay = Utilities.getTravelArrivalDay(
+                    srcPlanetWithUnits.planet,
+                    dstPlanetWithUnits.planet,
+                    gameTime
+                )
+                newFactory = Factory(
+                    id = Random.nextLong(),
+                    factoryType = factoryType,
+                    locationPlanetId = dstPlanetWithUnits.planet.id,
+                    isTravelling = true,
+                    dayArrival = tripArrivalDay.toLong(),
+                    created = true
+                )
+            } else {
+                newFactory = Factory(
+                    id = Random.nextLong(),
+                    factoryType = factoryType,
+                    locationPlanetId = dstPlanetWithUnits.planet.id,
+                    isTravelling = false,
+                    created = true
+                )
+            }
+            newFactories.add(newFactory)
+            updateEvents.add(FactoryBuiltEvent(newFactory, dstPlanetWithUnits.planet))
         }
     }// component
 }

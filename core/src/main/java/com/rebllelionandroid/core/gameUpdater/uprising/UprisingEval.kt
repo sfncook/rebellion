@@ -36,7 +36,7 @@ class UprisingEval {
             *Array(25) { garrToUpris_0_24 },
             *Array(25) { garrToUpris_25_49 },
             *Array(25) { garrToUpris_50_74 },
-            *Array(25) { garrToUpris_75_100 }
+            *Array(26) { garrToUpris_75_100 }
         )
 
 
