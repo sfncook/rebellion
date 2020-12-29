@@ -1,7 +1,6 @@
 package com.rebllelionandroid.core.database.gamestate
 
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
-import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import javax.inject.Inject
 
 class GameStateRepository @Inject constructor(
@@ -23,13 +22,13 @@ class GameStateRepository @Inject constructor(
 
 
     // Inserts
-    fun createNewGameState(gameState: GameState) = gameStateDao.createNewGameState(gameState)
-    fun insertNewSector(sector: Sector) = gameStateDao.insertNewSector(sector)
-    fun insertNewPlanet(planet: Planet) = gameStateDao.insertNewPlanet(planet)
-    fun insertNewDefenseStructure(defenseStructure: DefenseStructure) = gameStateDao.insertNewDefenseStructure(defenseStructure)
-    fun insertNewFactory(factory: Factory) = gameStateDao.insertNewFactory(factory)
-    fun insertNewShip(ship: Ship) = gameStateDao.insertNewShip(ship)
-    fun insertNewUnit(unit: Unit) = gameStateDao.insertNewUnit(unit)
+    fun insert(gameState: GameState) = gameStateDao.insert(gameState)
+    fun insert(sector: Sector) = gameStateDao.insert(sector)
+    fun insert(planet: Planet) = gameStateDao.insert(planet)
+    fun insert(defenseStructure: DefenseStructure) = gameStateDao.insert(defenseStructure)
+    fun insert(factory: Factory) = gameStateDao.insert(factory)
+    fun insert(ship: Ship) = gameStateDao.insert(ship)
+    fun insert(unit: Unit) = gameStateDao.insert(unit)
 
 
     // Updates

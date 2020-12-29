@@ -58,25 +58,25 @@ interface GameStateDao {
 
     // Inserts
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun createNewGameState(gameState: GameState)
+    fun insert(gameState: GameState)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewSector(sector: Sector)
+    fun insert(sector: Sector)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewPlanet(planet: Planet)
+    fun insert(planet: Planet)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewDefenseStructure(defenseStructure: DefenseStructure)
+    fun insert(defenseStructure: DefenseStructure)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewFactory(factory: Factory)
+    fun insert(factory: Factory)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewShip(ship: Ship)
+    fun insert(ship: Ship)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewUnit(unit: Unit)
+    fun insert(unit: Unit)
 
 
 

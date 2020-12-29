@@ -189,8 +189,8 @@ class GameStateViewModel @Inject constructor(
                 val gameStateWithSectors = getGameStateWithSectors(gameStateId)
                 val (newGameStateWithSectors, updateEvents, newFactories, newShips) = GameUpdater.updateGameState(gameStateWithSectors.deepCopy())
                 deepUpdateGameState(newGameStateWithSectors)
-                newFactories.forEach { gameStateRepository.insertNewFactory(it) }
-                newShips.forEach { gameStateRepository.insertNewShip(it) }
+                newFactories.forEach { gameStateRepository.insert(it) }
+                newShips.forEach { gameStateRepository.insert(it) }
                 postUpdate(gameStateId)
                 updateEvents.forEach { println(it.getEventMessage()) }
                 delay(1500)
@@ -241,7 +241,7 @@ class GameStateViewModel @Inject constructor(
     fun createNewGameState(callback: () -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val gameState = GameState(Random.nextLong(), false, 1, TeamLoyalty.TeamA, Date())
-            gameStateRepository.createNewGameState(gameState)
+            gameStateRepository.insert(gameState)
 
             val teamsToPlanets = mapOf(
                 TeamLoyalty.TeamA to ArrayList(),
@@ -253,7 +253,7 @@ class GameStateViewModel @Inject constructor(
             val allSectorTypes = staticTypesRepository.getAllSectorTypes()
             for (sectorType in allSectorTypes) {
                 val sector = Sector(Random.nextLong(), sectorType.name, gameState.id)
-                gameStateRepository.insertNewSector(sector)
+                gameStateRepository.insert(sector)
                 val allPlanetTypesForSector = staticTypesRepository.getAllPlanetTypesForSector(sectorType.id)
                 for (planetType in allPlanetTypesForSector) {
                     var loyaltyMinTeamA = 0
@@ -279,7 +279,7 @@ class GameStateViewModel @Inject constructor(
                         energyCap = Random.nextInt(10),
                         locationIndex = planetType.locationIndex
                     )
-                    gameStateRepository.insertNewPlanet(planet)
+                    gameStateRepository.insert(planet)
                     teamsToPlanets[sectorType.initTeamLoyalty]?.add(planet)
                 }
             }
@@ -302,7 +302,7 @@ class GameStateViewModel @Inject constructor(
                         isTravelling = false,
                         dayArrival = 0
                     )
-                    gameStateRepository.insertNewDefenseStructure(orbitalBattery)
+                    gameStateRepository.insert(orbitalBattery)
 
                     // Planetary shield
                     val planetaryShield = DefenseStructure(
@@ -312,7 +312,7 @@ class GameStateViewModel @Inject constructor(
                         isTravelling = false,
                         dayArrival = 0
                     )
-                    gameStateRepository.insertNewDefenseStructure(planetaryShield)
+                    gameStateRepository.insert(planetaryShield)
 
                     val manyInitFactories = planetForTeam.energyCap.coerceAtMost(3)
                     for (u in 1..manyInitFactories) {
@@ -326,7 +326,7 @@ class GameStateViewModel @Inject constructor(
                             isTravelling = false,
                             dayArrival = 0
                         )
-                        gameStateRepository.insertNewFactory(factory)
+                        gameStateRepository.insert(factory)
                     }
 
                     val manyInitShips = 5
@@ -345,7 +345,7 @@ class GameStateViewModel @Inject constructor(
                             destroyed = false,
                             healthPoints = shipType.defenseStrength.toInt()
                         )
-                        gameStateRepository.insertNewShip(ship)
+                        gameStateRepository.insert(ship)
 
                         for (uPs in 1..manyInitUnitsPerShip) {
                             val unit = Unit(
@@ -360,7 +360,7 @@ class GameStateViewModel @Inject constructor(
                                 team = teamLoyalty,
                                 updated = false
                             )
-                            gameStateRepository.insertNewUnit(unit)
+                            gameStateRepository.insert(unit)
                         }
                     }// ships
                 }
