@@ -20,7 +20,7 @@ data class Ship(
 
         @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long = 0,
         var isTraveling: Boolean = false,
-        var dayArrival: Long = 0,
+        var dayArrival: Long? = null,
         var destroyed: Boolean = false,
         var healthPoints: Int = 0,
 

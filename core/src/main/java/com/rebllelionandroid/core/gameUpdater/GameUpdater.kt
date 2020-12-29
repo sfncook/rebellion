@@ -119,7 +119,7 @@ class GameUpdater {
 
                     planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
                         val ship = shipWithUnits.ship
-                        if(ship.isTraveling && gameTime >= ship.dayArrival ) {
+                        if(ship.isTraveling && gameTime >= ship.dayArrival!!) {
                             ship.isTraveling = false
                             ship.dayArrival = 0
                             ship.updated = true
@@ -192,6 +192,66 @@ class GameUpdater {
                                             newShips,
                                             updateEvents
                                         )
+                                    FactoryBuildTargetType.ShipYard_Trireme ->
+                                        createShip(
+                                            ShipType.Trireme,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            factory.team,
+                                            gameTime,
+                                            newShips,
+                                            updateEvents
+                                        )
+                                    FactoryBuildTargetType.ShipYard_Quadrireme ->
+                                        createShip(
+                                            ShipType.Quadrireme,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            factory.team,
+                                            gameTime,
+                                            newShips,
+                                            updateEvents
+                                        )
+                                    FactoryBuildTargetType.ShipYard_Quinquereme ->
+                                        createShip(
+                                            ShipType.Quinquereme,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            factory.team,
+                                            gameTime,
+                                            newShips,
+                                            updateEvents
+                                        )
+                                    FactoryBuildTargetType.ShipYard_Hexareme ->
+                                        createShip(
+                                            ShipType.Hexareme,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            factory.team,
+                                            gameTime,
+                                            newShips,
+                                            updateEvents
+                                        )
+                                    FactoryBuildTargetType.ShipYard_Septireme ->
+                                        createShip(
+                                            ShipType.Septireme,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            factory.team,
+                                            gameTime,
+                                            newShips,
+                                            updateEvents
+                                        )
+                                    FactoryBuildTargetType.ShipYard_Octere ->
+                                        createShip(
+                                            ShipType.Octere,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            factory.team,
+                                            gameTime,
+                                            newShips,
+                                            updateEvents
+                                        )
                                     else -> println("updateFactoryBuildOrders Warning: Unhandled buildTargetType:${factory.buildTargetType}")
                                 }
                             } else {
@@ -215,7 +275,12 @@ class GameUpdater {
             newFactories: MutableList<Factory>,
             updateEvents: MutableList<UpdateEvent>
         ) {
-            val newFactory: Factory
+            val newFactory = Factory(
+                id = Random.nextLong(),
+                factoryType = factoryType,
+                locationPlanetId = dstPlanetWithUnits.planet.id,
+                created = true
+            )
             val needsDelivery = srcPlanetWithUnits.planet.id != dstPlanetWithUnits.planet.id
             val tripArrivalDay = Utilities.getTravelArrivalDay(
                 srcPlanetWithUnits.planet,
@@ -223,22 +288,8 @@ class GameUpdater {
                 gameTime
             )
             if(needsDelivery && tripArrivalDay > gameTime) {
-                newFactory = Factory(
-                    id = Random.nextLong(),
-                    factoryType = factoryType,
-                    locationPlanetId = dstPlanetWithUnits.planet.id,
-                    isTravelling = true,
-                    dayArrival = tripArrivalDay.toLong(),
-                    created = true
-                )
-            } else {
-                newFactory = Factory(
-                    id = Random.nextLong(),
-                    factoryType = factoryType,
-                    locationPlanetId = dstPlanetWithUnits.planet.id,
-                    isTravelling = false,
-                    created = true
-                )
+                newFactory.isTravelling = true
+                newFactory.dayArrival = tripArrivalDay.toLong()
             }
             newFactories.add(newFactory)
             updateEvents.add(FactoryBuiltEvent(newFactory, dstPlanetWithUnits.planet))
@@ -253,7 +304,14 @@ class GameUpdater {
             newShips: MutableList<Ship>,
             updateEvents: MutableList<UpdateEvent>
         ) {
-            val newShip: Ship
+            val newShip = Ship(
+                id = Random.nextLong(),
+                locationPlanetId = dstPlanetWithUnits.planet.id,
+                shipType = shipType,
+                team = teamLoyalty,
+                created = true
+            )
+            Utilities.setShipStrengthValues(newShip)
             val needsDelivery = srcPlanetWithUnits.planet.id != dstPlanetWithUnits.planet.id
             val tripArrivalDay = Utilities.getTravelArrivalDay(
                 srcPlanetWithUnits.planet,
@@ -261,48 +319,8 @@ class GameUpdater {
                 gameTime
             )
             if(needsDelivery && tripArrivalDay > gameTime) {
-                val tripArrivalDay = Utilities.getTravelArrivalDay(
-                    srcPlanetWithUnits.planet,
-                    dstPlanetWithUnits.planet,
-                    gameTime
-                )
-//                Ship(
-//                    @PrimaryKey var id: Long = 0,
-//                    var shipType: ShipType = ShipType.Bireme,
-//                    var team: TeamLoyalty = TeamLoyalty.Neutral,
-//                    var attackStrength: Int = 0,
-//                    var defenseStrength: Int = 0,
-//
-//                    @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long = 0,
-//                    var isTraveling: Boolean = false,
-//                    var dayArrival: Long = 0,
-//                    var destroyed: Boolean = false,
-//                    var healthPoints: Int = 0,
-//
-//                    @Ignore var updated: Boolean = false,
-//                    @Ignore var created: Boolean = false
-//                )
-                newShip = Ship(
-                    id = Random.nextLong(),
-                    locationPlanetId = dstPlanetWithUnits.planet.id,
-                    shipType = shipType,
-                    isTraveling = false,
-                    dayArrival = 0,
-                    team = teamLoyalty,
-                    attackStrength = shipType.attackStrength.toInt(),
-                    defenseStrength = shipType.defenseStrength.toInt(),
-                    destroyed = false,
-                    healthPoints = shipType.defenseStrength.toInt()
-                )
-            } else {
-                newShip = Ship(
-                    id = Random.nextLong(),
-                    shipType = shipType,
-                    locationPlanetId = dstPlanetWithUnits.planet.id,
-                    team = teamLoyalty,
-                    isTraveling = false,
-                    created = true
-                )
+                newShip.isTraveling = true
+                newShip.dayArrival = tripArrivalDay.toLong()
             }
             newShips.add(newShip)
             updateEvents.add(ShipBuiltEvent(newShip, dstPlanetWithUnits.planet))
