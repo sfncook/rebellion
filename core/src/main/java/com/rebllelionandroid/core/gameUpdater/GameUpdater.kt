@@ -131,8 +131,8 @@ class GameUpdater {
                     }
 
                     planetWithUnits.factories.forEach { factory ->
-                        if(factory.isTravelling && gameTime >= factory.dayArrival ) {
-                            factory.isTravelling = false
+                        if(factory.isTraveling && gameTime >= factory.dayArrival ) {
+                            factory.isTraveling = false
                             factory.dayArrival = 0
                             factory.updated = true
                             updateEvents.add(FactoryArrivalEvent(factory, planetWithUnits.planet))
@@ -292,7 +292,7 @@ class GameUpdater {
                 gameTime
             )
             if(needsDelivery && tripArrivalDay > gameTime) {
-                newFactory.isTravelling = true
+                newFactory.isTraveling = true
                 newFactory.dayArrival = tripArrivalDay.toLong()
             }
             newFactories.add(newFactory)
@@ -351,12 +351,12 @@ class GameUpdater {
                 dstPlanetWithUnits.planet,
                 gameTime
             )
-            if(needsDelivery && tripArrivalDay > gameTime) {
-                newShip.isTraveling = true
-                newShip.dayArrival = tripArrivalDay.toLong()
-            }
+//            if(needsDelivery && tripArrivalDay > gameTime) {
+//                newShip.isTraveling = true
+//                newShip.dayArrival = tripArrivalDay.toLong()
+//            }
             newUnits.add(newUnit)
-            updateEvents.add(ShipBuiltEvent(newUnit, dstPlanetWithUnits.planet))
+            updateEvents.add(NewUnitTrainedEvent(newUnit, dstPlanetWithUnits.planet))
         }
     }// component
 }

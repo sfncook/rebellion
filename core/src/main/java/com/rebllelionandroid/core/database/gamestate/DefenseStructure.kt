@@ -21,6 +21,6 @@ data class DefenseStructure(
         @PrimaryKey val id: Long,
         val defenseStructureType: DefenseStructureType,
         @ColumnInfo(name = "planet_id", index = true) val locationPlanetId: Long,
-        val isTravelling: Boolean, // Travelling for delivery
+        val isTraveling: Boolean, // Travelling for delivery
         val dayArrival: Long
 )

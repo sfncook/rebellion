@@ -299,7 +299,7 @@ class GameStateViewModel @Inject constructor(
                         id = Random.nextLong(),
                         defenseStructureType = DefenseStructureType.OrbitalBattery,
                         locationPlanetId = planetForTeam.id,
-                        isTravelling = false,
+                        isTraveling = false,
                         dayArrival = 0
                     )
                     gameStateRepository.insert(orbitalBattery)
@@ -309,7 +309,7 @@ class GameStateViewModel @Inject constructor(
                         id = Random.nextLong(),
                         defenseStructureType = DefenseStructureType.PlanetaryShield,
                         locationPlanetId = planetForTeam.id,
-                        isTravelling = false,
+                        isTraveling = false,
                         dayArrival = 0
                     )
                     gameStateRepository.insert(planetaryShield)
@@ -324,7 +324,7 @@ class GameStateViewModel @Inject constructor(
                             team = teamLoyalty,
                             buildTargetType = null,
                             dayBuildComplete = 0,
-                            isTravelling = false,
+                            isTraveling = false,
                             dayArrival = 0
                         )
                         gameStateRepository.insert(factory)
