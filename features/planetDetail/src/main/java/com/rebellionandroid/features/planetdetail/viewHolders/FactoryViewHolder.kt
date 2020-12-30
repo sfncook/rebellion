@@ -3,6 +3,7 @@ package com.rebellionandroid.features.planetdetail.viewHolders
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,10 @@ class FactoryViewHolder(
     val buildTargetTypeText: TextView = view.findViewById(R.id.factory_buildTargetType)
     val buildTargetDueDateText: TextView = view.findViewById(R.id.factory_buildTarget_duedate)
     val buildTargetDeliverText: TextView = view.findViewById(R.id.factory_buildTarget_deliver)
+    val factoryBg: View = view.findViewById(R.id.factory_bg)
+    val factoryTravelingIcon: View = view.findViewById(R.id.factory_travelling_icon)
+    val etaLabelText: TextView = view.findViewById(R.id.factory_eta_label)
+    val etaText: TextView = view.findViewById(R.id.factory_eta)
 
     init {
         val planetTeam = Utilities.getPlanetLoyalty(planetWithUnits.planet)
@@ -36,14 +41,16 @@ class FactoryViewHolder(
                 val structureObj = structureList[adapterPosition]
                 if (structureObj::class == Factory::class) {
                     val factory = structureObj as Factory
-                    val bundle = bundleOf(
-                        "factoryId" to factory.id
-                    )
-                    val fm: FragmentManager =
-                        (it.context as BaseActivity).supportFragmentManager
-                    val factoryBuildDialogFragment = FactoryBuildDialogFragment()
-                    factoryBuildDialogFragment.arguments = bundle
-                    factoryBuildDialogFragment.show(fm, "shipMoveDialogFragment")
+                    if(!factory.isTraveling) {
+                        val bundle = bundleOf(
+                            "factoryId" to factory.id
+                        )
+                        val fm: FragmentManager =
+                            (it.context as BaseActivity).supportFragmentManager
+                        val factoryBuildDialogFragment = FactoryBuildDialogFragment()
+                        factoryBuildDialogFragment.arguments = bundle
+                        factoryBuildDialogFragment.show(fm, "shipMoveDialogFragment")
+                    }
                 } else {
                     println("Whoops! the FactoryViewHolder got a click event for an object that is not of type Factory: ${structureObj::class.qualifiedName}")
                 }
@@ -68,6 +75,16 @@ class FactoryViewHolder(
             }
         } else {
             buildInfoContainer.visibility = View.GONE
+        }
+
+        factoryTravelingIcon.visibility =  if(factory.isTraveling) View.VISIBLE else View.GONE
+        etaLabelText.visibility =  if(factory.isTraveling) View.VISIBLE else View.GONE
+        etaText.visibility =  if(factory.isTraveling) View.VISIBLE else View.GONE
+        etaText.text =  factory.dayArrival.toString()
+        if(factory.isTraveling) {
+            factoryBg.setBackgroundColor(
+                ContextCompat.getColor(factoryBg.context, R.color.unit_travelling)
+            )
         }
     }
 }
