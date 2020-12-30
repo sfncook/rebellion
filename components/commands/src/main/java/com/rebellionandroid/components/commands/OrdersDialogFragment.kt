@@ -1,76 +1,38 @@
 package com.rebellionandroid.components.commands
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ExpandableListView
+import android.widget.Button
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
-import com.rebllelionandroid.core.BaseActivity
-import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
-import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
-import kotlinx.coroutines.launch
+import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 
 
 class OrdersDialogFragment: DialogFragment() {
-
-    private lateinit var rootContext: Context
-    private lateinit var sectorsAndPlanetsExpandableList: ExpandableListView
-    private var lastGroupExpandedPos: Int = -1
-    private var selectedShipId: Long = 0
-    private lateinit var selectedShipWithUnits: ShipWithUnits
-    private var currentGameStateId: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_ship_move, container, false)
-        rootContext = root.context
-        selectedShipId = arguments?.getLong("shipId")!!
-        currentGameStateId = arguments?.getLong("currentGameStateId")!!
+        val root = inflater.inflate(R.layout.fragment_orders, container, false)
 
-        root.findViewById<MaterialButton>(R.id.ship_move_close_btn).setOnClickListener {
+        val positiveBtnText = arguments?.getString(OrderDlgArgumentKeys.PositiveBtnText.value)!!
+        val negativeBtnText = arguments?.getString(OrderDlgArgumentKeys.NegativeBtnText.value)!!
+
+        val positiveBtn = root.findViewById<Button>(R.id.dlg_orders_positive_btn)
+        val negativeBtn = root.findViewById<Button>(R.id.dlg_orders_negative_btn)
+
+        positiveBtn.text = positiveBtnText
+        negativeBtn.text = negativeBtnText
+
+        positiveBtn.setOnClickListener {
             dismiss()
         }
-
-        sectorsAndPlanetsExpandableList = root.findViewById(R.id.ship_move_list_sector_and_planets) as ExpandableListView
-
-        val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-
-        gameStateViewModel.getGameStateWithSectors(currentGameStateId) { gameStateWithSectors ->
-            gameStateViewModel.getShipWithUnits(selectedShipId) { shipWithUnits ->
-                selectedShipWithUnits = shipWithUnits
-                gameStateViewModel.getPlanetWithUnits(selectedShipWithUnits.ship.locationPlanetId) { planetWithUnits ->
-                    val selectedSectorId = planetWithUnits.planet.sectorId
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        updateSectorsList(gameStateWithSectors, selectedSectorId)
-                    }
-                }
-            }
+        negativeBtn.setOnClickListener {
+            dismiss()
         }
-
-        // Only one group expanded at a time
-        sectorsAndPlanetsExpandableList.setOnGroupExpandListener { groupPosition ->
-            if (lastGroupExpandedPos != -1 && groupPosition != lastGroupExpandedPos) {
-                sectorsAndPlanetsExpandableList.collapseGroup(lastGroupExpandedPos);
-            }
-            lastGroupExpandedPos = groupPosition;
-        }
-
-        // planet selection event
-        sectorsAndPlanetsExpandableList.setOnChildClickListener { _, _, _, _, planetId ->
-            if(selectedShipWithUnits.ship.locationPlanetId != planetId) {
-                gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId)
-                dismiss()
-            }
-            true
-        }
-
         return root
     }
 
@@ -79,17 +41,4 @@ class OrdersDialogFragment: DialogFragment() {
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
-    private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors, selectedSectorId: Long) {
-        val sectors = gameStateWithSectors.sectors
-        val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
-            s1.sector.name.compareTo(s2.sector.name)
-        })
-        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList())
-        sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
-
-        // Expand selected sector
-        val selectedSector = sortedSectors.find { sectorWithPlanets -> sectorWithPlanets.sector.id == selectedSectorId }
-        val indexOfSelectedSector = sortedSectors.indexOf(selectedSector)
-        sectorsAndPlanetsExpandableList.expandGroup(indexOfSelectedSector)
-    }
 }
