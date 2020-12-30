@@ -5,11 +5,10 @@ import com.rebllelionandroid.core.database.gamestate.Unit
 
 data class NewUnitTrainedEvent(val unit: Unit, val planet: Planet): UpdateEvent {
     override fun getEventMessage(): String {
-//        if(unit.isTraveling) {
-//            return "Ship (${ship.shipType.name}) finished building and will arrive on planet ${planet.name} day:${ship.dayArrival}."
-//        } else {
-//            return "Ship (${ship.shipType.name}) finished building on planet ${planet.name}."
-//        }
-        return ""
+        if(unit.isTraveling) {
+            return "Ship (${unit.unitType.name}) finished building and will arrive on planet ${planet.name} day:${unit.dayArrival}."
+        } else {
+            return "Ship (${unit.unitType.name}) finished building on planet ${planet.name}."
+        }
     }
 }

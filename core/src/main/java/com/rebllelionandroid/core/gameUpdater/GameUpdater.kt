@@ -341,7 +341,7 @@ class GameUpdater {
         ) {
             val newUnit = Unit(
                 id = Random.nextLong(),
-                unitType = UnitType.values().random(),
+                unitType = unitType,
                 team = teamLoyalty,
                 created = true
             )
@@ -351,10 +351,10 @@ class GameUpdater {
                 dstPlanetWithUnits.planet,
                 gameTime
             )
-//            if(needsDelivery && tripArrivalDay > gameTime) {
-//                newShip.isTraveling = true
-//                newShip.dayArrival = tripArrivalDay.toLong()
-//            }
+            if(needsDelivery && tripArrivalDay > gameTime) {
+                newUnit.isTraveling = true
+                newUnit.dayArrival = tripArrivalDay.toLong()
+            }
             newUnits.add(newUnit)
             updateEvents.add(NewUnitTrainedEvent(newUnit, dstPlanetWithUnits.planet))
         }

@@ -32,6 +32,9 @@ data class Unit(
         @Nullable var missionTargetType: MissionTargetType? = MissionTargetType.Factory,
         @Nullable var missionTargetId: Long? = 0,
 
+        var isTraveling: Boolean = false,
+        var dayArrival: Long = 0,
+
         @Ignore var updated: Boolean = false,
         @Ignore var created: Boolean = false
 )
