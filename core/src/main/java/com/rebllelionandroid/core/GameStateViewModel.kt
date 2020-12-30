@@ -361,6 +361,7 @@ class GameStateViewModel @Inject constructor(
                                 team = teamLoyalty,
                                 updated = false
                             )
+                            Utilities.setUnitStrengthValues(unit)
                             gameStateRepository.insert(unit)
                         }
                     }// ships

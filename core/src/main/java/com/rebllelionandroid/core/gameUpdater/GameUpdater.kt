@@ -256,6 +256,28 @@ class GameUpdater {
                                             newShips,
                                             updateEvents
                                         )
+
+                                    FactoryBuildTargetType.TrainingFac_Garrison ->
+                                        createUnit(
+                                            UnitType.Garrison,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            factory.team,
+                                            gameTime,
+                                            newUnits,
+                                            updateEvents
+                                        )
+                                    FactoryBuildTargetType.TrainingFac_SpecOps ->
+                                        createUnit(
+                                            UnitType.SpecialForces,
+                                            planetWithUnits,
+                                            dstPlanetWithUnits,
+                                            factory.team,
+                                            gameTime,
+                                            newUnits,
+                                            updateEvents
+                                        )
+
                                     else -> println("updateFactoryBuildOrders Warning: Unhandled buildTargetType:${factory.buildTargetType}")
                                 }
                             } else {
@@ -345,6 +367,7 @@ class GameUpdater {
                 team = teamLoyalty,
                 created = true
             )
+            Utilities.setUnitStrengthValues(newUnit)
             val needsDelivery = srcPlanetWithUnits.planet.id != dstPlanetWithUnits.planet.id
             val tripArrivalDay = Utilities.getTravelArrivalDay(
                 srcPlanetWithUnits.planet,

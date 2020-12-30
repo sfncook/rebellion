@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
+import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class Utilities {
@@ -254,6 +255,21 @@ class Utilities {
                     ship.attackStrength = 8
                     ship.defenseStrength = 8
                     ship.healthPoints = 8
+                }
+            }
+        }
+
+        fun setUnitStrengthValues(unit: Unit) {
+            when(unit.unitType) {
+                UnitType.Garrison -> {
+                    unit.attackStrength = 10
+                    unit.defenseStrength = 10
+                    unit.healthPoints = 10
+                }
+                UnitType.SpecialForces -> {
+                    unit.attackStrength = 2
+                    unit.defenseStrength = 2
+                    unit.healthPoints = 2
                 }
             }
         }

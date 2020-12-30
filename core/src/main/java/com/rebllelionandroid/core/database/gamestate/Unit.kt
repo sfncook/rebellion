@@ -32,6 +32,11 @@ data class Unit(
         @Nullable var missionTargetType: MissionTargetType? = MissionTargetType.Factory,
         @Nullable var missionTargetId: Long? = 0,
 
+        var attackStrength: Int = 0,
+        var defenseStrength: Int = 0,
+        var destroyed: Boolean = false,
+        var healthPoints: Int = 0,
+
         var isTraveling: Boolean = false,
         var dayArrival: Long = 0,
 
