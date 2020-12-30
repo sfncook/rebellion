@@ -25,12 +25,21 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <fragment
+        android:id="@+id/dlg_orders_row_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:name="com.rebellionandroid.components.commands.FactoryCtorYardBuildOrderFragment"
+        />
+
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/dlg_orders_footer_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="3dp"
         >
         <Button
             android:id="@+id/dlg_orders_positive_btn"
