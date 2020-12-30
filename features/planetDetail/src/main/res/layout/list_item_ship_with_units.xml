@@ -87,6 +87,25 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <TextView
+        android:id="@+id/ship_with_units_capacity_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="Max Units:"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/ship_with_units_label"
+        app:layout_constraintStart_toStartOf="@+id/ship_with_units_label" />
+    <TextView
+        android:id="@+id/ship_with_units_capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:text="000"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/ship_with_units_label"
+        app:layout_constraintStart_toEndOf="@+id/ship_with_units_capacity_label" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ship_with_units_list"
         android:layout_width="0dp"
@@ -96,7 +115,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ship_with_units_ship_img"
+        app:layout_constraintTop_toBottomOf="@+id/ship_with_units_capacity_label"
         tools:listitem="@layout/list_item_unit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

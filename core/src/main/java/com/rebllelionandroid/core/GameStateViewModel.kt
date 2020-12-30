@@ -332,7 +332,6 @@ class GameStateViewModel @Inject constructor(
                     }
 
                     val manyInitShips = 5
-                    val manyInitUnitsPerShip = 4
                     for (s in 1..manyInitShips) {
                         val shipType = allShipTypes.random()
                         val ship = Ship(
@@ -342,13 +341,12 @@ class GameStateViewModel @Inject constructor(
                             isTraveling = false,
                             dayArrival = 0,
                             team = teamLoyalty,
-                            attackStrength = shipType.attackStrength.toInt(),
-                            defenseStrength = shipType.defenseStrength.toInt(),
                             destroyed = false,
-                            healthPoints = shipType.defenseStrength.toInt()
                         )
+                        Utilities.setShipStrengthValues(ship)
                         gameStateRepository.insert(ship)
 
+                        val manyInitUnitsPerShip = Random.nextInt(0, ship.unitCapacity)
                         for (uPs in 1..manyInitUnitsPerShip) {
                             val unit = Unit(
                                 id = Random.nextLong(),

@@ -3,7 +3,6 @@ package com.rebllelionandroid.core.database.gamestate
 import androidx.room.*
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
-import org.jetbrains.annotations.NotNull
 
 @Entity(
         tableName = "ships",
@@ -17,6 +16,7 @@ data class Ship(
         var team: TeamLoyalty = TeamLoyalty.Neutral,
         var attackStrength: Int = 0,
         var defenseStrength: Int = 0,
+        var unitCapacity: Int = 0,
 
         @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long = 0,
         var isTraveling: Boolean = false,

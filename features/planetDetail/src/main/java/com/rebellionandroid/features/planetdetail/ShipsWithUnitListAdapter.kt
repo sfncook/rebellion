@@ -44,13 +44,15 @@ class ShipsWithUnitListAdapter(
         val travellingIcon: ImageView = view.findViewById(R.id.ship_with_units_travelling_icon)
         val shipWithUnitsList: RecyclerView = view.findViewById(R.id.ship_with_units_list)
         val bgView: View = view.findViewById(R.id.ship_with_units_background)
+        val capcityText: TextView = view.findViewById(R.id.ship_with_units_capacity)
 
         @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
         private val dragListen = View.OnDragListener { v, event ->
             val shipWithUnits = shipsWithUnits[adapterPosition]
             when (event.action) {
                 DragEvent.ACTION_DRAG_ENTERED -> {
-                    if(!shipWithUnits.ship.isTraveling) {
+                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.units.size
+                    if(!shipWithUnits.ship.isTraveling && shipHasAvailability) {
                         bgView.setBackgroundColor(Color.GREEN)
                         v.invalidate()
                         true
@@ -59,7 +61,8 @@ class ShipsWithUnitListAdapter(
                     }
                 }
                 DragEvent.ACTION_DRAG_EXITED -> {
-                    if(!shipWithUnits.ship.isTraveling) {
+                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.units.size
+                    if(!shipWithUnits.ship.isTraveling && shipHasAvailability) {
                         bgView.setBackgroundColor(ContextCompat.getColor(v.context, R.color.list_item_bg))
                         v.invalidate()
                         true
@@ -68,7 +71,8 @@ class ShipsWithUnitListAdapter(
                     }
                 }
                 DragEvent.ACTION_DROP -> {
-                    if(!shipWithUnits.ship.isTraveling) {
+                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.units.size
+                    if(!shipWithUnits.ship.isTraveling && shipHasAvailability) {
                         val item: ClipData.Item = event.clipData.getItemAt(0)
                         val dragData = item.text
                         val unitId = dragData.toString().toLong()
@@ -139,6 +143,7 @@ class ShipsWithUnitListAdapter(
         viewHolder.travellingEtaLabel.visibility =  if(shipWithUnits.ship.isTraveling) VISIBLE else GONE
         viewHolder.travellingEtaText.visibility =  if(shipWithUnits.ship.isTraveling) VISIBLE else GONE
         viewHolder.travellingEtaText.text =  shipWithUnits.ship.dayArrival.toString()
+        viewHolder.capcityText.text =  shipWithUnits.ship.unitCapacity.toString()
 
         if(shipWithUnits.ship.isTraveling) {
             viewHolder.bgView.setBackgroundColor(
