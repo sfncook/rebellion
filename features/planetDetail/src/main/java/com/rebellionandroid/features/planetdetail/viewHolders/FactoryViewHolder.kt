@@ -8,6 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.commands.FactoryBuildDialogFragment
+import com.rebellionandroid.components.commands.OrdersDialogFragment
+import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.features.planetdetail.R
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.Utilities
@@ -43,11 +45,14 @@ class FactoryViewHolder(
                     val factory = structureObj as Factory
                     if(!factory.isTraveling) {
                         val bundle = bundleOf(
-                            "factoryId" to factory.id
+                            "factoryId" to factory.id,
+                            OrderDlgArgumentKeys.PositiveBtnText.value to "Do it.",
+                            OrderDlgArgumentKeys.NegativeBtnText.value to "Never mind",
                         )
                         val fm: FragmentManager =
                             (it.context as BaseActivity).supportFragmentManager
-                        val factoryBuildDialogFragment = FactoryBuildDialogFragment()
+//                        val factoryBuildDialogFragment = FactoryBuildDialogFragment()
+                        val factoryBuildDialogFragment = OrdersDialogFragment.newInstance()
                         factoryBuildDialogFragment.arguments = bundle
                         factoryBuildDialogFragment.show(fm, "shipMoveDialogFragment")
                     }

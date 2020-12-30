@@ -26,11 +26,12 @@
 
 
     <fragment
-        android:id="@+id/dlg_orders_row_1"
+        android:id="@+id/dlg_orders_ctoryard_build_component"
+        android:tag="dlg_orders_ctoryard_build_component_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:name="com.rebellionandroid.components.commands.FactoryCtorYardBuildOrderFragment"
+        android:name="com.rebellionandroid.components.commands.orderComponents.FactoryCtorYardBuildOrderFragment"
         />
 
 
