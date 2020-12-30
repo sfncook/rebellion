@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -8,55 +8,56 @@
     android:background="@drawable/solid_border"
     android:orientation="vertical"
     >
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dlg_orders_header_bar"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/dlg_orders_title_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
-        <TextView
-            android:id="@+id/dlg_orders_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TITLE TEXT"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <fragment
-        android:id="@+id/dlg_orders_ctoryard_build_component"
-        android:tag="dlg_orders_ctoryard_build_component_tag"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:name="com.rebellionandroid.components.commands.orderComponents.FactoryCtorYardBuildOrderFragment"
+        android:text="TITLE TEXT"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/dlg_orders_footer_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dlg_orders_title_text">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <fragment
+            android:id="@+id/dlg_orders_ctoryard_build_component"
+            android:name="com.rebellionandroid.components.commands.orderComponents.FactoryCtorYardBuildOrderFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:tag="dlg_orders_ctoryard_build_component_tag" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/dlg_orders_footer_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
         <Button
             android:id="@+id/dlg_orders_positive_btn"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="POSITIVE"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dlg_orders_negative_btn"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_weight="50"
+            android:layout_margin="2dp"
+            android:text="POSITIVE" />
         <Button
             android:id="@+id/dlg_orders_negative_btn"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="NEGATIVE"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dlg_orders_positive_btn"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+            android:layout_weight="50"
+            android:layout_margin="2dp"
+            android:text="NEGATIVE" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
