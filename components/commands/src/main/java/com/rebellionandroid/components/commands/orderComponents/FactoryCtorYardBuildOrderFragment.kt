@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.rebellionandroid.components.commands.R
 
-class FactoryCtorYardBuildOrderFragment(): Fragment(), OrderComponent {
+class FactoryCtorYardBuildOrderFragment(): OrderComponent() {
 
     companion object {
         fun newInstance(): FactoryCtorYardBuildOrderFragment {

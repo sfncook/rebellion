@@ -17,8 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -26,15 +25,13 @@
         app:layout_constraintBottom_toTopOf="@+id/dlg_orders_footer_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dlg_orders_title_text">
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/dlg_orders_ctoryard_build_component"
-            android:name="com.rebellionandroid.components.commands.orderComponents.FactoryCtorYardBuildOrderFragment"
+        <LinearLayout
+            android:id="@+id/dlg_orders_components_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:tag="dlg_orders_ctoryard_build_component_tag" />
-    </LinearLayout>
+            android:orientation="vertical"
+            />
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/dlg_orders_footer_bar"

@@ -1,5 +1,7 @@
 package com.rebellionandroid.components.commands.orderComponents
 
-interface OrderComponent {
-    fun getSelectedValue(): Pair<String, String>
+import androidx.fragment.app.Fragment
+
+abstract class OrderComponent(): Fragment() {
+    abstract fun getSelectedValue(): Pair<String, String>
 }

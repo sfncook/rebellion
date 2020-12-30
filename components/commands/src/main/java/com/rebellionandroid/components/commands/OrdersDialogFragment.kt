@@ -7,14 +7,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.components.commands.orderComponents.FactoryCtorYardBuildOrderFragment
+import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 
 
 class OrdersDialogFragment: DialogFragment() {
+
+    private lateinit var componentsListLayout: LinearLayout
+    private val componentFragments = mutableListOf<OrderComponent>()
 
     companion object {
         fun newInstance(): OrdersDialogFragment {
@@ -45,26 +47,10 @@ class OrdersDialogFragment: DialogFragment() {
             dismiss()
         }
 
-
-        val dlg_orders_ctoryard_build_component = root.findViewById<FragmentContainerView>(R.id.dlg_orders_ctoryard_build_component)
-//        dlg_orders_ctoryard_build_component.
-        val frag = requireActivity().supportFragmentManager.findFragmentByTag("dlg_orders_ctoryard_build_component_tag")
+        componentsListLayout = root.findViewById(R.id.dlg_orders_components_list)
         loadComponents()
 
         return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        val findViewWithTag =
-//            view.findViewWithTag<FragmentContainerView>("dlg_orders_ctoryard_build_component_tag")
-
-        val findFragmentById =
-            requireActivity().supportFragmentManager.findFragmentById(R.id.dlg_orders_ctoryard_build_component)
-        val findFragmentByTag =
-            childFragmentManager.findFragmentByTag("dlg_orders_ctoryard_build_component_tag")
-
-        println("asdf")
     }
 
     override fun onStart() {
@@ -77,14 +63,17 @@ class OrdersDialogFragment: DialogFragment() {
 
     private fun loadComponents() {
         val componentsToShow = arguments?.getStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value)!!
-        val fragmentsToLoad = componentsToShow.map { componentToShow ->
+        componentsToShow.map { componentToShow ->
             when(componentToShow) {
-                OrderDlgComponentTypes.CtorYardBuildTypes.value -> FactoryCtorYardBuildOrderFragment.newInstance()
+                OrderDlgComponentTypes.CtorYardBuildTypes.value -> loadComponent(FactoryCtorYardBuildOrderFragment.newInstance(), "FactoryCtorYardBuildOrderFragment")
                 else -> FactoryCtorYardBuildOrderFragment.newInstance()
             }
         }
-        childFragmentManager.beginTransaction()
+    }
 
+    private fun loadComponent(orderComponent: OrderComponent, tag: String) {
+        componentFragments.add(orderComponent)
+        childFragmentManager.beginTransaction().add(R.id.dlg_orders_components_list, orderComponent, tag).commit()
     }
 
 }

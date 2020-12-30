@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.commands.FactoryBuildDialogFragment
 import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
+import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.features.planetdetail.R
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.Utilities
@@ -49,6 +50,8 @@ class FactoryViewHolder(
                             OrderDlgArgumentKeys.PositiveBtnText.value to "Do it.",
                             OrderDlgArgumentKeys.NegativeBtnText.value to "Never mind",
                         )
+                        val components = arrayListOf(OrderDlgComponentTypes.CtorYardBuildTypes.value)
+                        bundle.putStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value, components)
                         val fm: FragmentManager =
                             (it.context as BaseActivity).supportFragmentManager
 //                        val factoryBuildDialogFragment = FactoryBuildDialogFragment()
