@@ -187,10 +187,11 @@ class GameStateViewModel @Inject constructor(
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
                 val gameStateWithSectors = getGameStateWithSectors(gameStateId)
-                val (newGameStateWithSectors, updateEvents, newFactories, newShips) = GameUpdater.updateGameState(gameStateWithSectors.deepCopy())
+                val (newGameStateWithSectors, updateEvents, newFactories, newShips, newUnits) = GameUpdater.updateGameState(gameStateWithSectors.deepCopy())
                 deepUpdateGameState(newGameStateWithSectors)
                 newFactories.forEach { gameStateRepository.insert(it) }
                 newShips.forEach { gameStateRepository.insert(it) }
+                newUnits.forEach { gameStateRepository.insert(it) }
                 postUpdate(gameStateId)
                 updateEvents.forEach { println(it.getEventMessage()) }
                 delay(1500)

@@ -25,8 +25,8 @@ data class Unit(
         var unitType: UnitType = UnitType.Garrison,
         var team: TeamLoyalty = TeamLoyalty.Neutral,
 
-        @Nullable @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long? = 0,
-        @Nullable @ColumnInfo(name = "ship_id", index = true) var locationShip: Long? = 0,
+        @Nullable @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long? = null,
+        @Nullable @ColumnInfo(name = "ship_id", index = true) var locationShip: Long? = null,
         @Nullable var mission: Mission? = Mission.Assassination,
         var dayMissionComplete: Long = 0,
         @Nullable var missionTargetType: MissionTargetType? = MissionTargetType.Factory,

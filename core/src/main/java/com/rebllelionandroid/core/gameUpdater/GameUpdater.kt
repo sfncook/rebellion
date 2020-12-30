@@ -95,7 +95,7 @@ class GameUpdater {
 
             updateFactoryBuildOrders(gameStateWithSectors, updateEvents, newFactories, newShips, newUnits)
 
-            return GameUpdateResponse(gameStateWithSectors, updateEvents, newFactories, newShips)
+            return GameUpdateResponse(gameStateWithSectors, updateEvents, newFactories, newShips, newUnits)
         }// updateGameState
 
         private fun applyDamage(offensiveShips: List<ShipWithUnits>, defensiveShips: List<ShipWithUnits>) {
@@ -163,6 +163,7 @@ class GameUpdater {
                                             FactoryType.ConstructionYard,
                                             planetWithUnits,
                                             dstPlanetWithUnits,
+                                            factory.team,
                                             gameTime,
                                             newFactories,
                                             updateEvents
@@ -172,6 +173,7 @@ class GameUpdater {
                                             FactoryType.ShipYard,
                                             planetWithUnits,
                                             dstPlanetWithUnits,
+                                            factory.team,
                                             gameTime,
                                             newFactories,
                                             updateEvents
@@ -181,6 +183,7 @@ class GameUpdater {
                                             FactoryType.TrainingFaciliy,
                                             planetWithUnits,
                                             dstPlanetWithUnits,
+                                            factory.team,
                                             gameTime,
                                             newFactories,
                                             updateEvents
@@ -297,6 +300,7 @@ class GameUpdater {
             factoryType: FactoryType,
             srcPlanetWithUnits: PlanetWithUnits,
             dstPlanetWithUnits: PlanetWithUnits,
+            teamLoyalty: TeamLoyalty,
             gameTime: Long,
             newFactories: MutableList<Factory>,
             updateEvents: MutableList<UpdateEvent>
@@ -305,6 +309,7 @@ class GameUpdater {
                 id = Random.nextLong(),
                 factoryType = factoryType,
                 locationPlanetId = dstPlanetWithUnits.planet.id,
+                team = teamLoyalty,
                 created = true
             )
             val needsDelivery = srcPlanetWithUnits.planet.id != dstPlanetWithUnits.planet.id
@@ -363,6 +368,7 @@ class GameUpdater {
         ) {
             val newUnit = Unit(
                 id = Random.nextLong(),
+                locationPlanetId = dstPlanetWithUnits.planet.id,
                 unitType = unitType,
                 team = teamLoyalty,
                 created = true
@@ -377,6 +383,8 @@ class GameUpdater {
             if(needsDelivery && tripArrivalDay > gameTime) {
                 newUnit.isTraveling = true
                 newUnit.dayArrival = tripArrivalDay
+            } else {
+
             }
             newUnits.add(newUnit)
             updateEvents.add(NewUnitTrainedEvent(newUnit, dstPlanetWithUnits.planet))
