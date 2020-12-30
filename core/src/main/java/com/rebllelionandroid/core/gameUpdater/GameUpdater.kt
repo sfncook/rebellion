@@ -275,7 +275,7 @@ class GameUpdater {
             factoryType: FactoryType,
             srcPlanetWithUnits: PlanetWithUnits,
             dstPlanetWithUnits: PlanetWithUnits,
-            gameTime: Int,
+            gameTime: Long,
             newFactories: MutableList<Factory>,
             updateEvents: MutableList<UpdateEvent>
         ) {
@@ -293,7 +293,7 @@ class GameUpdater {
             )
             if(needsDelivery && tripArrivalDay > gameTime) {
                 newFactory.isTraveling = true
-                newFactory.dayArrival = tripArrivalDay.toLong()
+                newFactory.dayArrival = tripArrivalDay
             }
             newFactories.add(newFactory)
             updateEvents.add(FactoryBuiltEvent(newFactory, dstPlanetWithUnits.planet))
@@ -304,7 +304,7 @@ class GameUpdater {
             srcPlanetWithUnits: PlanetWithUnits,
             dstPlanetWithUnits: PlanetWithUnits,
             teamLoyalty: TeamLoyalty,
-            gameTime: Int,
+            gameTime: Long,
             newShips: MutableList<Ship>,
             updateEvents: MutableList<UpdateEvent>
         ) {
@@ -324,7 +324,7 @@ class GameUpdater {
             )
             if(needsDelivery && tripArrivalDay > gameTime) {
                 newShip.isTraveling = true
-                newShip.dayArrival = tripArrivalDay.toLong()
+                newShip.dayArrival = tripArrivalDay
             }
             newShips.add(newShip)
             updateEvents.add(ShipBuiltEvent(newShip, dstPlanetWithUnits.planet))
@@ -335,7 +335,7 @@ class GameUpdater {
             srcPlanetWithUnits: PlanetWithUnits,
             dstPlanetWithUnits: PlanetWithUnits,
             teamLoyalty: TeamLoyalty,
-            gameTime: Int,
+            gameTime: Long,
             newUnits: MutableList<Unit>,
             updateEvents: MutableList<UpdateEvent>
         ) {
@@ -353,7 +353,7 @@ class GameUpdater {
             )
             if(needsDelivery && tripArrivalDay > gameTime) {
                 newUnit.isTraveling = true
-                newUnit.dayArrival = tripArrivalDay.toLong()
+                newUnit.dayArrival = tripArrivalDay
             }
             newUnits.add(newUnit)
             updateEvents.add(NewUnitTrainedEvent(newUnit, dstPlanetWithUnits.planet))

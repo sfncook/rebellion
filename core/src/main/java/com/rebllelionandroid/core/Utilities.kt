@@ -213,7 +213,7 @@ class Utilities {
             return respPlanetWithUnits
         }
 
-        fun getTravelArrivalDay(srcPlanet: Planet, dstPlanet: Planet, gameTime: Int): Int {
+        fun getTravelArrivalDay(srcPlanet: Planet, dstPlanet: Planet, gameTime: Long): Long {
             val tripDurationDays = Math.abs(srcPlanet.locationIndex - dstPlanet.locationIndex)
             return gameTime + tripDurationDays
         }

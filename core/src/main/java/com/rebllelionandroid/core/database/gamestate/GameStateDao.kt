@@ -113,9 +113,9 @@ interface GameStateDao {
     fun moveUnitToPlanet(unitId: Long, planetId: Long): Int
 
     @Query("UPDATE ships SET planet_id = :planetId, dayArrival = :dayArrival, isTraveling = 1 WHERE id = :shipId")
-    fun startShipJourneyToPlanet(shipId: Long, planetId: Long, dayArrival: Int): Int
+    fun startShipJourneyToPlanet(shipId: Long, planetId: Long, dayArrival: Long): Int
 
     @Query("UPDATE factories SET buildTargetType = :buildTargetType, dayBuildComplete = :dayBuildComplete, deliver_built_structure_to_planet_id = :destPlanetId WHERE id = :factoryId")
-    fun setFactoryBuildOrder(factoryId: Long, dayBuildComplete: Int, buildTargetType: FactoryBuildTargetType, destPlanetId: Long): Int
+    fun setFactoryBuildOrder(factoryId: Long, dayBuildComplete: Long, buildTargetType: FactoryBuildTargetType, destPlanetId: Long): Int
 
 }

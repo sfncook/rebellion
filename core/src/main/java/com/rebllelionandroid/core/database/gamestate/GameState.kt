@@ -10,7 +10,7 @@ import java.util.*
 data class GameState(
     @PrimaryKey var id: Long,
     @ColumnInfo(name = "gameInProgress") var gameInProgress: Boolean,
-    @ColumnInfo(name = "gameTime") var gameTime: Int,
+    @ColumnInfo(name = "gameTime") var gameTime: Long,
     var myTeam: TeamLoyalty,
     var gameStartedTime: Date
 )
