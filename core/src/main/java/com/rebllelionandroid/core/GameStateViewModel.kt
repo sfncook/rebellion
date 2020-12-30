@@ -321,6 +321,7 @@ class GameStateViewModel @Inject constructor(
                             id = Random.nextLong(),
                             factoryType = FactoryType.values().random(),
                             planetId,
+                            team = teamLoyalty,
                             buildTargetType = null,
                             dayBuildComplete = 0,
                             isTravelling = false,
