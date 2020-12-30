@@ -2,6 +2,7 @@ package com.rebllelionandroid.core.gameUpdater
 
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.*
+import com.rebllelionandroid.core.database.gamestate.Unit
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
@@ -9,7 +10,6 @@ import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.core.gameUpdater.events.*
 import com.rebllelionandroid.core.gameUpdater.uprising.UprisingEval
-import com.rebllelionandroid.core.database.gamestate.Unit
 import kotlin.random.Random
 
 class GameUpdater {
@@ -178,7 +178,7 @@ class GameUpdater {
                                         )
                                     FactoryBuildTargetType.ConstructionYard_TrainingFacility ->
                                         createFactory(
-                                            FactoryType.ShipYard,
+                                            FactoryType.TrainingFaciliy,
                                             planetWithUnits,
                                             dstPlanetWithUnits,
                                             gameTime,
