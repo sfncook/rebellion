@@ -46,7 +46,8 @@ class OrdersDialogFragment: DialogFragment() {
         }
 
 
-//        val dlg_orders_ctoryard_build_component = root.findViewById<View>(R.id.dlg_orders_ctoryard_build_component)
+        val dlg_orders_ctoryard_build_component = root.findViewById<FragmentContainerView>(R.id.dlg_orders_ctoryard_build_component)
+//        dlg_orders_ctoryard_build_component.
         val frag = requireActivity().supportFragmentManager.findFragmentByTag("dlg_orders_ctoryard_build_component_tag")
         loadComponents()
 
@@ -61,7 +62,7 @@ class OrdersDialogFragment: DialogFragment() {
         val findFragmentById =
             requireActivity().supportFragmentManager.findFragmentById(R.id.dlg_orders_ctoryard_build_component)
         val findFragmentByTag =
-            requireActivity().supportFragmentManager.findFragmentByTag("dlg_orders_ctoryard_build_component_tag")
+            childFragmentManager.findFragmentByTag("dlg_orders_ctoryard_build_component_tag")
 
         println("asdf")
     }
@@ -75,13 +76,14 @@ class OrdersDialogFragment: DialogFragment() {
     }
 
     private fun loadComponents() {
-//        val componentsToShow = arguments?.getStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value)!!
-//        val fragmentsToLoad = componentsToShow.map { componentToShow ->
-//            when(componentToShow) {
-//                OrderDlgComponentTypes.CtorYardBuildTypes.value -> FactoryCtorYardBuildOrderFragment.newInstance()
-//                else -> FactoryCtorYardBuildOrderFragment.newInstance()
-//            }
-//        }
+        val componentsToShow = arguments?.getStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value)!!
+        val fragmentsToLoad = componentsToShow.map { componentToShow ->
+            when(componentToShow) {
+                OrderDlgComponentTypes.CtorYardBuildTypes.value -> FactoryCtorYardBuildOrderFragment.newInstance()
+                else -> FactoryCtorYardBuildOrderFragment.newInstance()
+            }
+        }
+        childFragmentManager.beginTransaction()
 
     }
 
