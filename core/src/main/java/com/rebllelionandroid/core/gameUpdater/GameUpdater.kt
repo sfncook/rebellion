@@ -5,9 +5,11 @@ import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
+import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.core.gameUpdater.events.*
 import com.rebllelionandroid.core.gameUpdater.uprising.UprisingEval
+import com.rebllelionandroid.core.database.gamestate.Unit
 import kotlin.random.Random
 
 class GameUpdater {
@@ -17,6 +19,7 @@ class GameUpdater {
             val updateEvents = mutableListOf<UpdateEvent>()
             val newFactories = mutableListOf<Factory>()
             val newShips = mutableListOf<Ship>()
+            val newUnits = mutableListOf<Unit>()
 
             gameStateWithSectors.gameState.gameTime = gameStateWithSectors.gameState.gameTime.plus(1)
             val gameTime = gameStateWithSectors.gameState.gameTime
@@ -90,7 +93,7 @@ class GameUpdater {
                 }// planets
             }// sectors
 
-            updateFactoryBuildOrders(gameStateWithSectors, updateEvents, newFactories, newShips)
+            updateFactoryBuildOrders(gameStateWithSectors, updateEvents, newFactories, newShips, newUnits)
 
             return GameUpdateResponse(gameStateWithSectors, updateEvents, newFactories, newShips)
         }// updateGameState
@@ -143,7 +146,8 @@ class GameUpdater {
             gameStateWithSectors: GameStateWithSectors,
             updateEvents: MutableList<UpdateEvent>,
             newFactories: MutableList<Factory>,
-            newShips: MutableList<Ship>
+            newShips: MutableList<Ship>,
+            newUnits: MutableList<Unit>,
         ) {
             val gameTime = gameStateWithSectors.gameState.gameTime
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
@@ -324,6 +328,35 @@ class GameUpdater {
             }
             newShips.add(newShip)
             updateEvents.add(ShipBuiltEvent(newShip, dstPlanetWithUnits.planet))
+        }
+
+        private fun createUnit(
+            unitType: UnitType,
+            srcPlanetWithUnits: PlanetWithUnits,
+            dstPlanetWithUnits: PlanetWithUnits,
+            teamLoyalty: TeamLoyalty,
+            gameTime: Int,
+            newUnits: MutableList<Unit>,
+            updateEvents: MutableList<UpdateEvent>
+        ) {
+            val newUnit = Unit(
+                id = Random.nextLong(),
+                unitType = UnitType.values().random(),
+                team = teamLoyalty,
+                created = true
+            )
+            val needsDelivery = srcPlanetWithUnits.planet.id != dstPlanetWithUnits.planet.id
+            val tripArrivalDay = Utilities.getTravelArrivalDay(
+                srcPlanetWithUnits.planet,
+                dstPlanetWithUnits.planet,
+                gameTime
+            )
+            if(needsDelivery && tripArrivalDay > gameTime) {
+                newShip.isTraveling = true
+                newShip.dayArrival = tripArrivalDay.toLong()
+            }
+            newUnits.add(newUnit)
+            updateEvents.add(ShipBuiltEvent(newUnit, dstPlanetWithUnits.planet))
         }
     }// component
 }
