@@ -14,13 +14,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.commands.UnitCmdDialogFragment
 import com.rebllelionandroid.core.BaseActivity
-import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 class UnitListAdapter(
-    private val units: List<Unit>,
+    private val personnels: List<Personnel>,
     private val unitsAreTravelling: Boolean
 ) : RecyclerView.Adapter<UnitListAdapter.ViewHolder>() {
 
@@ -45,7 +45,7 @@ class UnitListAdapter(
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     class ViewHolder(
         view: View,
-        private val units: List<Unit>,
+        private val personnels: List<Personnel>,
         unitsAreTravelling: Boolean
         ) : RecyclerView.ViewHolder(view) {
         val unitLabel: TextView = view.findViewById(R.id.unit_label)
@@ -85,7 +85,7 @@ class UnitListAdapter(
                                 val vel = sqrt(dx.pow(2) + dy.pow(2))
                                 if (vel > 150) {
                                     if (!isDragging) {
-                                        val unit = units[adapterPosition]
+                                        val unit = personnels[adapterPosition]
                                         val dragData =
                                             ClipData.newPlainText("unit.id", unit.id.toString())
                                         val myShadow = MyDragShadowBuilder(itemView)
@@ -119,11 +119,11 @@ class UnitListAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item_unit, viewGroup, false)
-        return ViewHolder(view, units, unitsAreTravelling)
+        return ViewHolder(view, personnels, unitsAreTravelling)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val unit = units[position]
+        val unit = personnels[position]
         viewHolder.unitLabel.text = unit.unitType.value
         val imgSrc  = when(unit.unitType) {
             UnitType.Garrison -> R.drawable.personelle_garrison_outline
@@ -132,6 +132,6 @@ class UnitListAdapter(
         viewHolder.unitImg.setImageResource(imgSrc)
     }
 
-    override fun getItemCount() =  units.size
+    override fun getItemCount() =  personnels.size
 
 }

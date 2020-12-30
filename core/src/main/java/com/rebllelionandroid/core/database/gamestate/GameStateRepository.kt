@@ -28,7 +28,7 @@ class GameStateRepository @Inject constructor(
     fun insert(defenseStructure: DefenseStructure) = gameStateDao.insert(defenseStructure)
     fun insert(factory: Factory) = gameStateDao.insert(factory)
     fun insert(ship: Ship) = gameStateDao.insert(ship)
-    fun insert(unit: Unit) = gameStateDao.insert(unit)
+    fun insert(personnel: Personnel) = gameStateDao.insert(personnel)
 
 
     // Updates

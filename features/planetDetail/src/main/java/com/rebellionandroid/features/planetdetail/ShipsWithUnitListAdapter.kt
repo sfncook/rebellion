@@ -51,7 +51,7 @@ class ShipsWithUnitListAdapter(
             val shipWithUnits = shipsWithUnits[adapterPosition]
             when (event.action) {
                 DragEvent.ACTION_DRAG_ENTERED -> {
-                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.units.size
+                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.personnels.size
                     if(!shipWithUnits.ship.isTraveling && shipHasAvailability) {
                         bgView.setBackgroundColor(Color.GREEN)
                         v.invalidate()
@@ -61,7 +61,7 @@ class ShipsWithUnitListAdapter(
                     }
                 }
                 DragEvent.ACTION_DRAG_EXITED -> {
-                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.units.size
+                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.personnels.size
                     if(!shipWithUnits.ship.isTraveling && shipHasAvailability) {
                         bgView.setBackgroundColor(ContextCompat.getColor(v.context, R.color.list_item_bg))
                         v.invalidate()
@@ -71,7 +71,7 @@ class ShipsWithUnitListAdapter(
                     }
                 }
                 DragEvent.ACTION_DROP -> {
-                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.units.size
+                    val shipHasAvailability = shipWithUnits.ship.unitCapacity > shipWithUnits.personnels.size
                     if(!shipWithUnits.ship.isTraveling && shipHasAvailability) {
                         val item: ClipData.Item = event.clipData.getItemAt(0)
                         val dragData = item.text
@@ -151,7 +151,7 @@ class ShipsWithUnitListAdapter(
             )
         }
 
-        viewHolder.shipWithUnitsList.adapter = UnitListAdapter(shipWithUnits.units, shipWithUnits.ship.isTraveling)
+        viewHolder.shipWithUnitsList.adapter = UnitListAdapter(shipWithUnits.personnels, shipWithUnits.ship.isTraveling)
     }
 
     override fun getItemCount() =  shipsWithUnits.size

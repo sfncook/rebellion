@@ -29,7 +29,7 @@ interface GameStateDao {
     fun getPlanet(planetId: Long): Planet
 
     @Query("SELECT * FROM units WHERE id = :unitId")
-    fun getUnit(unitId: Long): Unit
+    fun getUnit(unitId: Long): Personnel
 
     @Transaction
     @Query("SELECT * FROM ships WHERE id = :shipId")
@@ -40,7 +40,7 @@ interface GameStateDao {
     fun getShipWithUnits(shipId: Long): ShipWithUnits
 
     @Query("SELECT * FROM units WHERE planet_id = :planetId")
-    fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long): List<Unit>
+    fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long): List<Personnel>
 
     @Query("SELECT * FROM game_state WHERE id = :gameStateId")
     fun getGameState(gameStateId: Long): GameState
@@ -76,7 +76,7 @@ interface GameStateDao {
     fun insert(ship: Ship)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(unit: Unit)
+    fun insert(personnel: Personnel)
 
 
 

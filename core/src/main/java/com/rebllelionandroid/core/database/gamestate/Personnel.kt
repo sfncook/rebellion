@@ -24,7 +24,7 @@ import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
                         onDelete = ForeignKey.SET_NULL)
         ]
 )
-data class Unit(
+data class Personnel(
         @PrimaryKey var id: Long = 0,
         var unitType: UnitType = UnitType.Garrison,
         var team: TeamLoyalty = TeamLoyalty.Neutral,

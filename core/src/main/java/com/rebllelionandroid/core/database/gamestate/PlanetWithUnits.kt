@@ -4,27 +4,27 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 data class PlanetWithUnits(
-        @Embedded val planet: Planet,
-        @Relation(
+    @Embedded val planet: Planet,
+    @Relation(
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
-        val units: MutableList<Unit>,
+        val personnels: MutableList<Personnel>,
 
-        @Relation(
+    @Relation(
                 entity = Ship::class,
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
         val shipsWithUnits: MutableList<ShipWithUnits>,
 
-        @Relation(
+    @Relation(
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )
         val defenseStructures: MutableList<DefenseStructure>,
 
-        @Relation(
+    @Relation(
                 parentColumn = "id",
                 entityColumn = "planet_id"
         )

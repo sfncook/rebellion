@@ -105,7 +105,7 @@ class PlanetsListAdapter(
 
         var manyUnitsTeamA = 0
         var manyUnitsTeamB = 0
-        planetWithUnit.units.forEach { unit ->
+        planetWithUnit.personnels.forEach { unit ->
             when(unit.team) {
                 TeamLoyalty.TeamA -> manyUnitsTeamA = manyUnitsTeamA.inc()
                 TeamLoyalty.TeamB -> manyUnitsTeamB = manyUnitsTeamB.inc()

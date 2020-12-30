@@ -25,7 +25,7 @@ import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
-import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.launch
@@ -134,7 +134,7 @@ class PlanetUnitsFragment : Fragment() {
                     // **** Enemy Units ****
                     var manyEnemyUnitsSpecOps = 0
                     var manyEnemyUnitsGarison = 0
-                    planetWithUnits.units.forEach{unit ->
+                    planetWithUnits.personnels.forEach{ unit ->
                         if(unit.team != myTeam) {
                             when (unit.unitType) {
                                 UnitType.SpecialForces -> manyEnemyUnitsSpecOps =
@@ -203,8 +203,8 @@ class PlanetUnitsFragment : Fragment() {
         }
     }
 
-    private fun updateUnitsOnPlanetSurface(units: List<Unit>) {
-        val viewAdapter = UnitListAdapter(units, false)
+    private fun updateUnitsOnPlanetSurface(personnels: List<Personnel>) {
+        val viewAdapter = UnitListAdapter(personnels, false)
         viewLifecycleOwner.lifecycleScope.launch {
             listUnitsOnPlanetSurface.adapter = viewAdapter
         }

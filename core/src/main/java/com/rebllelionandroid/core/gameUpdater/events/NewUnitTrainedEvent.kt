@@ -1,14 +1,14 @@
 package com.rebllelionandroid.core.gameUpdater.events
 
 import com.rebllelionandroid.core.database.gamestate.Planet
-import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.Personnel
 
-data class NewUnitTrainedEvent(val unit: Unit, val planet: Planet): UpdateEvent {
+data class NewUnitTrainedEvent(val personnel: Personnel, val planet: Planet): UpdateEvent {
     override fun getEventMessage(): String {
-        if(unit.isTraveling) {
-            return "Ship (${unit.unitType.name}) finished building and will arrive on planet ${planet.name} day:${unit.dayArrival}."
+        if(personnel.isTraveling) {
+            return "Ship (${personnel.unitType.name}) finished building and will arrive on planet ${planet.name} day:${personnel.dayArrival}."
         } else {
-            return "Ship (${unit.unitType.name}) finished building on planet ${planet.name}."
+            return "Ship (${personnel.unitType.name}) finished building on planet ${planet.name}."
         }
     }
 }

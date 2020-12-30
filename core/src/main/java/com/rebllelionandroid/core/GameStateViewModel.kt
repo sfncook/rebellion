@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.*
-import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.DefenseStructureType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
@@ -92,7 +92,7 @@ class GameStateViewModel @Inject constructor(
             callback(shipWithUnits)
         }
     }
-    fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long, callback: (units: List<Unit>) -> kotlin.Unit) {
+    fun getAllUnitsOnTheSurfaceOfPlanet(planetId: Long, callback: (personnels: List<Personnel>) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val units = gameStateRepository.getAllUnitsOnTheSurfaceOfPlanet(planetId)
             callback(units)
@@ -104,7 +104,7 @@ class GameStateViewModel @Inject constructor(
             callback(planets)
         }
     }
-    fun getUnit(unitId: Long, callback: (unit: Unit) -> kotlin.Unit) {
+    fun getUnit(unitId: Long, callback: (personnel: Personnel) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val unit = gameStateRepository.getUnit(unitId)
             callback(unit)
@@ -348,7 +348,7 @@ class GameStateViewModel @Inject constructor(
 
                         val manyInitUnitsPerShip = Random.nextInt(0, ship.unitCapacity)
                         for (uPs in 1..manyInitUnitsPerShip) {
-                            val unit = Unit(
+                            val unit = Personnel(
                                 id = Random.nextLong(),
                                 unitType = UnitType.values().random(),
                                 locationPlanetId = null,

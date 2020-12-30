@@ -2,7 +2,7 @@ package com.rebllelionandroid.core.gameUpdater
 
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.*
-import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
@@ -19,7 +19,7 @@ class GameUpdater {
             val updateEvents = mutableListOf<UpdateEvent>()
             val newFactories = mutableListOf<Factory>()
             val newShips = mutableListOf<Ship>()
-            val newUnits = mutableListOf<Unit>()
+            val newUnits = mutableListOf<Personnel>()
 
             gameStateWithSectors.gameState.gameTime = gameStateWithSectors.gameState.gameTime.plus(1)
             val gameTime = gameStateWithSectors.gameState.gameTime
@@ -37,7 +37,7 @@ class GameUpdater {
                         applyDamage(teamsToShips[TeamLoyalty.TeamB]!!, teamsToShips[TeamLoyalty.TeamA]!!)
 
                         // units on surface
-                        planetWithUnits.units.forEach { unit ->
+                        planetWithUnits.personnels.forEach { unit ->
 
                         }
                     }
@@ -53,7 +53,7 @@ class GameUpdater {
 
                     val uprisingRank = UprisingEval.getUprisingRank(
                         planet.teamALoyalty,
-                        planetWithUnits.units.size
+                        planetWithUnits.personnels.size
                     )
                 }// planets
             }// sectors
@@ -87,7 +87,7 @@ class GameUpdater {
                     }
 
                     // units on surface
-                    planetWithUnits.units.forEach { unit ->
+                    planetWithUnits.personnels.forEach { unit ->
 
                     }
                 }// planets
@@ -147,7 +147,7 @@ class GameUpdater {
             updateEvents: MutableList<UpdateEvent>,
             newFactories: MutableList<Factory>,
             newShips: MutableList<Ship>,
-            newUnits: MutableList<Unit>,
+            newPersonnels: MutableList<Personnel>,
         ) {
             val gameTime = gameStateWithSectors.gameState.gameTime
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
@@ -267,7 +267,7 @@ class GameUpdater {
                                             dstPlanetWithUnits,
                                             factory.team,
                                             gameTime,
-                                            newUnits,
+                                            newPersonnels,
                                             updateEvents
                                         )
                                     FactoryBuildTargetType.TrainingFac_SpecOps ->
@@ -277,7 +277,7 @@ class GameUpdater {
                                             dstPlanetWithUnits,
                                             factory.team,
                                             gameTime,
-                                            newUnits,
+                                            newPersonnels,
                                             updateEvents
                                         )
 
@@ -363,10 +363,10 @@ class GameUpdater {
             dstPlanetWithUnits: PlanetWithUnits,
             teamLoyalty: TeamLoyalty,
             gameTime: Long,
-            newUnits: MutableList<Unit>,
+            newPersonnels: MutableList<Personnel>,
             updateEvents: MutableList<UpdateEvent>
         ) {
-            val newUnit = Unit(
+            val newUnit = Personnel(
                 id = Random.nextLong(),
                 locationPlanetId = dstPlanetWithUnits.planet.id,
                 unitType = unitType,
@@ -386,7 +386,7 @@ class GameUpdater {
             } else {
 
             }
-            newUnits.add(newUnit)
+            newPersonnels.add(newUnit)
             updateEvents.add(NewUnitTrainedEvent(newUnit, dstPlanetWithUnits.planet))
         }
     }// component

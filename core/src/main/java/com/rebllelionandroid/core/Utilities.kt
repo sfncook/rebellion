@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.rebllelionandroid.core.database.gamestate.*
-import com.rebllelionandroid.core.database.gamestate.Unit
+import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
@@ -69,8 +69,8 @@ class Utilities {
             return shipsWithUnits.groupBy { it.ship.team }
         }
 
-        fun getTeamsToUnitsOnPlanet(planetsWithUnits: PlanetWithUnits): Map<TeamLoyalty, List<Unit>> {
-            return planetsWithUnits.units.groupBy { it.team }
+        fun getTeamsToUnitsOnPlanet(planetsWithUnits: PlanetWithUnits): Map<TeamLoyalty, List<Personnel>> {
+            return planetsWithUnits.personnels.groupBy { it.team }
         }
 
         fun getPlanetEnergiesFull(planetWithUnit: PlanetWithUnits): Int {
@@ -266,17 +266,17 @@ class Utilities {
             }
         }
 
-        fun setUnitStrengthValues(unit: Unit) {
-            when(unit.unitType) {
+        fun setUnitStrengthValues(personnel: Personnel) {
+            when(personnel.unitType) {
                 UnitType.Garrison -> {
-                    unit.attackStrength = 10
-                    unit.defenseStrength = 10
-                    unit.healthPoints = 10
+                    personnel.attackStrength = 10
+                    personnel.defenseStrength = 10
+                    personnel.healthPoints = 10
                 }
                 UnitType.SpecialForces -> {
-                    unit.attackStrength = 2
-                    unit.defenseStrength = 2
-                    unit.healthPoints = 2
+                    personnel.attackStrength = 2
+                    personnel.defenseStrength = 2
+                    personnel.healthPoints = 2
                 }
             }
         }

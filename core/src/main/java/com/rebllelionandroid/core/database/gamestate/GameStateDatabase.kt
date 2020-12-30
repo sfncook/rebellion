@@ -14,7 +14,7 @@ import com.rebllelionandroid.core.database.staticTypes.StaticTypesDao
         GameState::class,
         Sector::class,
         Planet::class,
-        Unit::class,
+        Personnel::class,
         Ship::class,
         Factory::class,
         DefenseStructure::class,
