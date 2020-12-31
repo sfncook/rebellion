@@ -49,13 +49,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:layout_margin="2dp"
-            android:text="POSITIVE" />
+            android:text="Submit" />
         <Button
             android:id="@+id/dlg_orders_negative_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:layout_margin="2dp"
-            android:text="NEGATIVE" />
+            android:text="Cancel" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

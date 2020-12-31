@@ -110,15 +110,12 @@ class ShipsWithUnitListAdapter(
             view.setOnClickListener {
                 val shipWithUnits = shipsWithUnits[adapterPosition]
                 if(!shipWithUnits.ship.isTraveling) {
+                    val components = arrayListOf(OrderDlgComponentTypes.PlanetPicker.value)
                     val bundle = bundleOf(
                         OrderDlgArgumentKeys.MoveShipId.value to shipWithUnits.ship.id,
-                        OrderDlgArgumentKeys.DialogTitleText.value to "Move ship to new planet",
-                        OrderDlgArgumentKeys.PositiveBtnText.value to "Send Ship",
-                        OrderDlgArgumentKeys.NegativeBtnText.value to "Cancel",
-                        OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.MoveShip,
+                        OrderDlgArgumentKeys.ComponentsToShow.value to components,
+                        OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.MoveShip
                     )
-                    val components = arrayListOf(OrderDlgComponentTypes.PlanetPicker.value)
-                    bundle.putStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value, components)
                     val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                     val shipMoveDialogFragment = OrdersDialogFragment.newInstance()
                     shipMoveDialogFragment.setTargetFragment(parentFragment, 1234)

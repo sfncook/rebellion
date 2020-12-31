@@ -11,6 +11,7 @@ import com.rebellionandroid.components.commands.FactoryBuildDialogFragment
 import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
+import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebellionandroid.features.planetdetail.R
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.Utilities
@@ -45,16 +46,13 @@ class FactoryViewHolder(
                 if (structureObj::class == Factory::class) {
                     val factory = structureObj as Factory
                     if(!factory.isTraveling) {
-                        val bundle = bundleOf(
-                            "factoryId" to factory.id,
-                            OrderDlgArgumentKeys.PositiveBtnText.value to "Do it.",
-                            OrderDlgArgumentKeys.NegativeBtnText.value to "Never mind",
-                        )
                         val components = arrayListOf(OrderDlgComponentTypes.CtorYardBuildTypes.value)
-                        bundle.putStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value, components)
-                        val fm: FragmentManager =
-                            (it.context as BaseActivity).supportFragmentManager
-//                        val factoryBuildDialogFragment = FactoryBuildDialogFragment()
+                        val bundle = bundleOf(
+                            OrderDlgArgumentKeys.FactoryId.value to factory.id,
+                            OrderDlgArgumentKeys.ComponentsToShow.value to components,
+                            OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.BuildUnit
+                        )
+                        val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                         val factoryBuildDialogFragment = OrdersDialogFragment.newInstance()
                         factoryBuildDialogFragment.arguments = bundle
                         factoryBuildDialogFragment.show(fm, "shipMoveDialogFragment")

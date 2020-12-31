@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
+import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentPlanetPickerFragment
@@ -36,22 +37,16 @@ class OrdersDialogFragment: DialogFragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_orders, container, false)
 
-
-        val titleText = arguments?.getString(OrderDlgArgumentKeys.DialogTitleText.value)
-        if(titleText!=null) {
-            val titleTextView = root.findViewById<TextView>(R.id.dlg_orders_title_text)
-            titleTextView.text = titleText
-        }
-
-
-        val positiveBtnText = arguments?.getString(OrderDlgArgumentKeys.PositiveBtnText.value)!!
-        val negativeBtnText = arguments?.getString(OrderDlgArgumentKeys.NegativeBtnText.value)!!
-
+        val titleTextView = root.findViewById<TextView>(R.id.dlg_orders_title_text)
         val positiveBtn = root.findViewById<Button>(R.id.dlg_orders_positive_btn)
         val negativeBtn = root.findViewById<Button>(R.id.dlg_orders_negative_btn)
 
-        positiveBtn.text = positiveBtnText
-        negativeBtn.text = negativeBtnText
+        when(arguments?.get(OrderDlgArgumentKeys.OrderProcedure.value) as OrderProcedures) {
+            OrderProcedures.MoveShip -> {
+                titleTextView.text = "Move ship to new planet"
+                positiveBtn.text = "Move"
+            }
+        }
 
         positiveBtn.setOnClickListener {
             val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
