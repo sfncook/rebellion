@@ -125,4 +125,8 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
             sectorsAndPlanetsExpandableList.expandGroup(indexOfSelectedSector)
         }
     }
+
+    override fun setAllOrderParameters(orderParameters: Map<String, String>) {
+        // Do nothing
+    }
 }

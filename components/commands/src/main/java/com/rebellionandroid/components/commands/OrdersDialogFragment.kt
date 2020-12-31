@@ -52,10 +52,11 @@ class OrdersDialogFragment: DialogFragment() {
         positiveBtn.setOnClickListener {
             val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
             if(currentGameStateId!=null && arguments!=null) {
+                val orderParameters = CommandUtilities.orderComponentsToMap(orderComponents)
                 CommandUtilities.conductOrderProcedures(
                     gameStateViewModel,
                     requireArguments(),
-                    orderComponents,
+                    orderParameters,
                     currentGameStateId!!
                 )
             }
@@ -116,6 +117,11 @@ class OrdersDialogFragment: DialogFragment() {
             orderComponent,
             tag
         ).commit()
+    }
+
+    fun onComponentSelection() {
+        val orderParameters = CommandUtilities.orderComponentsToMap(orderComponents)
+        orderComponents.forEach {it.setAllOrderParameters(orderParameters)}
     }
 
 }

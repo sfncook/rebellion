@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.content.ContextCompat.getColor
+import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.R
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
@@ -52,6 +53,9 @@ class OrderComponentFactoryCtorYardBuildTypesFragment(): OrderComponent() {
     private fun setSelectedBuildType(buildTargetType: FactoryBuildTargetType?) {
         selectedBuildType = buildTargetType
         updateBtns()
+        if(parentFragment!=null && parentFragment!!::class == OrdersDialogFragment::class) {
+            (parentFragment as OrdersDialogFragment).onComponentSelection()
+        }
     }
 
     private fun updateBtns() {
@@ -76,5 +80,9 @@ class OrderComponentFactoryCtorYardBuildTypesFragment(): OrderComponent() {
         } else {
             return Pair("","")
         }
+    }
+
+    override fun setAllOrderParameters(orderParameters: Map<String, String>) {
+        // Do nothing
     }
 }

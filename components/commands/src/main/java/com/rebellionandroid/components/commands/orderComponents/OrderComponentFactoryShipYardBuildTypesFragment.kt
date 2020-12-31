@@ -87,4 +87,8 @@ class OrderComponentFactoryShipYardBuildTypesFragment(): OrderComponent() {
             return Pair("","")
         }
     }
+
+    override fun setAllOrderParameters(orderParameters: Map<String, String>) {
+        // Do nothing
+    }
 }

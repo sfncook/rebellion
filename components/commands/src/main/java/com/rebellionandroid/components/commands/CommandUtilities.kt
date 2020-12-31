@@ -121,15 +121,17 @@ class CommandUtilities {
             }
         }
 
+        fun orderComponentsToMap(orderComponents: List<OrderComponent>): Map<String, String> {
+            return orderComponents.associateBy({it->it.getSelectedValue().first}, {it->it.getSelectedValue().second})
+        }
+
         fun conductOrderProcedures(
             gameStateViewModel: GameStateViewModel,
             bundle: Bundle,
-            orderComponents: List<OrderComponent>,
+            orderParameters: Map<String, String>,
             currentGameStateId: Long
         ) {
-            val orderProcedure = bundle.get(OrderDlgArgumentKeys.OrderProcedure.value) as OrderProcedures
-            val orderParameters = orderComponents.associateBy({it->it.getSelectedValue().first}, {it->it.getSelectedValue().second})
-            when(orderProcedure) {
+            when(bundle.get(OrderDlgArgumentKeys.OrderProcedure.value) as OrderProcedures) {
                 OrderProcedures.MoveShip -> {
                     val shipId = bundle.getLong(OrderDlgArgumentKeys.MoveShipId.value)
                     val destPlanetId = orderParameters[OrderDlgArgumentKeys.SelectedPlanetId.value]
