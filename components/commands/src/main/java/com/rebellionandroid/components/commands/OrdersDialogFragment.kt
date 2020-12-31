@@ -13,6 +13,7 @@ import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
+import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryShipYardBuildTypesFragment
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentPlanetPickerFragment
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.Utilities
@@ -94,6 +95,10 @@ class OrdersDialogFragment: DialogFragment() {
                 OrderDlgComponentTypes.CtorYardBuildTypes.value -> loadComponent(
                     OrderComponentFactoryCtorYardBuildTypesFragment.newInstance(),
                     "FactoryCtorYardBuildOrderFragment"
+                )
+                OrderDlgComponentTypes.ShipYardBuildTypes.value -> loadComponent(
+                    OrderComponentFactoryShipYardBuildTypesFragment.newInstance(),
+                    "OrderComponentFactoryShipYardBuildTypesFragment"
                 )
                 OrderDlgComponentTypes.PlanetPicker.value -> loadComponent(
                     OrderComponentPlanetPickerFragment.newInstance(),

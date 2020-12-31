@@ -45,8 +45,13 @@ class FactoryViewHolder(
                 if (structureObj::class == Factory::class) {
                     val factory = structureObj as Factory
                     if(!factory.isTraveling) {
+                        val buildTypeComponent = when(factory.factoryType) {
+                            FactoryType.ConstructionYard -> OrderDlgComponentTypes.CtorYardBuildTypes
+                            FactoryType.ShipYard -> OrderDlgComponentTypes.ShipYardBuildTypes
+                            else -> OrderDlgComponentTypes.CtorYardBuildTypes
+                        }
                         val components = arrayListOf(
-                            OrderDlgComponentTypes.CtorYardBuildTypes.value,
+                            buildTypeComponent.value,
                             OrderDlgComponentTypes.PlanetPicker.value
                         )
                         val bundle = bundleOf(
