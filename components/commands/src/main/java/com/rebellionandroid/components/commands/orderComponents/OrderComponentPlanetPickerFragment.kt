@@ -12,6 +12,7 @@ import com.rebellionandroid.components.commands.SectorsAndPlanetsListAdapter
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 import kotlinx.coroutines.launch
@@ -71,16 +72,12 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         super.onResume()
         val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
         val keyCurrentGameId = getString(R.string.keyCurrentGameId)
-        val sharedPref = activity?.getSharedPreferences(
-            gameStateSharedPrefFile,
-            Context.MODE_PRIVATE
+        currentGameStateId = Utilities.getCurrentGameStateId(
+            getString(R.string.gameStateSharedPrefFile),
+            getString(R.string.keyCurrentGameId),
+            requireActivity()
         )
-        if(sharedPref?.contains(keyCurrentGameId) == true) {
-            currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
-            updateList()
-        } else {
-            println("ERROR No current game ID found in shared preferences")
-        }
+        updateList()
     }
 
     override fun getSelectedValue(): Pair<String, String> {

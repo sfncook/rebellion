@@ -79,10 +79,23 @@ class CommandUtilities {
             }
         }
 
+        fun moveShipToPlanet(
+            gameStateViewModel: GameStateViewModel,
+            shipId: Long,
+            destPlanetId: Long,
+            currentGameStateId: Long
+        ) {
+//            if(selectedShipWithUnits.ship.locationPlanetId != planetId) {
+//                gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId)
+//                dismiss()
+//            }
+        }
+
         fun conductOrderProcedures(
             gameStateViewModel: GameStateViewModel,
             bundle: Bundle?,
-            orderComponents: List<OrderComponent>
+            orderComponents: List<OrderComponent>,
+            currentGameStateId: Long
         ) {
             val orderProcedureStr = bundle?.getString(OrderDlgArgumentKeys.OrderProcedure.value)
             if(orderProcedureStr!=null) {

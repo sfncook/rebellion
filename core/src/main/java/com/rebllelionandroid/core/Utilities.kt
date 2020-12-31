@@ -1,6 +1,7 @@
 package com.rebllelionandroid.core
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -278,6 +279,23 @@ class Utilities {
                     personnel.defenseStrength = 2
                     personnel.healthPoints = 2
                 }
+            }
+        }
+
+        fun getCurrentGameStateId(
+            gameStateSharedPrefFile: String,
+            keyCurrentGameId: String,
+            contextWrapper: ContextWrapper
+        ): Long? {
+            val sharedPref = contextWrapper?.getSharedPreferences(
+                gameStateSharedPrefFile,
+                Context.MODE_PRIVATE
+            )
+            if(sharedPref?.contains(keyCurrentGameId) == true) {
+                return sharedPref.getLong(keyCurrentGameId, 0)
+            } else {
+                println("OrdersDialogFragment.onResume ERROR No current game ID found in shared preferences")
+                return null
             }
         }
     }

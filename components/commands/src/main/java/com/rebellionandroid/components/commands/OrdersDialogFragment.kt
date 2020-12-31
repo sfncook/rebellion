@@ -1,6 +1,5 @@
 package com.rebellionandroid.components.commands
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,17 +10,18 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
-import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentPlanetPickerFragment
 import com.rebllelionandroid.core.BaseActivity
+import com.rebllelionandroid.core.Utilities
 
 
 class OrdersDialogFragment: DialogFragment() {
 
     private lateinit var componentsListLayout: LinearLayout
     private val orderComponents = mutableListOf<OrderComponent>()
+    private var currentGameStateId: Long? = null
 
     companion object {
         fun newInstance(): OrdersDialogFragment {
@@ -55,7 +55,14 @@ class OrdersDialogFragment: DialogFragment() {
 
         positiveBtn.setOnClickListener {
             val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-            CommandUtilities.conductOrderProcedures(gameStateViewModel, arguments, orderComponents)
+            if(currentGameStateId!=null) {
+                CommandUtilities.conductOrderProcedures(
+                    gameStateViewModel,
+                    arguments,
+                    orderComponents,
+                    currentGameStateId!!
+                )
+            }
             dismiss()
         }
         negativeBtn.setOnClickListener {
@@ -73,6 +80,15 @@ class OrdersDialogFragment: DialogFragment() {
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentGameStateId = Utilities.getCurrentGameStateId(
+            getString(R.string.gameStateSharedPrefFile),
+            getString(R.string.keyCurrentGameId),
+            requireActivity()
         )
     }
 
