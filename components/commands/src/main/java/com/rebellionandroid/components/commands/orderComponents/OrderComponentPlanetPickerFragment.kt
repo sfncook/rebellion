@@ -19,6 +19,7 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
 
     private lateinit var sectorsAndPlanetsExpandableList: ExpandableListView
     private lateinit var gameStateViewModel: GameStateViewModel
+    private var currentGameStateId: Long? = null
     private var selectedPlanetId: Long? = null
     private var lastGroupExpandedPos: Int? = null
     private lateinit var rootContext: Context
@@ -58,6 +59,7 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         // planet selection event
         sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, planetId ->
             selectedPlanetId = planetId
+            updateList()
             true
         }
 
@@ -73,13 +75,8 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
             Context.MODE_PRIVATE
         )
         if(sharedPref?.contains(keyCurrentGameId) == true) {
-            val currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
-            gameStateViewModel.getGameStateWithSectors(currentGameStateId) { gameStateWithSectors ->
-                viewLifecycleOwner.lifecycleScope.launch {
-                    updateSectorsList(gameStateWithSectors)
-                    expandSectorForSelectedPlanet(gameStateWithSectors)
-                }
-            }
+            currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
+            updateList()
         } else {
             println("ERROR No current game ID found in shared preferences")
         }
@@ -97,11 +94,23 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         return sortedSectors.toList()
     }
 
+    private fun updateList() {
+        if(currentGameStateId!=null) {
+            gameStateViewModel.getGameStateWithSectors(currentGameStateId!!) { gameStateWithSectors ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    updateSectorsList(gameStateWithSectors)
+                    expandSectorForSelectedPlanet(gameStateWithSectors)
+                }
+            }
+        }
+    }
+
     private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors) {
         val sortedSectors = getSortedSectorsList(gameStateWithSectors)
         val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(
             rootContext,
-            sortedSectors.toList()
+            sortedSectors.toList(),
+            selectedPlanetId = selectedPlanetId
         )
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
     }

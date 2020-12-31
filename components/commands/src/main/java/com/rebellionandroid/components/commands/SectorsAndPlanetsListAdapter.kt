@@ -20,6 +20,7 @@ import com.rebllelionandroid.core.database.gamestate.SectorWithPlanets
 internal class SectorsAndPlanetsListAdapter(
     private val context: Context,
     private val sectorsWithPlanets: List<SectorWithPlanets>,
+    private val selectedPlanetId: Long? = null,
     private var filterPlanet: (planetWithUnits: PlanetWithUnits) -> Boolean = {true}
 ) : BaseExpandableListAdapter() {
 
@@ -90,7 +91,9 @@ internal class SectorsAndPlanetsListAdapter(
 
         Utilities.populateEnergiesUi(convertView2.context, energyList, planetWithUnits)
 
-        if(filterPlanet(planetWithUnits)) {
+        if(planetWithUnits.planet.id == selectedPlanetId) {
+            shipMoveBg.setBackgroundColor(Color.CYAN)
+        } else if(filterPlanet(planetWithUnits)) {
             shipMoveBg.setBackgroundColor(Color.WHITE)
         } else {
             shipMoveBg.setBackgroundColor(Color.GRAY)
