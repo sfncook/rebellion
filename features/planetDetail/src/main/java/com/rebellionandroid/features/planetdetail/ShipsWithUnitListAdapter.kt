@@ -21,6 +21,7 @@ import com.rebellionandroid.components.commands.CommandUtilities
 import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
+import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
@@ -110,9 +111,11 @@ class ShipsWithUnitListAdapter(
                 val shipWithUnits = shipsWithUnits[adapterPosition]
                 if(!shipWithUnits.ship.isTraveling) {
                     val bundle = bundleOf(
-                        "shipId" to shipWithUnits.ship.id,
-                        OrderDlgArgumentKeys.PositiveBtnText.value to "Bon Voyage",
+                        OrderDlgArgumentKeys.MoveShipId.value to shipWithUnits.ship.id,
+                        OrderDlgArgumentKeys.DialogTitleText.value to "Move ship to new planet",
+                        OrderDlgArgumentKeys.PositiveBtnText.value to "Send Ship",
                         OrderDlgArgumentKeys.NegativeBtnText.value to "Cancel",
+                        OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.MoveShip,
                     )
                     val components = arrayListOf(OrderDlgComponentTypes.PlanetPicker.value)
                     bundle.putStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value, components)

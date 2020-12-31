@@ -9,6 +9,7 @@ import android.widget.ExpandableListView
 import androidx.lifecycle.lifecycleScope
 import com.rebellionandroid.components.commands.R
 import com.rebellionandroid.components.commands.SectorsAndPlanetsListAdapter
+import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
@@ -83,7 +84,7 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
     }
 
     override fun getSelectedValue(): Pair<String, String> {
-        return Pair("selectedPlanetId", selectedPlanetId.toString())
+        return Pair(OrderDlgArgumentKeys.SelectedPlanetId.value, selectedPlanetId.toString())
     }
 
     private fun getSortedSectorsList(gameStateWithSectors: GameStateWithSectors): List<SectorWithPlanets> {

@@ -1,5 +1,9 @@
 package com.rebellionandroid.components.commands
 
+import android.os.Bundle
+import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
+import com.rebellionandroid.components.commands.enums.OrderProcedures
+import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
@@ -71,6 +75,21 @@ class CommandUtilities {
                         shipId = destShipId,
                         gameStateId = currentGameStateId
                     )
+                }
+            }
+        }
+
+        fun conductOrderProcedures(
+            gameStateViewModel: GameStateViewModel,
+            bundle: Bundle?,
+            orderComponents: List<OrderComponent>
+        ) {
+            val orderProcedureStr = bundle?.getString(OrderDlgArgumentKeys.OrderProcedure.value)
+            if(orderProcedureStr!=null) {
+                val orderProcedure = OrderProcedures.valueOf(orderProcedureStr)
+                val orderParameters = orderComponents.associateBy({it->it.getSelectedValue().first}, {it->it.getSelectedValue().second})
+                when(orderProcedure) {
+                    OrderProcedures.MoveShip -> {}
                 }
             }
         }

@@ -7,18 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
+import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentPlanetPickerFragment
+import com.rebllelionandroid.core.BaseActivity
 
 
 class OrdersDialogFragment: DialogFragment() {
 
     private lateinit var componentsListLayout: LinearLayout
-    private val componentFragments = mutableListOf<OrderComponent>()
+    private val orderComponents = mutableListOf<OrderComponent>()
 
     companion object {
         fun newInstance(): OrdersDialogFragment {
@@ -33,6 +36,14 @@ class OrdersDialogFragment: DialogFragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_orders, container, false)
 
+
+        val titleText = arguments?.getString(OrderDlgArgumentKeys.DialogTitleText.value)
+        if(titleText!=null) {
+            val titleTextView = root.findViewById<TextView>(R.id.dlg_orders_title_text)
+            titleTextView.text = titleText
+        }
+
+
         val positiveBtnText = arguments?.getString(OrderDlgArgumentKeys.PositiveBtnText.value)!!
         val negativeBtnText = arguments?.getString(OrderDlgArgumentKeys.NegativeBtnText.value)!!
 
@@ -43,9 +54,8 @@ class OrdersDialogFragment: DialogFragment() {
         negativeBtn.text = negativeBtnText
 
         positiveBtn.setOnClickListener {
-            val intent = Intent()
-            intent.putExtra("FOO", "bar1234")
-            targetFragment?.onActivityResult(getTargetRequestCode(), 1234, intent)
+            val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+            CommandUtilities.conductOrderProcedures(gameStateViewModel, arguments, orderComponents)
             dismiss()
         }
         negativeBtn.setOnClickListener {
@@ -84,7 +94,7 @@ class OrdersDialogFragment: DialogFragment() {
     }
 
     private fun loadComponent(orderComponent: OrderComponent, tag: String) {
-        componentFragments.add(orderComponent)
+        orderComponents.add(orderComponent)
         childFragmentManager.beginTransaction().add(
             R.id.dlg_orders_components_list,
             orderComponent,
