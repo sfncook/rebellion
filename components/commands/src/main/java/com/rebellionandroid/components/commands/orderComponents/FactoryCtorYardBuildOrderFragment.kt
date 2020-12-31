@@ -19,7 +19,7 @@ class FactoryCtorYardBuildOrderFragment(): OrderComponent() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_factory_ctoryard_build_order, container, false)
+        val root = inflater.inflate(R.layout.fragment_order_component_factory_ctoryard_build_types, container, false)
 
         return root
     }
