@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
-import com.rebellionandroid.components.commands.orderComponents.FactoryCtorYardBuildOrderFragment
+import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
 import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 
 
@@ -65,8 +65,8 @@ class OrdersDialogFragment: DialogFragment() {
         val componentsToShow = arguments?.getStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value)!!
         componentsToShow.map { componentToShow ->
             when(componentToShow) {
-                OrderDlgComponentTypes.CtorYardBuildTypes.value -> loadComponent(FactoryCtorYardBuildOrderFragment.newInstance(), "FactoryCtorYardBuildOrderFragment")
-                else -> FactoryCtorYardBuildOrderFragment.newInstance()
+                OrderDlgComponentTypes.CtorYardBuildTypes.value -> loadComponent(OrderComponentFactoryCtorYardBuildTypesFragment.newInstance(), "FactoryCtorYardBuildOrderFragment")
+                else -> OrderComponentFactoryCtorYardBuildTypesFragment.newInstance()
             }
         }
     }

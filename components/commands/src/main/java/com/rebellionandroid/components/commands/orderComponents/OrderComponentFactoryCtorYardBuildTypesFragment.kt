@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.rebellionandroid.components.commands.R
 
-class FactoryCtorYardBuildOrderFragment(): OrderComponent() {
+class OrderComponentFactoryCtorYardBuildTypesFragment(): OrderComponent() {
 
     companion object {
-        fun newInstance(): FactoryCtorYardBuildOrderFragment {
-            return FactoryCtorYardBuildOrderFragment()
+        fun newInstance(): OrderComponentFactoryCtorYardBuildTypesFragment {
+            return OrderComponentFactoryCtorYardBuildTypesFragment()
         }
     }
 
