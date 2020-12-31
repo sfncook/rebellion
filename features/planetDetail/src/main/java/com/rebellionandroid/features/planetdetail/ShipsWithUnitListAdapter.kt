@@ -14,11 +14,11 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.commands.CommandUtilities
 import com.rebellionandroid.components.commands.OrdersDialogFragment
-import com.rebellionandroid.components.commands.ShipMoveDialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebllelionandroid.core.BaseActivity
@@ -29,7 +29,8 @@ import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 class ShipsWithUnitListAdapter(
     private val shipsWithUnits: List<ShipWithUnits>,
     private val gameStateViewModel: GameStateViewModel,
-    private val currentGameStateId: Long
+    private val currentGameStateId: Long,
+    private val parentFragment: Fragment
 ) : RecyclerView.Adapter<ShipsWithUnitListAdapter.ViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
@@ -37,7 +38,8 @@ class ShipsWithUnitListAdapter(
             view: View,
             private val shipsWithUnits: List<ShipWithUnits>,
             private val gameStateViewModel: GameStateViewModel,
-            private val currentGameStateId: Long
+            private val currentGameStateId: Long,
+            private val parentFragment: Fragment
         ) : RecyclerView.ViewHolder(view) {
         val shipLabel: TextView = view.findViewById(R.id.ship_with_units_label)
         val healthPointsText: TextView = view.findViewById(R.id.ship_with_units_healthpoints)
@@ -116,6 +118,7 @@ class ShipsWithUnitListAdapter(
                     bundle.putStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value, components)
                     val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                     val shipMoveDialogFragment = OrdersDialogFragment.newInstance()
+                    shipMoveDialogFragment.setTargetFragment(parentFragment, 1234)
                     shipMoveDialogFragment.arguments = bundle
                     shipMoveDialogFragment.show(fm, "shipMoveDialogFragment")
                 }
@@ -128,7 +131,7 @@ class ShipsWithUnitListAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.list_item_ship_with_units, viewGroup, false)
-        return ViewHolder(view, shipsWithUnits, gameStateViewModel, currentGameStateId)
+        return ViewHolder(view, shipsWithUnits, gameStateViewModel, currentGameStateId, parentFragment)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {

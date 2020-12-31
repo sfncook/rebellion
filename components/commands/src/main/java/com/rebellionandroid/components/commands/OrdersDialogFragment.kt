@@ -1,5 +1,6 @@
 package com.rebellionandroid.components.commands
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,8 @@ import android.widget.LinearLayout
 import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
-import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
 import com.rebellionandroid.components.commands.orderComponents.OrderComponent
+import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentPlanetPickerFragment
 
 
@@ -42,6 +43,9 @@ class OrdersDialogFragment: DialogFragment() {
         negativeBtn.text = negativeBtnText
 
         positiveBtn.setOnClickListener {
+            val intent = Intent()
+            intent.putExtra("FOO", "bar1234")
+            targetFragment?.onActivityResult(getTargetRequestCode(), 1234, intent)
             dismiss()
         }
         negativeBtn.setOnClickListener {
@@ -66,8 +70,14 @@ class OrdersDialogFragment: DialogFragment() {
         val componentsToShow = arguments?.getStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value)!!
         componentsToShow.map { componentToShow ->
             when(componentToShow) {
-                OrderDlgComponentTypes.CtorYardBuildTypes.value -> loadComponent(OrderComponentFactoryCtorYardBuildTypesFragment.newInstance(), "FactoryCtorYardBuildOrderFragment")
-                OrderDlgComponentTypes.PlanetPicker.value -> loadComponent(OrderComponentPlanetPickerFragment.newInstance(), "OrderComponentPlanetPickerFragment")
+                OrderDlgComponentTypes.CtorYardBuildTypes.value -> loadComponent(
+                    OrderComponentFactoryCtorYardBuildTypesFragment.newInstance(),
+                    "FactoryCtorYardBuildOrderFragment"
+                )
+                OrderDlgComponentTypes.PlanetPicker.value -> loadComponent(
+                    OrderComponentPlanetPickerFragment.newInstance(),
+                    "OrderComponentPlanetPickerFragment"
+                )
                 else -> OrderComponentFactoryCtorYardBuildTypesFragment.newInstance()
             }
         }
@@ -75,7 +85,11 @@ class OrdersDialogFragment: DialogFragment() {
 
     private fun loadComponent(orderComponent: OrderComponent, tag: String) {
         componentFragments.add(orderComponent)
-        childFragmentManager.beginTransaction().add(R.id.dlg_orders_components_list, orderComponent, tag).commit()
+        childFragmentManager.beginTransaction().add(
+            R.id.dlg_orders_components_list,
+            orderComponent,
+            tag
+        ).commit()
     }
 
 }

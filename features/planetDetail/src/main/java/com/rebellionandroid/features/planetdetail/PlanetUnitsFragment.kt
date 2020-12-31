@@ -2,6 +2,7 @@ package com.rebellionandroid.features.planetdetail
 
 import android.content.ClipData
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -203,6 +204,12 @@ class PlanetUnitsFragment : Fragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+        val fooValue = data?.getStringExtra("FOO")
+        println(fooValue)
+    }
+
     private fun updateUnitsOnPlanetSurface(personnels: List<Personnel>) {
         val viewAdapter = UnitListAdapter(personnels, false)
         viewLifecycleOwner.lifecycleScope.launch {
@@ -211,9 +218,10 @@ class PlanetUnitsFragment : Fragment() {
     }
 
     private fun updateUnitsOnShips(shipsWithUnits: List<ShipWithUnits>, myTeam: TeamLoyalty) {
+        val _this = this
         viewLifecycleOwner.lifecycleScope.launch {
             val myShipsWithUnits = shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team == myTeam }
-            val myShipsViewAdapter = ShipsWithUnitListAdapter(myShipsWithUnits, gameStateViewModel, currentGameStateId)
+            val myShipsViewAdapter = ShipsWithUnitListAdapter(myShipsWithUnits, gameStateViewModel, currentGameStateId, _this)
             listShipsWithUnits.adapter = myShipsViewAdapter
 
             val enemyShipsWithUnits = shipsWithUnits.filter { shipWithUnits -> shipWithUnits.ship.team != myTeam }
