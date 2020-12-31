@@ -7,5 +7,5 @@
     android:divider="@android:color/darker_gray"
     android:dividerHeight="0.5dp"
     android:childDivider="@color/list_item_bg"
-    android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+    android:choiceMode="singleChoice"
     />

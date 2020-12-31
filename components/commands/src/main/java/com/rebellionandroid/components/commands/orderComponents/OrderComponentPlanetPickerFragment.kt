@@ -20,6 +20,7 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
     private lateinit var sectorsAndPlanetsExpandableList: ExpandableListView
     private lateinit var gameStateViewModel: GameStateViewModel
     private var selectedPlanetId: Long? = null
+    private var lastGroupExpandedPos: Int? = null
     private lateinit var rootContext: Context
 
     companion object {
@@ -33,7 +34,11 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_order_component_planet_picker, container, false)
+        val root = inflater.inflate(
+            R.layout.fragment_order_component_planet_picker,
+            container,
+            false
+        )
 
         selectedPlanetId = arguments?.getLong("selectedPlanetId")
 
@@ -42,6 +47,20 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         rootContext = root.context
 //        parentFragment use this to callback on select
 
+        // Only one group expanded at a time
+        sectorsAndPlanetsExpandableList.setOnGroupExpandListener { groupPosition ->
+            if (lastGroupExpandedPos != null && groupPosition != lastGroupExpandedPos) {
+                sectorsAndPlanetsExpandableList.collapseGroup(lastGroupExpandedPos!!);
+            }
+            lastGroupExpandedPos = groupPosition;
+        }
+
+        // planet selection event
+        sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, planetId ->
+            selectedPlanetId = planetId
+            true
+        }
+
         return root
     }
 
@@ -49,7 +68,10 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         super.onResume()
         val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
         val keyCurrentGameId = getString(R.string.keyCurrentGameId)
-        val sharedPref = activity?.getSharedPreferences(gameStateSharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPref = activity?.getSharedPreferences(
+            gameStateSharedPrefFile,
+            Context.MODE_PRIVATE
+        )
         if(sharedPref?.contains(keyCurrentGameId) == true) {
             val currentGameStateId = sharedPref.getLong(keyCurrentGameId, 0)
             gameStateViewModel.getGameStateWithSectors(currentGameStateId) { gameStateWithSectors ->
@@ -77,12 +99,14 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
 
     private fun updateSectorsList(gameStateWithSectors: GameStateWithSectors) {
         val sortedSectors = getSortedSectorsList(gameStateWithSectors)
-        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(rootContext, sortedSectors.toList())
+        val sectorsAndPlanetsListAdapter = SectorsAndPlanetsListAdapter(
+            rootContext,
+            sortedSectors.toList()
+        )
         sectorsAndPlanetsExpandableList.setAdapter(sectorsAndPlanetsListAdapter)
     }
 
     private fun expandSectorForSelectedPlanet(gameStateWithSectors: GameStateWithSectors) {
-        // Expand selected sector
         val sortedSectors = getSortedSectorsList(gameStateWithSectors)
         val selectedSector = sortedSectors.find { sectorWithPlanets ->
             sectorWithPlanets.planets.any { planetWithUnits ->
