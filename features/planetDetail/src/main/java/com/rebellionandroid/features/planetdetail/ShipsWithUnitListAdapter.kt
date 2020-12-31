@@ -17,7 +17,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.commands.CommandUtilities
+import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.ShipMoveDialogFragment
+import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
+import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
@@ -106,10 +109,13 @@ class ShipsWithUnitListAdapter(
                 if(!shipWithUnits.ship.isTraveling) {
                     val bundle = bundleOf(
                         "shipId" to shipWithUnits.ship.id,
-                        "currentGameStateId" to currentGameStateId
+                        OrderDlgArgumentKeys.PositiveBtnText.value to "Bon Voyage",
+                        OrderDlgArgumentKeys.NegativeBtnText.value to "Cancel",
                     )
+                    val components = arrayListOf(OrderDlgComponentTypes.PlanetPicker.value)
+                    bundle.putStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value, components)
                     val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
-                    val shipMoveDialogFragment = ShipMoveDialogFragment()
+                    val shipMoveDialogFragment = OrdersDialogFragment.newInstance()
                     shipMoveDialogFragment.arguments = bundle
                     shipMoveDialogFragment.show(fm, "shipMoveDialogFragment")
                 }
