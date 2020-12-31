@@ -22,6 +22,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:paddingTop="5dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/dlg_orders_footer_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dlg_orders_title_text">
