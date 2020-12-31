@@ -11,6 +11,7 @@ import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
 import com.rebellionandroid.components.commands.orderComponents.OrderComponent
+import com.rebellionandroid.components.commands.orderComponents.OrderComponentPlanetPickerFragment
 
 
 class OrdersDialogFragment: DialogFragment() {
@@ -66,6 +67,7 @@ class OrdersDialogFragment: DialogFragment() {
         componentsToShow.map { componentToShow ->
             when(componentToShow) {
                 OrderDlgComponentTypes.CtorYardBuildTypes.value -> loadComponent(OrderComponentFactoryCtorYardBuildTypesFragment.newInstance(), "FactoryCtorYardBuildOrderFragment")
+                OrderDlgComponentTypes.PlanetPicker.value -> loadComponent(OrderComponentPlanetPickerFragment.newInstance(), "OrderComponentPlanetPickerFragment")
                 else -> OrderComponentFactoryCtorYardBuildTypesFragment.newInstance()
             }
         }
