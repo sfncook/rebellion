@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.rebellionandroid.components.commands.FactoryBuildDialogFragment
 import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
@@ -46,11 +45,14 @@ class FactoryViewHolder(
                 if (structureObj::class == Factory::class) {
                     val factory = structureObj as Factory
                     if(!factory.isTraveling) {
-                        val components = arrayListOf(OrderDlgComponentTypes.CtorYardBuildTypes.value)
+                        val components = arrayListOf(
+                            OrderDlgComponentTypes.CtorYardBuildTypes.value,
+                            OrderDlgComponentTypes.PlanetPicker.value
+                        )
                         val bundle = bundleOf(
                             OrderDlgArgumentKeys.FactoryId.value to factory.id,
                             OrderDlgArgumentKeys.ComponentsToShow.value to components,
-                            OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.BuildUnit
+                            OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.FactoryBuild
                         )
                         val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                         val factoryBuildDialogFragment = OrdersDialogFragment.newInstance()

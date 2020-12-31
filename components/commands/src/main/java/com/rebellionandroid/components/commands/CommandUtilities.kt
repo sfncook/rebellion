@@ -5,6 +5,8 @@ import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.Utilities
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class CommandUtilities {
@@ -92,6 +94,33 @@ class CommandUtilities {
             }
         }
 
+        private fun factoryBuild(
+            gameStateViewModel: GameStateViewModel,
+            factoryId: Long,
+            destPlanetId: Long,
+            buildTargetType: FactoryBuildTargetType,
+            currentGameStateId: Long
+        ) {
+            gameStateViewModel.getPlanetWithUnits(destPlanetId) { destPlanetWithUnits ->
+                val factory = gameStateViewModel.getFactory(factoryId)
+                val planetLoyalty = Utilities.getPlanetLoyalty(destPlanetWithUnits.planet)
+                if(factory.team == planetLoyalty) {
+                    if(Utilities.getPlanetEnergiesEmpty(destPlanetWithUnits)>0) {
+                        gameStateViewModel.setFactoryBuildOrder(
+                            factoryId,
+                            destPlanetId,
+                            buildTargetType,
+                            currentGameStateId
+                        )
+                    } else {
+                        println("ERROR: Build order for dest planet that does not have available energy slots")
+                    }
+                } else {
+                    println("ERROR: Build order for factory and dest planet that aren't on the same team")
+                }
+            }
+        }
+
         fun conductOrderProcedures(
             gameStateViewModel: GameStateViewModel,
             bundle: Bundle,
@@ -108,6 +137,26 @@ class CommandUtilities {
                         moveShipToPlanet(gameStateViewModel, shipId, destPlanetId.toLong(), currentGameStateId)
                     } else {
                         println("ERROR: MoveShip missing parameters")
+                    }
+                }
+
+                OrderProcedures.FactoryBuild -> {
+                    val factoryId = bundle.getLong(OrderDlgArgumentKeys.FactoryId.value)
+                    val destPlanetId = orderParameters[OrderDlgArgumentKeys.SelectedPlanetId.value]
+                    val buildTargetTypeStr = orderParameters[OrderDlgArgumentKeys.BuildTargetType.value]
+                    if(buildTargetTypeStr != null) {
+                        val buildTargetType = FactoryBuildTargetType.valueOf(buildTargetTypeStr)
+                        if (destPlanetId != null) {
+                            factoryBuild(
+                                gameStateViewModel,
+                                factoryId,
+                                destPlanetId.toLong(),
+                                buildTargetType,
+                                currentGameStateId
+                            )
+                        } else {
+                            println("ERROR: MoveShip missing parameters")
+                        }
                     }
                 }
             }

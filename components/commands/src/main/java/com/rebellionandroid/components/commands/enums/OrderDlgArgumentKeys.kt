@@ -10,6 +10,6 @@ enum class OrderDlgArgumentKeys(val value: String) {
     FactoryId("FactoryId"),
 
     // Output Keys
-    SelectedCtorYardBuildType("SelectedCtorYardBuildType"),
+    BuildTargetType("BuildTargetType"),
     SelectedPlanetId("SelectedPlanetId"),
 }
