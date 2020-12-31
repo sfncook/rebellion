@@ -55,10 +55,10 @@ class OrdersDialogFragment: DialogFragment() {
 
         positiveBtn.setOnClickListener {
             val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-            if(currentGameStateId!=null) {
+            if(currentGameStateId!=null && arguments!=null) {
                 CommandUtilities.conductOrderProcedures(
                     gameStateViewModel,
-                    arguments,
+                    requireArguments(),
                     orderComponents,
                     currentGameStateId!!
                 )

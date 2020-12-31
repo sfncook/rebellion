@@ -79,30 +79,36 @@ class CommandUtilities {
             }
         }
 
-        fun moveShipToPlanet(
+        private fun moveShipToPlanet(
             gameStateViewModel: GameStateViewModel,
             shipId: Long,
             destPlanetId: Long,
             currentGameStateId: Long
         ) {
-//            if(selectedShipWithUnits.ship.locationPlanetId != planetId) {
-//                gameStateViewModel.startShipJourneyToPlanet(selectedShipId, planetId, currentGameStateId)
-//                dismiss()
-//            }
+            gameStateViewModel.getShipWithUnits(shipId) { shipWithUnits ->
+                if(shipWithUnits.ship.locationPlanetId != destPlanetId) {
+                    gameStateViewModel.startShipJourneyToPlanet(shipId, destPlanetId, currentGameStateId)
+                }
+            }
         }
 
         fun conductOrderProcedures(
             gameStateViewModel: GameStateViewModel,
-            bundle: Bundle?,
+            bundle: Bundle,
             orderComponents: List<OrderComponent>,
             currentGameStateId: Long
         ) {
-            val orderProcedureStr = bundle?.getString(OrderDlgArgumentKeys.OrderProcedure.value)
-            if(orderProcedureStr!=null) {
-                val orderProcedure = OrderProcedures.valueOf(orderProcedureStr)
-                val orderParameters = orderComponents.associateBy({it->it.getSelectedValue().first}, {it->it.getSelectedValue().second})
-                when(orderProcedure) {
-                    OrderProcedures.MoveShip -> {}
+            val orderProcedure = bundle.get(OrderDlgArgumentKeys.OrderProcedure.value) as OrderProcedures
+            val orderParameters = orderComponents.associateBy({it->it.getSelectedValue().first}, {it->it.getSelectedValue().second})
+            when(orderProcedure) {
+                OrderProcedures.MoveShip -> {
+                    val shipId = bundle.getLong(OrderDlgArgumentKeys.MoveShipId.value)
+                    val destPlanetId = orderParameters[OrderDlgArgumentKeys.SelectedPlanetId.value]
+                    if (destPlanetId != null) {
+                        moveShipToPlanet(gameStateViewModel, shipId, destPlanetId.toLong(), currentGameStateId)
+                    } else {
+                        println("ERROR: MoveShip missing parameters")
+                    }
                 }
             }
         }
