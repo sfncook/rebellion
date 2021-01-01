@@ -11,10 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.components.commands.enums.OrderProcedures
-import com.rebellionandroid.components.commands.orderComponents.OrderComponent
-import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryCtorYardBuildTypesFragment
-import com.rebellionandroid.components.commands.orderComponents.OrderComponentFactoryShipYardBuildTypesFragment
-import com.rebellionandroid.components.commands.orderComponents.OrderComponentPlanetPickerFragment
+import com.rebellionandroid.components.commands.orderComponents.*
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.Utilities
 
@@ -46,6 +43,14 @@ class OrdersDialogFragment: DialogFragment() {
             OrderProcedures.MoveShip -> {
                 titleTextView.text = "Move ship to new planet"
                 positiveBtn.text = "Move"
+            }
+            OrderProcedures.FactoryBuild -> {
+                titleTextView.text = "Build order"
+                positiveBtn.text = "Build"
+            }
+            OrderProcedures.AssignMission -> {
+                titleTextView.text = "Assign mission"
+                positiveBtn.text = "Assign"
             }
         }
 
@@ -104,6 +109,10 @@ class OrdersDialogFragment: DialogFragment() {
                 OrderDlgComponentTypes.PlanetPicker.value -> loadComponent(
                     OrderComponentPlanetPickerFragment.newInstance(),
                     "OrderComponentPlanetPickerFragment"
+                )
+                OrderDlgComponentTypes.SpecOpsMissionTypes.value -> loadComponent(
+                    OrderComponentSpecOpsMissionTypesFragment.newInstance(),
+                    "OrderComponentSpecOpsMissionTypesFragment"
                 )
                 else -> OrderComponentFactoryCtorYardBuildTypesFragment.newInstance()
             }
