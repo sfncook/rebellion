@@ -10,9 +10,14 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.UnitCmdDialogFragment
+import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
+import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
+import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
@@ -106,8 +111,19 @@ class UnitListAdapter(
                 }
 
                 view.setOnClickListener {
+                    val personnel = personnels[adapterPosition]
+                    val components = arrayListOf(
+                        OrderDlgComponentTypes.SpecOpsMissionTypes.value,
+                        OrderDlgComponentTypes.PlanetPicker.value,
+                    )
+                    val bundle = bundleOf(
+                        OrderDlgArgumentKeys.PersonnelId.value to personnel.id,
+                        OrderDlgArgumentKeys.ComponentsToShow.value to components,
+                        OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.AssignMission
+                    )
                     val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
-                    val editNameDialogFragment = UnitCmdDialogFragment()
+                    val editNameDialogFragment = OrdersDialogFragment.newInstance()
+                    editNameDialogFragment.arguments = bundle
                     editNameDialogFragment.show(fm, "fragment_edit_name")
                 }
             }

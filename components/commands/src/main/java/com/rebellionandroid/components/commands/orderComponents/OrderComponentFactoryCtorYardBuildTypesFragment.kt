@@ -53,9 +53,6 @@ class OrderComponentFactoryCtorYardBuildTypesFragment(): OrderComponent() {
     private fun setSelectedBuildType(buildTargetType: FactoryBuildTargetType?) {
         selectedBuildType = buildTargetType
         updateBtns()
-        if(parentFragment!=null && parentFragment!!::class == OrdersDialogFragment::class) {
-            (parentFragment as OrdersDialogFragment).onComponentSelection()
-        }
     }
 
     private fun updateBtns() {
