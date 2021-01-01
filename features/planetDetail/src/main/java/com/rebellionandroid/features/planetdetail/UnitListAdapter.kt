@@ -114,8 +114,7 @@ class UnitListAdapter(
                     if(personnel.unitType == UnitType.SpecialForces) {
                         val components = arrayListOf(
                             OrderDlgComponentTypes.SpecOpsMissionTypes.value,
-                            OrderDlgComponentTypes.SpecOpsMissionTargets.value,
-                            OrderDlgComponentTypes.PlanetPicker.value,
+                            OrderDlgComponentTypes.SpecOpsMissionTargets.value
                         )
                         val bundle = bundleOf(
                             OrderDlgArgumentKeys.PersonnelId.value to personnel.id,

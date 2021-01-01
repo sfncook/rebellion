@@ -101,9 +101,9 @@ class GameStateViewModel @Inject constructor(
             callback(planets)
         }
     }
-    fun getUnit(unitId: Long, callback: (personnel: Personnel) -> kotlin.Unit) {
+    fun getPersonnel(personnelId: Long, callback: (personnel: Personnel) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            val unit = gameStateRepository.getUnit(unitId)
+            val unit = gameStateRepository.getPersonnel(personnelId)
             callback(unit)
         }
     }

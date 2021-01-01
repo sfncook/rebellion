@@ -23,7 +23,7 @@ class CommandUtilities {
             currentGameStateId: Long
         ) {
             gameStateViewModel.getPlanet(destPlanetId) { planet ->
-                gameStateViewModel.getUnit(unitId) { unit ->
+                gameStateViewModel.getPersonnel(unitId) { unit ->
                     var newTeamALoyalty = planet.teamALoyalty
                     var newTeamBLoyalty = planet.teamBLoyalty
                     if(unit.team == TeamLoyalty.TeamA) {
@@ -50,7 +50,7 @@ class CommandUtilities {
             destShipId: Long,
             currentGameStateId: Long
         ) {
-            gameStateViewModel.getUnit(unitId) { unit ->
+            gameStateViewModel.getPersonnel(unitId) { unit ->
                 // If unit is leaving a planet then update the planet's loyalties
                 val srcPlanetId = unit.locationPlanetId
                 if(srcPlanetId!=null) {

@@ -1,15 +1,19 @@
 package com.rebellionandroid.components.commands.orderComponents
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.rebellionandroid.components.commands.R
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
+import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
@@ -21,6 +25,7 @@ import kotlinx.coroutines.launch
 
 class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
 
+    private var personnelId: Long? = null
     private var selectedMissionTargetId: Long? = null
     private lateinit var missionTargetBtnsList: LinearLayout
     private val missionTargetIdsToBtns = mutableMapOf<Long, Pair<MaterialButton, MissionTargetType>>()
@@ -29,8 +34,15 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
     private var currentGameStateId: Long? = null
 
     companion object {
-        fun newInstance(): OrderComponentSpecOpsMissionTargetsFragment {
-            return OrderComponentSpecOpsMissionTargetsFragment()
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun newInstance(arguments: Bundle?): OrderComponentSpecOpsMissionTargetsFragment {
+            val frag = OrderComponentSpecOpsMissionTargetsFragment()
+            if(arguments!=null) {
+                frag.arguments = arguments.deepCopy()
+            } else {
+                println("ERROR: arguments null for OrderComponentSpecOpsMissionTargetsFragment.newInstance")
+            }
+            return frag
         }
     }
 
@@ -43,6 +55,11 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
 
         missionTargetBtnsList = root.findViewById(R.id.missiontargets_btns)
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+
+        personnelId = arguments?.getLong(OrderDlgArgumentKeys.PersonnelId.value)
+        if(personnelId==null) {
+            println("ERROR: personnelId is nul for OrderComponentSpecOpsMissionTargetsFragment")
+        }
 
         return root
     }
@@ -119,21 +136,22 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
         if(!suppressUpdate) {
             missionTargetBtnsList.removeAllViews()
             val selectedMissionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
-            val selectedPlanetId = orderParameters[OrderDlgArgumentKeys.SelectedPlanetId.value]
-            if (selectedMissionTypeStr != null && selectedPlanetId != null) {
+            if (selectedMissionTypeStr != null) {
                 val selectedMissionType = MissionType.valueOf(selectedMissionTypeStr)
-                gameStateViewModel.getPlanetWithUnits(selectedPlanetId.toLong()) { targetPlanetWithUnits ->
-                    if(currentGameStateId!=null) {
-                        val gameState = gameStateViewModel.getGameState(currentGameStateId!!)
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            when (selectedMissionType) {
-                                MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits, gameState.myTeam)
-                                else -> println("unsupported mission type")
+                gameStateViewModel.getPersonnel(personnelId!!) { personnel ->
+                    gameStateViewModel.getPlanetWithUnits(personnel.locationPlanetId!!) { targetPlanetWithUnits ->
+                        if(currentGameStateId!=null) {
+                            val gameState = gameStateViewModel.getGameState(currentGameStateId!!)
+                            viewLifecycleOwner.lifecycleScope.launch {
+                                when (selectedMissionType) {
+                                    MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits, gameState.myTeam)
+                                    else -> println("unsupported mission type")
+                                }
+                                updateBtns()
                             }
-                            updateBtns()
                         }
-                    }
-                }
+                    } // getPlanetWithUnits
+                } // getPersonnel
             }
         }
         suppressUpdate = false
