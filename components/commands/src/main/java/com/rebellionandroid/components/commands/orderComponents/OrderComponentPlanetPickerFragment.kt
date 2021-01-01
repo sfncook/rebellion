@@ -81,15 +81,6 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         updateList()
     }
 
-    override fun getSelectedValue(): Pair<String, String>? {
-        if(selectedPlanetId!=null) {
-            return Pair(OrderDlgArgumentKeys.SelectedPlanetId.value, selectedPlanetId.toString())
-        } else {
-            return null
-        }
-
-    }
-
     private fun getSortedSectorsList(gameStateWithSectors: GameStateWithSectors): List<SectorWithPlanets> {
         val sectors = gameStateWithSectors.sectors
         val sortedSectors = sectors.toSortedSet(Comparator { s1, s2 ->
@@ -129,6 +120,14 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         if(selectedSector!=null) {
             val indexOfSelectedSector = sortedSectors.indexOf(selectedSector)
             sectorsAndPlanetsExpandableList.expandGroup(indexOfSelectedSector)
+        }
+    }
+
+    override fun getSelectedValue(): Pair<String, String>? {
+        if(selectedPlanetId!=null) {
+            return Pair(OrderDlgArgumentKeys.SelectedPlanetId.value, selectedPlanetId.toString())
+        } else {
+            return null
         }
     }
 

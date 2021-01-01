@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
@@ -120,7 +119,10 @@ class OrdersDialogFragment: DialogFragment() {
                     OrderComponentSpecOpsMissionTypesFragment.newInstance(),
                     "OrderComponentSpecOpsMissionTypesFragment"
                 )
-                else -> OrderComponentFactoryCtorYardBuildTypesFragment.newInstance()
+                OrderDlgComponentTypes.SpecOpsMissionTargets.value -> loadComponent(
+                    OrderComponentSpecOpsMissionTargetsFragment.newInstance(),
+                    "OrderComponentSpecOpsMissionTargetsFragment"
+                )
             }
         }
     }

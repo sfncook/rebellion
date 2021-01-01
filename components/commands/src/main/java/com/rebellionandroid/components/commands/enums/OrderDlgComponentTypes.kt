@@ -5,4 +5,5 @@ enum class OrderDlgComponentTypes(val value: String) {
     ShipYardBuildTypes("ShipYardBuildTypes"),
     PlanetPicker("PlanetPicker"),
     SpecOpsMissionTypes("SpecOpsMissionTypes"),
+    SpecOpsMissionTargets("SpecOpsMissionTargets"),
 }
