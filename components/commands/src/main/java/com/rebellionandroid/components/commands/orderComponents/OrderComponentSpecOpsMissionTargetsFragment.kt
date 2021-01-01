@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
@@ -21,7 +22,7 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
 
     private var selectedMissionTargetId: Long? = null
     private lateinit var missionTargetBtnsList: LinearLayout
-    private val missionTargetIdsToBtns = mutableMapOf<Long, Button>()
+    private val missionTargetIdsToBtns = mutableMapOf<Long, MaterialButton>()
     private lateinit var gameStateViewModel: GameStateViewModel
     private var suppressUpdate:Boolean = false
 
@@ -52,10 +53,13 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
     }
 
     private fun updateBtns() {
-        missionTargetIdsToBtns.values.forEach { it.setBackgroundColor(getColor(requireContext(), R.color.purple_200)) }
+        //materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this@MyActivity, R.color.myCustomColor));
+        missionTargetIdsToBtns.values.forEach {
+            it.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.purple_200);
+        }
         if(selectedMissionTargetId!=null) {
             val missionTargetBtn = missionTargetIdsToBtns.get(selectedMissionTargetId)
-            missionTargetBtn?.setBackgroundColor(getColor(requireContext(), R.color.purple_700))
+            missionTargetBtn?.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.purple_700);
         }
     }
 
@@ -71,7 +75,7 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
         btnText: String,
         missionTargetId: Long
     ) {
-        val btn = Button(requireContext())
+        val btn = MaterialButton(requireContext())
         btn.text = btnText
         missionTargetBtnsList.addView(btn)
         missionTargetIdsToBtns.put(missionTargetId, btn)
@@ -105,6 +109,7 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
                             MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits)
                             else -> println("unsupported mission type")
                         }
+                        updateBtns()
                     }
                 }
             }
