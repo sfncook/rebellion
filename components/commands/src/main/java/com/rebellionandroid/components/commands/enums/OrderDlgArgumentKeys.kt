@@ -8,6 +8,7 @@ enum class OrderDlgArgumentKeys(val value: String) {
     // Order Procedure Parameters
     MoveShipId("MoveShipId"),
     FactoryId("FactoryId"),
+    PersonnelId("PersonnelId"),
 
     // Output Keys
     BuildTargetType("BuildTargetType"),

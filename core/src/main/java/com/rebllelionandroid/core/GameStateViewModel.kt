@@ -353,7 +353,7 @@ class GameStateViewModel @Inject constructor(
                                 unitType = UnitType.values().random(),
                                 locationPlanetId = null,
                                 locationShip = ship.id,
-                                mission = null,
+                                missionType = null,
                                 dayMissionComplete = 0,
                                 missionTargetType = null,
                                 missionTargetId = null,

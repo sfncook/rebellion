@@ -23,9 +23,9 @@ class Converters {
     fun fromUnitType(value: UnitType?) = value?.name
 
     @TypeConverter
-    fun toMission(value: String?) = value?.let { enumValueOf<Mission>(it) }
+    fun toMission(value: String?) = value?.let { enumValueOf<MissionType>(it) }
     @TypeConverter
-    fun fromMission(value: Mission?) = value?.name
+    fun fromMission(value: MissionType?) = value?.name
 
     @TypeConverter
     fun toMissionTargetType(value: String?) = value?.let { enumValueOf<MissionTargetType>(it) }

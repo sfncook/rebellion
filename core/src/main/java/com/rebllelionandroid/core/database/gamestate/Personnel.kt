@@ -2,7 +2,7 @@ package com.rebllelionandroid.core.database.gamestate
 
 import androidx.annotation.Nullable
 import androidx.room.*
-import com.rebllelionandroid.core.database.gamestate.enums.Mission
+import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
@@ -32,7 +32,7 @@ data class Personnel(
         @Nullable @ColumnInfo(name = "planet_id", index = true) var locationPlanetId: Long? = null,
         @Nullable @ColumnInfo(name = "ship_id", index = true) var locationShip: Long? = null,
 
-        @Nullable var mission: Mission? = null,
+        @Nullable var missionType: MissionType? = null,
         var dayMissionComplete: Long? = null,
         @Nullable var missionTargetType: MissionTargetType? = null,
         @Nullable var missionTargetId: Long? = null,
