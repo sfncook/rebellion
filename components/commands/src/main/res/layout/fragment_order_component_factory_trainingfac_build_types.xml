@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:background="@drawable/solid_border"
+    >
+    <TextView
+        android:id="@+id/trainingfac_btns_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What to build?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <LinearLayout
+        android:id="@+id/trainingfac_btns_ctoryard_col_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/trainingfac_btns_label"
+        app:layout_constraintEnd_toStartOf="@+id/trainingfac_btns_ctoryard_col_2"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/trainingfac_build_specops"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:text="Spec Ops" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/trainingfac_btns_ctoryard_col_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/trainingfac_btns_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/trainingfac_btns_ctoryard_col_1"
+        >
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/trainingfac_build_garrison"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:text="Garrison Unit" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

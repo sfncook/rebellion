@@ -48,7 +48,7 @@ class FactoryViewHolder(
                         val buildTypeComponent = when(factory.factoryType) {
                             FactoryType.ConstructionYard -> OrderDlgComponentTypes.CtorYardBuildTypes
                             FactoryType.ShipYard -> OrderDlgComponentTypes.ShipYardBuildTypes
-                            else -> OrderDlgComponentTypes.CtorYardBuildTypes
+                            FactoryType.TrainingFaciliy -> OrderDlgComponentTypes.TrainingFacBuildTypes
                         }
                         val components = arrayListOf(
                             buildTypeComponent.value,

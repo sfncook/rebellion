@@ -111,6 +111,10 @@ class OrdersDialogFragment: DialogFragment() {
                     OrderComponentFactoryShipYardBuildTypesFragment.newInstance(),
                     "OrderComponentFactoryShipYardBuildTypesFragment"
                 )
+                OrderDlgComponentTypes.TrainingFacBuildTypes.value -> loadComponent(
+                    OrderComponentFactoryTrainingFacBuildTypesFragment.newInstance(),
+                    "OrderComponentFactoryTrainingFacBuildTypesFragment"
+                )
                 OrderDlgComponentTypes.PlanetPicker.value -> loadComponent(
                     OrderComponentPlanetPickerFragment.newInstance(),
                     "OrderComponentPlanetPickerFragment"
