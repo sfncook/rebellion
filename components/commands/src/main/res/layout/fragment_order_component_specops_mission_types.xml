@@ -11,7 +11,7 @@
         android:id="@+id/missiontypes_btns_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="What to build?"
+        android:text="Which mission?"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
