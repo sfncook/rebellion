@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.rebellionandroid.components.commands.R
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
+import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.MissionType
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.launch
 
 class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
@@ -25,6 +25,7 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
     private val missionTargetIdsToBtns = mutableMapOf<Long, MaterialButton>()
     private lateinit var gameStateViewModel: GameStateViewModel
     private var suppressUpdate:Boolean = false
+    private var currentGameStateId: Long? = null
 
     companion object {
         fun newInstance(): OrderComponentSpecOpsMissionTargetsFragment {
@@ -43,6 +44,15 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentGameStateId = Utilities.getCurrentGameStateId(
+            getString(R.string.gameStateSharedPrefFile),
+            getString(R.string.keyCurrentGameId),
+            requireActivity()
+        )
     }
 
     private fun setSelectedMissionTarget(missionTargetId: Long?) {
@@ -82,17 +92,23 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
         btn.setOnClickListener { setSelectedMissionTarget(missionTargetId) }
     }
 
-    private fun addTargetBtnsForSabotage(targetPlanetWithUnits: PlanetWithUnits) {
+    private fun addTargetBtnsForSabotage(targetPlanetWithUnits: PlanetWithUnits, myTeam: TeamLoyalty) {
         targetPlanetWithUnits.factories.forEach { factory ->
-            addButton(factory.factoryType.value, factory.id)
+            if(factory.team != myTeam) {
+                addButton(factory.factoryType.value, factory.id)
+            }
         }
 
         targetPlanetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
-            addButton(shipWithUnits.ship.shipType.value, shipWithUnits.ship.id)
+            if(shipWithUnits.ship.team != myTeam) {
+                addButton(shipWithUnits.ship.shipType.value, shipWithUnits.ship.id)
+            }
         }
 
         targetPlanetWithUnits.defenseStructures.forEach { structure ->
-            addButton(structure.defenseStructureType.value, structure.id)
+            if(Utilities.getPlanetLoyalty(targetPlanetWithUnits.planet) != myTeam) {
+                addButton(structure.defenseStructureType.value, structure.id)
+            }
         }
     }
 
@@ -104,12 +120,15 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
             if (selectedMissionTypeStr != null && selectedPlanetId != null) {
                 val selectedMissionType = MissionType.valueOf(selectedMissionTypeStr)
                 gameStateViewModel.getPlanetWithUnits(selectedPlanetId.toLong()) { targetPlanetWithUnits ->
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        when (selectedMissionType) {
-                            MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits)
-                            else -> println("unsupported mission type")
+                    if(currentGameStateId!=null) {
+                        val gameState = gameStateViewModel.getGameState(currentGameStateId!!)
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            when (selectedMissionType) {
+                                MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits, gameState.myTeam)
+                                else -> println("unsupported mission type")
+                            }
+                            updateBtns()
                         }
-                        updateBtns()
                     }
                 }
             }

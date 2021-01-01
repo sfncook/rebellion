@@ -71,8 +71,6 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
 
     override fun onResume() {
         super.onResume()
-        val gameStateSharedPrefFile = getString(R.string.gameStateSharedPrefFile)
-        val keyCurrentGameId = getString(R.string.keyCurrentGameId)
         currentGameStateId = Utilities.getCurrentGameStateId(
             getString(R.string.gameStateSharedPrefFile),
             getString(R.string.keyCurrentGameId),

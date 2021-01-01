@@ -56,7 +56,7 @@ class GameStateViewModel @Inject constructor(
         }
     }
     fun getGameStateWithSectors(gameStateId: Long) = gameStateRepository.getGameStateWithSectors(gameStateId)
-    private fun getGameState(gameStateId: Long) = gameStateRepository.getGameState(gameStateId)
+    fun getGameState(gameStateId: Long) = gameStateRepository.getGameState(gameStateId)
     fun getGameStateWithSectors(gameStateId: Long, callback: (gameStateWithSectors: GameStateWithSectors) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val gameStateWithSectors = gameStateRepository.getGameStateWithSectors(gameStateId)
