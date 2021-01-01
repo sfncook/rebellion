@@ -23,6 +23,7 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
     private lateinit var missionTargetBtnsList: LinearLayout
     private val missionTargetIdsToBtns = mutableMapOf<Long, Button>()
     private lateinit var gameStateViewModel: GameStateViewModel
+    private var suppressUpdate:Boolean = false
 
     companion object {
         fun newInstance(): OrderComponentSpecOpsMissionTargetsFragment {
@@ -46,6 +47,7 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
     private fun setSelectedMissionTarget(missionTargetId: Long?) {
         selectedMissionTargetId = missionTargetId
         updateBtns()
+        suppressUpdate = true
         notifyParentOfSelection()
     }
 
@@ -69,7 +71,7 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
         btnText: String,
         missionTargetId: Long
     ) {
-        val btn = MaterialButton(requireContext())
+        val btn = Button(requireContext())
         btn.text = btnText
         missionTargetBtnsList.addView(btn)
         missionTargetIdsToBtns.put(missionTargetId, btn)
@@ -91,19 +93,22 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
     }
 
     override fun setAllOrderParameters(orderParameters: Map<String, String>) {
-        missionTargetBtnsList.removeAllViews()
-        val selectedMissionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
-        val selectedPlanetId = orderParameters[OrderDlgArgumentKeys.SelectedPlanetId.value]
-        if(selectedMissionTypeStr!=null && selectedPlanetId!=null) {
-            val selectedMissionType = MissionType.valueOf(selectedMissionTypeStr)
-            gameStateViewModel.getPlanetWithUnits(selectedPlanetId.toLong()) { targetPlanetWithUnits ->
-                viewLifecycleOwner.lifecycleScope.launch {
-                    when (selectedMissionType) {
-                        MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits)
-                        else -> println("unsupported mission type")
+        if(!suppressUpdate) {
+            missionTargetBtnsList.removeAllViews()
+            val selectedMissionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
+            val selectedPlanetId = orderParameters[OrderDlgArgumentKeys.SelectedPlanetId.value]
+            if (selectedMissionTypeStr != null && selectedPlanetId != null) {
+                val selectedMissionType = MissionType.valueOf(selectedMissionTypeStr)
+                gameStateViewModel.getPlanetWithUnits(selectedPlanetId.toLong()) { targetPlanetWithUnits ->
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        when (selectedMissionType) {
+                            MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits)
+                            else -> println("unsupported mission type")
+                        }
                     }
                 }
             }
         }
+        suppressUpdate = false
     }
 }
