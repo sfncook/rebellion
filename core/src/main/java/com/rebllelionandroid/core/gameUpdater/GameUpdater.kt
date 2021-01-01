@@ -33,8 +33,12 @@ class GameUpdater {
                     if(planet.inConflict) {
                         // ships
                         val teamsToShips = Utilities.getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
-                        applyDamage(teamsToShips[TeamLoyalty.TeamA]!!, teamsToShips[TeamLoyalty.TeamB]!!)
-                        applyDamage(teamsToShips[TeamLoyalty.TeamB]!!, teamsToShips[TeamLoyalty.TeamA]!!)
+                        val teamAShips = teamsToShips[TeamLoyalty.TeamA]
+                        val teamBShips = teamsToShips[TeamLoyalty.TeamB]
+                        if(teamAShips!=null && teamBShips!=null) {
+                            applyDamage(teamAShips, teamBShips)
+                            applyDamage(teamBShips, teamAShips)
+                        }
 
                         // units on surface
                         planetWithUnits.personnels.forEach { unit ->
