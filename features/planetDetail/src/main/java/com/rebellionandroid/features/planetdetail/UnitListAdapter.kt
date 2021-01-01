@@ -121,19 +121,21 @@ class UnitListAdapter(
                 view.setOnClickListener {
                     val personnel = personnels[adapterPosition]
                     if(personnel.unitType == UnitType.SpecialForces) {
-                        val components = arrayListOf(
-                            OrderDlgComponentTypes.SpecOpsMissionTypes.value,
-                            OrderDlgComponentTypes.SpecOpsMissionTargets.value
-                        )
-                        val bundle = bundleOf(
-                            OrderDlgArgumentKeys.PersonnelId.value to personnel.id,
-                            OrderDlgArgumentKeys.ComponentsToShow.value to components,
-                            OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.AssignMission
-                        )
-                        val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
-                        val editNameDialogFragment = OrdersDialogFragment.newInstance()
-                        editNameDialogFragment.arguments = bundle
-                        editNameDialogFragment.show(fm, "fragment_edit_name")
+                        if(personnel.missionType==null) {
+                            val components = arrayListOf(
+                                OrderDlgComponentTypes.SpecOpsMissionTypes.value,
+                                OrderDlgComponentTypes.SpecOpsMissionTargets.value
+                            )
+                            val bundle = bundleOf(
+                                OrderDlgArgumentKeys.PersonnelId.value to personnel.id,
+                                OrderDlgArgumentKeys.ComponentsToShow.value to components,
+                                OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.AssignMission
+                            )
+                            val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
+                            val editNameDialogFragment = OrdersDialogFragment.newInstance()
+                            editNameDialogFragment.arguments = bundle
+                            editNameDialogFragment.show(fm, "fragment_edit_name")
+                        }
                     }
                 }
             }

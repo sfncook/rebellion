@@ -1,5 +1,6 @@
 package com.rebellionandroid.components.commands
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
@@ -29,6 +31,7 @@ class OrdersDialogFragment: DialogFragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -99,6 +102,7 @@ class OrdersDialogFragment: DialogFragment() {
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadComponents() {
         val componentsToShow = arguments?.getStringArrayList(OrderDlgArgumentKeys.ComponentsToShow.value)!!
         componentsToShow.map { componentToShow ->

@@ -190,7 +190,9 @@ class CommandUtilities {
                         println("ERROR: assign mission missing parameters")
                     }
                 }
-            }
+
+                else -> {}
+            }// when orderProcedure
         }
     }
 }
