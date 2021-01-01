@@ -18,6 +18,7 @@ import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.components.commands.enums.OrderProcedures
+import com.rebellionandroid.components.entityUi.dialog.DialogModalFragment
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.MissionType
@@ -121,6 +122,7 @@ class UnitListAdapter(
                 view.setOnClickListener {
                     val personnel = personnels[adapterPosition]
                     if(personnel.unitType == UnitType.SpecialForces) {
+                        val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                         if(personnel.missionType==null) {
                             val components = arrayListOf(
                                 OrderDlgComponentTypes.SpecOpsMissionTypes.value,
@@ -131,10 +133,12 @@ class UnitListAdapter(
                                 OrderDlgArgumentKeys.ComponentsToShow.value to components,
                                 OrderDlgArgumentKeys.OrderProcedure.value to OrderProcedures.AssignMission
                             )
-                            val fm: FragmentManager = (it.context as BaseActivity).supportFragmentManager
                             val editNameDialogFragment = OrdersDialogFragment.newInstance()
                             editNameDialogFragment.arguments = bundle
                             editNameDialogFragment.show(fm, "fragment_edit_name")
+                        } else {
+                            val frag = DialogModalFragment.newInstance("SpecOps Mission Details")
+                            frag.show(fm, "DialogModalFragment")
                         }
                     }
                 }
