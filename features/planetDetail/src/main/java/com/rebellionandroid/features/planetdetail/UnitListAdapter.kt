@@ -20,6 +20,7 @@ import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebellionandroid.components.entityUi.dialog.DialogModalFragment
 import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentParamKeys
+import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentTypes
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.MissionType
@@ -138,7 +139,13 @@ class UnitListAdapter(
                             editNameDialogFragment.arguments = bundle
                             editNameDialogFragment.show(fm, "fragment_edit_name")
                         } else {
-                            val bundle = bundleOf(DialogComponentParamKeys.PersonnelId.value to personnel.id)
+                            val componentsToShow = arrayListOf(
+                                DialogComponentTypes.PersonnelDetails.value
+                            )
+                            val bundle = bundleOf(
+                                DialogComponentParamKeys.PersonnelId.value to personnel.id,
+                                DialogComponentParamKeys.ComponentsToShow.value to componentsToShow
+                            )
                             val frag = DialogModalFragment.newInstance(titleText = "SpecOps Mission Details", bundle)
                             frag.show(fm, "SpecOpsMissionDetails")
                         }

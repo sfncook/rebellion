@@ -1,15 +1,15 @@
-package com.rebellionandroid.components.entityUi
+package com.rebellionandroid.components.entityUi.dialog.components
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.rebellionandroid.components.entityUi.R
 
 class DialogComponentPersonnelDetailsFragment(): DialogFragment() {
 
     companion object {
-        private const val TITLE_TEXT_KEY = "TITLE_TEXT_KEY"
         fun newInstance(bundleOptions: Bundle): DialogComponentPersonnelDetailsFragment {
             val frag = DialogComponentPersonnelDetailsFragment()
             frag.arguments = bundleOptions

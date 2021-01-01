@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.rebellionandroid.components.entityUi.R
 import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentParamKeys
-import com.rebellionandroid.components.entityUi.DialogComponentPersonnelDetailsFragment
+import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentPersonnelDetailsFragment
 import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentTypes
 
 class DialogModalFragment: DialogFragment() {
@@ -49,6 +49,8 @@ class DialogModalFragment: DialogFragment() {
         negativeBtn.setOnClickListener {
             dismiss()
         }
+
+        loadComponents()
 
         return root
     }
