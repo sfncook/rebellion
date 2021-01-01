@@ -124,13 +124,10 @@ class CommandUtilities {
             }
         }
 
-        fun orderComponentsToMap(orderComponents: List<OrderComponent>): Map<String, String> {
-            val orderParameters = mutableMapOf<String, String>()
+        fun orderComponentsToMap(orderComponents: List<OrderComponent>): Map<String, String?> {
+            val orderParameters = mutableMapOf<String, String?>()
             orderComponents.forEach { orderComponent ->
-                val pair = orderComponent.getSelectedValue()
-                if(pair!=null) {
-                    orderParameters.put(pair.first, pair.second)
-                }
+                orderParameters.putAll(orderComponent.getSelectedValue())
             }
             return orderParameters
         }
@@ -138,7 +135,7 @@ class CommandUtilities {
         fun conductOrderProcedures(
             gameStateViewModel: GameStateViewModel,
             bundle: Bundle,
-            orderParameters: Map<String, String>,
+            orderParameters: Map<String, String?>,
             currentGameStateId: Long
         ) {
             when(bundle.get(OrderDlgArgumentKeys.OrderProcedure.value) as OrderProcedures) {

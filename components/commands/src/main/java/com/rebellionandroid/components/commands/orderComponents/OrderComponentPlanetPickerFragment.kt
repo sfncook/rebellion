@@ -121,15 +121,11 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         }
     }
 
-    override fun getSelectedValue(): Pair<String, String>? {
-        if(selectedPlanetId!=null) {
-            return Pair(OrderDlgArgumentKeys.SelectedPlanetId.value, selectedPlanetId.toString())
-        } else {
-            return null
-        }
+    override fun getSelectedValue(): Map<String, String?> {
+        return mapOf(OrderDlgArgumentKeys.SelectedPlanetId.value to selectedPlanetId?.toString())
     }
 
-    override fun setAllOrderParameters(orderParameters: Map<String, String>) {
+    override fun setAllOrderParameters(orderParameters: Map<String, String?>) {
         // Do nothing
     }
 }

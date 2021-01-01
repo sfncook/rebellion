@@ -81,15 +81,11 @@ class OrderComponentFactoryShipYardBuildTypesFragment(): OrderComponent() {
         }
     }
 
-    override fun getSelectedValue(): Pair<String, String>? {
-        if(selectedBuildType!=null) {
-            return Pair(OrderDlgArgumentKeys.BuildTargetType.value, selectedBuildType!!.value)
-        } else {
-            return null
-        }
+    override fun getSelectedValue(): Map<String, String?> {
+        return mapOf(OrderDlgArgumentKeys.BuildTargetType.value to selectedBuildType?.value)
     }
 
-    override fun setAllOrderParameters(orderParameters: Map<String, String>) {
+    override fun setAllOrderParameters(orderParameters: Map<String, String?>) {
         // Do nothing
     }
 }

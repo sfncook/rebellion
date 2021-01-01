@@ -107,15 +107,11 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
         }
     }
 
-    override fun getSelectedValue(): Pair<String, String>? {
-        if(selectedMissionTargetId!=null) {
-            return Pair(OrderDlgArgumentKeys.MissionTargetId.value, selectedMissionTargetId.toString())
-        } else {
-            return null
-        }
+    override fun getSelectedValue(): Map<String, String?> {
+        return mapOf(OrderDlgArgumentKeys.MissionTargetId.value to selectedMissionTargetId?.toString())
     }
 
-    override fun setAllOrderParameters(orderParameters: Map<String, String>) {
+    override fun setAllOrderParameters(orderParameters: Map<String, String?>) {
         if(!suppressUpdate) {
             missionTargetBtnsList.removeAllViews()
             val selectedMissionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]

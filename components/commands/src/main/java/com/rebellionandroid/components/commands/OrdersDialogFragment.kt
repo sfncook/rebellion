@@ -151,7 +151,9 @@ class OrdersDialogFragment: DialogFragment() {
     }
 
     private fun allComponentsSelected(): Boolean {
-        return orderComponents.all { orderComponent -> orderComponent.getSelectedValue()!=null }
+        return orderComponents.all { orderComponent ->
+            orderComponent.getSelectedValue().values.all { it!=null }
+        }
     }
 
 }

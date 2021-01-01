@@ -66,15 +66,11 @@ class OrderComponentSpecOpsMissionTypesFragment(): OrderComponent() {
         }
     }
 
-    override fun getSelectedValue(): Pair<String, String>? {
-        if(selectedMissionType!=null) {
-            return Pair(OrderDlgArgumentKeys.MissionType.value, selectedMissionType!!.value)
-        } else {
-            return null
-        }
+    override fun getSelectedValue(): Map<String, String?> {
+        return mapOf(OrderDlgArgumentKeys.MissionType.value to selectedMissionType?.value)
     }
 
-    override fun setAllOrderParameters(orderParameters: Map<String, String>) {
+    override fun setAllOrderParameters(orderParameters: Map<String, String?>) {
         // Do nothing
     }
 }
