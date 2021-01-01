@@ -8,7 +8,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.rebellionandroid.components.entityUi.R
+import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentParamKeys
+import com.rebellionandroid.components.entityUi.DialogComponentPersonnelDetailsFragment
+import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentTypes
 
 class DialogModalFragment: DialogFragment() {
 
@@ -17,8 +21,9 @@ class DialogModalFragment: DialogFragment() {
 
     companion object {
         private const val TITLE_TEXT_KEY = "TITLE_TEXT_KEY"
-        fun newInstance(titleText: String): DialogModalFragment {
+        fun newInstance(titleText: String, bundleOptions: Bundle): DialogModalFragment {
             val bundle = bundleOf(TITLE_TEXT_KEY to titleText)
+            bundle.putAll(bundleOptions)
             val frag = DialogModalFragment()
             frag.arguments = bundle
             return frag
@@ -54,6 +59,26 @@ class DialogModalFragment: DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+    }
+
+    private fun loadComponents() {
+        val componentsToShow = arguments?.getStringArrayList(DialogComponentParamKeys.ComponentsToShow.value)!!
+        componentsToShow.forEach { componentToShow ->
+            when(componentToShow) {
+                DialogComponentTypes.PersonnelDetails.value -> loadComponent(
+                    DialogComponentPersonnelDetailsFragment.newInstance(requireArguments()),
+                    "DialogComponentPersonnelDetailsFragment"
+                )
+            }
+        }
+    }
+
+    private fun loadComponent(fragment: Fragment, tag: String) {
+        childFragmentManager.beginTransaction().add(
+            R.id.dlg_components_list,
+            fragment,
+            tag
+        ).commit()
     }
 
 }

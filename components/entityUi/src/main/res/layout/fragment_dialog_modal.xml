@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dlg_title_text">
         <LinearLayout
-            android:id="@+id/dlg_orders_components_list"
+            android:id="@+id/dlg_components_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
