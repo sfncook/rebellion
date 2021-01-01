@@ -22,4 +22,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/unit_label" />
+
+    <ImageView
+        android:id="@+id/unit_mission_sabotage_img"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/mission_sabotage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <ImageView
+        android:id="@+id/unit_mission_insurection_img"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/mission_insurection"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <ImageView
+        android:id="@+id/unit_mission_intelligence_img"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/mission_intelligence"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <ImageView
+        android:id="@+id/unit_mission_diplomacy_img"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/mission_diplomacy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,9 @@ import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.database.gamestate.Personnel
+import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
+import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -52,8 +55,14 @@ class UnitListAdapter(
         private val personnels: List<Personnel>,
         unitsAreTravelling: Boolean
         ) : RecyclerView.ViewHolder(view) {
+
         val unitLabel: TextView = view.findViewById(R.id.unit_label)
         val unitImg: ImageView = view.findViewById(R.id.unit_img)
+        val missionSabotageImg: ImageView = view.findViewById(R.id.unit_mission_sabotage_img)
+        val missionInsurrectionImg: ImageView = view.findViewById(R.id.unit_mission_insurection_img)
+        val missionIntelligenceImg: ImageView = view.findViewById(R.id.unit_mission_intelligence_img)
+        val missionDiplomacyImg: ImageView = view.findViewById(R.id.unit_mission_diplomacy_img)
+
         private var mVelocityTracker: VelocityTracker? = null
         private var isDragging:Boolean = false
 
@@ -140,13 +149,30 @@ class UnitListAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val unit = personnels[position]
-        viewHolder.unitLabel.text = unit.unitType.value
-        val imgSrc  = when(unit.unitType) {
+        val personnel = personnels[position]
+        viewHolder.unitLabel.text = personnel.unitType.value
+        val imgSrc  = when(personnel.unitType) {
             UnitType.Garrison -> R.drawable.personelle_garrison_outline
             UnitType.SpecialForces -> R.drawable.personelle_specops_outline
         }
         viewHolder.unitImg.setImageResource(imgSrc)
+        val colorId = if(personnel.team==TeamLoyalty.TeamA) R.color.loyalty_team_a else R.color.loyalty_team_b
+        viewHolder.unitImg.setColorFilter(
+            ContextCompat.getColor(viewHolder.itemView.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
+        )
+
+        // Update mission icons
+        viewHolder.missionSabotageImg.visibility = View.GONE
+        viewHolder.missionInsurrectionImg.visibility = View.GONE
+        viewHolder.missionIntelligenceImg.visibility = View.GONE
+        viewHolder.missionDiplomacyImg.visibility = View.GONE
+
+        when(personnel.missionType) {
+            MissionType.Sabotage -> viewHolder.missionSabotageImg.visibility = View.VISIBLE
+            MissionType.Insurrection -> viewHolder.missionInsurrectionImg.visibility = View.VISIBLE
+            MissionType.Intelligence -> viewHolder.missionIntelligenceImg.visibility = View.VISIBLE
+            MissionType.Diplomacy -> viewHolder.missionDiplomacyImg.visibility = View.VISIBLE
+        }
     }
 
     override fun getItemCount() =  personnels.size
