@@ -1,7 +1,10 @@
 package com.rebllelionandroid.core.database.gamestate
 
+import androidx.annotation.Nullable
 import androidx.room.*
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 
 /**
  * The data access object for the [GameState] class.
@@ -117,5 +120,8 @@ interface GameStateDao {
 
     @Query("UPDATE factories SET buildTargetType = :buildTargetType, dayBuildComplete = :dayBuildComplete, deliver_built_structure_to_planet_id = :destPlanetId WHERE id = :factoryId")
     fun setFactoryBuildOrder(factoryId: Long, dayBuildComplete: Long, buildTargetType: FactoryBuildTargetType, destPlanetId: Long): Int
+
+    @Query("UPDATE units SET missionType=:missionType, missionTargetType=:missionTargetType, missionTargetId=:missionTargetId, dayMissionComplete=:dayMissionComplete WHERE id = :personnelId")
+    fun assignOrder(personnelId: Long, missionType: MissionType, missionTargetType: MissionTargetType, missionTargetId: Long, dayMissionComplete: Long): Int
 
 }

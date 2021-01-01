@@ -6,10 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Personnel
-import com.rebllelionandroid.core.database.gamestate.enums.DefenseStructureType
-import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
-import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
-import com.rebllelionandroid.core.database.gamestate.enums.UnitType
+import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.StaticTypesRepository
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.core.gameUpdater.GameUpdater
@@ -159,6 +156,20 @@ class GameStateViewModel @Inject constructor(
             val gameState = getGameState(gameStateId)
             val dayBuildComplete = gameState.gameTime + 3
             gameStateRepository.setFactoryBuildOrder(factoryId, dayBuildComplete, buildTargetType, destPlanetId)
+            postUpdate(gameStateId)
+        }
+    }
+    fun assignMission(
+        gameStateId: Long,
+        personnelId: Long,
+        missionType: MissionType,
+        missionTargetType: MissionTargetType,
+        missionTargetId: Long
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val gameState = getGameState(gameStateId)
+            val dayMissionComplete = gameState.gameTime + 3
+            gameStateRepository.assignMission(personnelId, missionType, missionTargetType, missionTargetId, dayMissionComplete)
             postUpdate(gameStateId)
         }
     }

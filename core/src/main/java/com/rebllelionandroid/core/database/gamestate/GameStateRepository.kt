@@ -1,6 +1,8 @@
 package com.rebllelionandroid.core.database.gamestate
 
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 import javax.inject.Inject
 
 class GameStateRepository @Inject constructor(
@@ -32,6 +34,13 @@ class GameStateRepository @Inject constructor(
 
 
     // Updates
+    fun update(gameState: GameState) = gameStateDao.update(gameState)
+    fun update(planet: Planet) = gameStateDao.update(planet)
+    fun update(ship: Ship) = gameStateDao.update(ship)
+    fun update(factory: Factory) = gameStateDao.update(factory)
+    fun delete(ship: Ship) = gameStateDao.delete(ship)
+
+    // Game Play Updates
     fun stopAllGameStates() = gameStateDao.stopAllGameStates()
     fun setGameInProgress(gameStateId: Long, gameInProgress: Int) = gameStateDao.setGameInProgress(gameStateId, gameInProgress)
     fun moveUnitToShip(unitId: Long, shipId: Long) = gameStateDao.moveUnitToShip(unitId, shipId)
@@ -40,10 +49,7 @@ class GameStateRepository @Inject constructor(
     fun startShipJourneyToPlanet(shipId: Long, planetId: Long, dayArrival: Long) = gameStateDao.startShipJourneyToPlanet(shipId, planetId, dayArrival)
     fun setFactoryBuildOrder(factoryId: Long, dayBuildComplete: Long, buildTargetType: FactoryBuildTargetType, destPlanetId: Long)
         = gameStateDao.setFactoryBuildOrder(factoryId, dayBuildComplete, buildTargetType, destPlanetId)
-    fun update(gameState: GameState) = gameStateDao.update(gameState)
-    fun update(planet: Planet) = gameStateDao.update(planet)
-    fun update(ship: Ship) = gameStateDao.update(ship)
-    fun update(factory: Factory) = gameStateDao.update(factory)
-    fun delete(ship: Ship) = gameStateDao.delete(ship)
+    fun assignMission(personnelId: Long, missionType: MissionType, missionTargetType: MissionTargetType, missionTargetId: Long, dayMissionComplete: Long)
+        = gameStateDao.assignOrder(personnelId, missionType, missionTargetType, missionTargetId, dayMissionComplete)
 
 }

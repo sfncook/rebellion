@@ -7,6 +7,8 @@ import com.rebellionandroid.components.commands.orderComponents.OrderComponent
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class CommandUtilities {
@@ -171,10 +173,22 @@ class CommandUtilities {
 
                 OrderProcedures.AssignMission -> {
                     val personnelId = bundle.getLong(OrderDlgArgumentKeys.PersonnelId.value)
-                    val missionType = bundle.getLong(OrderDlgArgumentKeys.MissionType.value)
-                    val missionTargetType = bundle.getLong(OrderDlgArgumentKeys.MissionTargetType.value)
-                    val destPlanetId = bundle.getLong(OrderDlgArgumentKeys.SelectedPlanetId.value)
-                    val missionTargetId = bundle.getLong(OrderDlgArgumentKeys.MissionTargetId.value)
+                    val missionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
+                    val missionTargetTypeStr = orderParameters[OrderDlgArgumentKeys.MissionTargetType.value]
+                    val missionTargetId = orderParameters[OrderDlgArgumentKeys.MissionTargetId.value]
+                    if(missionTypeStr!=null && missionTargetTypeStr!=null && missionTargetId!=null) {
+                        val missionType = MissionType.valueOf(missionTypeStr)
+                        val missionTargetType = MissionTargetType.valueOf(missionTargetTypeStr)
+                        gameStateViewModel.assignMission(
+                            currentGameStateId,
+                            personnelId,
+                            missionType,
+                            missionTargetType,
+                            missionTargetId.toLong()
+                        )
+                    } else {
+                        println("ERROR: assign mission missing parameters")
+                    }
                 }
             }
         }

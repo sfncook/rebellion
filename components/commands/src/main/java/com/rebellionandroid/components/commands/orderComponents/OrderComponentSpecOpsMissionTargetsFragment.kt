@@ -108,7 +108,11 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
     }
 
     override fun getSelectedValue(): Map<String, String?> {
-        return mapOf(OrderDlgArgumentKeys.MissionTargetId.value to selectedMissionTargetId?.toString())
+        val pair = missionTargetIdsToBtns[selectedMissionTargetId]
+        return mapOf(
+            OrderDlgArgumentKeys.MissionTargetId.value to selectedMissionTargetId?.toString(),
+            OrderDlgArgumentKeys.MissionTargetType.value to pair?.second.toString()
+        )
     }
 
     override fun setAllOrderParameters(orderParameters: Map<String, String?>) {
