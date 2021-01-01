@@ -4,5 +4,6 @@ enum class MissionTargetType(val value: String) {
     Planet("Planet"),
     Ship("Ship"),
     Unit("Unit"),
-    Factory("Factory")
+    Factory("Factory"),
+    DefenseStructure("DefenseStructure")
 }

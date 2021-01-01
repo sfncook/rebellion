@@ -14,5 +14,6 @@ enum class OrderDlgArgumentKeys(val value: String) {
     BuildTargetType("BuildTargetType"),
     SelectedPlanetId("SelectedPlanetId"),
     MissionType("MissionType"),
-    MissionTarget("MissionTarget"),
+    MissionTargetId("MissionTargetId"),
+    MissionTargetType("MissionTargetType"),
 }

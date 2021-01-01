@@ -14,6 +14,7 @@ import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.launch
@@ -22,7 +23,7 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
 
     private var selectedMissionTargetId: Long? = null
     private lateinit var missionTargetBtnsList: LinearLayout
-    private val missionTargetIdsToBtns = mutableMapOf<Long, MaterialButton>()
+    private val missionTargetIdsToBtns = mutableMapOf<Long, Pair<MaterialButton, MissionTargetType>>()
     private lateinit var gameStateViewModel: GameStateViewModel
     private var suppressUpdate:Boolean = false
     private var currentGameStateId: Long? = null
@@ -63,52 +64,54 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
     }
 
     private fun updateBtns() {
-        //materialButton.setBackgroundTintList(ContextCompat.getColorStateList(this@MyActivity, R.color.myCustomColor));
-        missionTargetIdsToBtns.values.forEach {
-            it.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.purple_200);
+        missionTargetIdsToBtns.values.forEach { pair->
+            val missionTargetBtn = pair.first
+            missionTargetBtn.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.purple_200);
         }
         if(selectedMissionTargetId!=null) {
-            val missionTargetBtn = missionTargetIdsToBtns.get(selectedMissionTargetId)
+            val pair = missionTargetIdsToBtns.get(selectedMissionTargetId)
+            val missionTargetBtn = pair?.first
             missionTargetBtn?.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.purple_700);
-        }
-    }
-
-    override fun getSelectedValue(): Pair<String, String>? {
-        if(selectedMissionTargetId!=null) {
-            return Pair(OrderDlgArgumentKeys.MissionTarget.value, selectedMissionTargetId.toString())
-        } else {
-            return null
         }
     }
 
     private fun addButton(
         btnText: String,
-        missionTargetId: Long
+        missionTargetId: Long,
+        missionTargetType: MissionTargetType
     ) {
         val btn = MaterialButton(requireContext())
         btn.text = btnText
         missionTargetBtnsList.addView(btn)
-        missionTargetIdsToBtns.put(missionTargetId, btn)
+        missionTargetIdsToBtns.put(missionTargetId, Pair(btn, missionTargetType))
         btn.setOnClickListener { setSelectedMissionTarget(missionTargetId) }
     }
 
     private fun addTargetBtnsForSabotage(targetPlanetWithUnits: PlanetWithUnits, myTeam: TeamLoyalty) {
         targetPlanetWithUnits.factories.forEach { factory ->
             if(factory.team != myTeam) {
-                addButton(factory.factoryType.value, factory.id)
+                addButton(factory.factoryType.value, factory.id, MissionTargetType.Factory)
             }
         }
 
         targetPlanetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
             if(shipWithUnits.ship.team != myTeam) {
-                addButton(shipWithUnits.ship.shipType.value, shipWithUnits.ship.id)
+                addButton(shipWithUnits.ship.shipType.value, shipWithUnits.ship.id, MissionTargetType.Ship)
             }
         }
 
         targetPlanetWithUnits.defenseStructures.forEach { structure ->
             if(Utilities.getPlanetLoyalty(targetPlanetWithUnits.planet) != myTeam) {
-                addButton(structure.defenseStructureType.value, structure.id)
+                addButton(structure.defenseStructureType.value, structure.id, MissionTargetType.DefenseStructure)
             }
+        }
+    }
+
+    override fun getSelectedValue(): Pair<String, String>? {
+        if(selectedMissionTargetId!=null) {
+            return Pair(OrderDlgArgumentKeys.MissionTargetId.value, selectedMissionTargetId.toString())
+        } else {
+            return null
         }
     }
 

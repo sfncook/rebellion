@@ -171,6 +171,14 @@ class CommandUtilities {
                         }
                     }
                 }
+
+                OrderProcedures.AssignMission -> {
+                    val personnelId = bundle.getLong(OrderDlgArgumentKeys.PersonnelId.value)
+                    val missionType = bundle.getLong(OrderDlgArgumentKeys.MissionType.value)
+                    val missionTargetType = bundle.getLong(OrderDlgArgumentKeys.MissionTargetType.value)
+                    val destPlanetId = bundle.getLong(OrderDlgArgumentKeys.SelectedPlanetId.value)
+                    val missionTargetId = bundle.getLong(OrderDlgArgumentKeys.MissionTargetId.value)
+                }
             }
         }
     }
