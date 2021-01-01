@@ -80,8 +80,13 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         updateList()
     }
 
-    override fun getSelectedValue(): Pair<String, String> {
-        return Pair(OrderDlgArgumentKeys.SelectedPlanetId.value, selectedPlanetId.toString())
+    override fun getSelectedValue(): Pair<String, String>? {
+        if(selectedPlanetId!=null) {
+            return Pair(OrderDlgArgumentKeys.SelectedPlanetId.value, selectedPlanetId.toString())
+        } else {
+            return null
+        }
+
     }
 
     private fun getSortedSectorsList(gameStateWithSectors: GameStateWithSectors): List<SectorWithPlanets> {

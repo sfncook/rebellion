@@ -80,11 +80,11 @@ class OrderComponentFactoryShipYardBuildTypesFragment(): OrderComponent() {
         }
     }
 
-    override fun getSelectedValue(): Pair<String, String> {
+    override fun getSelectedValue(): Pair<String, String>? {
         if(selectedBuildType!=null) {
             return Pair(OrderDlgArgumentKeys.BuildTargetType.value, selectedBuildType!!.value)
         } else {
-            return Pair("","")
+            return null
         }
     }
 

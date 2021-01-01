@@ -133,4 +133,8 @@ class OrdersDialogFragment: DialogFragment() {
         orderComponents.forEach {it.setAllOrderParameters(orderParameters)}
     }
 
+    private fun updatePositiveBtn() {
+
+    }
+
 }
