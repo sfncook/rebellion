@@ -105,7 +105,10 @@ class CommandUtilities {
                 val factory = gameStateViewModel.getFactory(factoryId)
                 val planetLoyalty = Utilities.getPlanetLoyalty(destPlanetWithUnits.planet)
                 if(factory.team == planetLoyalty) {
-                    if(Utilities.getPlanetEnergiesEmpty(destPlanetWithUnits)>0) {
+                    if(
+                        (Utilities.isBuildOrderForStructure(buildTargetType) && Utilities.getPlanetEnergiesEmpty(destPlanetWithUnits)>0) ||
+                        !Utilities.isBuildOrderForStructure(buildTargetType)
+                    ) {
                         gameStateViewModel.setFactoryBuildOrder(
                             factoryId,
                             destPlanetId,
@@ -122,7 +125,14 @@ class CommandUtilities {
         }
 
         fun orderComponentsToMap(orderComponents: List<OrderComponent>): Map<String, String> {
-            return orderComponents.associateBy({it->it.getSelectedValue().first}, {it->it.getSelectedValue().second})
+            val orderParameters = mutableMapOf<String, String>()
+            orderComponents.forEach { orderComponent ->
+                val pair = orderComponent.getSelectedValue()
+                if(pair!=null) {
+                    orderParameters.put(pair.first, pair.second)
+                }
+            }
+            return orderParameters
         }
 
         fun conductOrderProcedures(

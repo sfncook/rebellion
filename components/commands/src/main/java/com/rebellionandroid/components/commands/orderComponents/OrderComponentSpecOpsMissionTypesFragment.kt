@@ -50,9 +50,7 @@ class OrderComponentSpecOpsMissionTypesFragment(): OrderComponent() {
     private fun setSelectedMissionType(missionType: MissionType?) {
         selectedMissionType = missionType
         updateBtns()
-        if(parentFragment!=null && parentFragment!!::class == OrdersDialogFragment::class) {
-            (parentFragment as OrdersDialogFragment).onComponentSelection()
-        }
+        notifyParentOfSelection()
     }
 
     private fun updateBtns() {

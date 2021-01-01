@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Personnel
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
@@ -297,6 +298,16 @@ class Utilities {
                 println("OrdersDialogFragment.onResume ERROR No current game ID found in shared preferences")
                 return null
             }
+        }
+
+        fun isBuildOrderForStructure(factoryBuildTargetType: FactoryBuildTargetType): Boolean {
+            return (
+                factoryBuildTargetType==FactoryBuildTargetType.ConstructionYard_ConstructionYard ||
+                factoryBuildTargetType==FactoryBuildTargetType.ConstructionYard_ShipYard ||
+                factoryBuildTargetType==FactoryBuildTargetType.ConstructionYard_TrainingFacility ||
+                factoryBuildTargetType==FactoryBuildTargetType.ConstructionYard_OrbitalBattery ||
+                factoryBuildTargetType==FactoryBuildTargetType.ConstructionYard_PlanetaryShield
+                )
         }
     }
 }

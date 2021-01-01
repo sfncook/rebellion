@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
@@ -21,6 +22,7 @@ class OrdersDialogFragment: DialogFragment() {
     private lateinit var componentsListLayout: LinearLayout
     private val orderComponents = mutableListOf<OrderComponent>()
     private var currentGameStateId: Long? = null
+    private lateinit var positiveBtn: Button
 
     companion object {
         fun newInstance(): OrdersDialogFragment {
@@ -36,7 +38,7 @@ class OrdersDialogFragment: DialogFragment() {
         val root = inflater.inflate(R.layout.fragment_orders, container, false)
 
         val titleTextView = root.findViewById<TextView>(R.id.dlg_orders_title_text)
-        val positiveBtn = root.findViewById<Button>(R.id.dlg_orders_positive_btn)
+        positiveBtn = root.findViewById<Button>(R.id.dlg_orders_positive_btn)
         val negativeBtn = root.findViewById<Button>(R.id.dlg_orders_negative_btn)
 
         when(arguments?.get(OrderDlgArgumentKeys.OrderProcedure.value) as OrderProcedures) {
@@ -55,17 +57,19 @@ class OrdersDialogFragment: DialogFragment() {
         }
 
         positiveBtn.setOnClickListener {
-            val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
-            if(currentGameStateId!=null && arguments!=null) {
-                val orderParameters = CommandUtilities.orderComponentsToMap(orderComponents)
-                CommandUtilities.conductOrderProcedures(
-                    gameStateViewModel,
-                    requireArguments(),
-                    orderParameters,
-                    currentGameStateId!!
-                )
+            if(allComponentsSelected()) {
+                val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
+                if(currentGameStateId!=null && arguments!=null) {
+                    val orderParameters = CommandUtilities.orderComponentsToMap(orderComponents)
+                    CommandUtilities.conductOrderProcedures(
+                        gameStateViewModel,
+                        requireArguments(),
+                        orderParameters,
+                        currentGameStateId!!
+                    )
+                }
+                dismiss()
             }
-            dismiss()
         }
         negativeBtn.setOnClickListener {
             dismiss()
@@ -73,6 +77,8 @@ class OrdersDialogFragment: DialogFragment() {
 
         componentsListLayout = root.findViewById(R.id.dlg_orders_components_list)
         loadComponents()
+
+        updatePositiveBtn()
 
         return root
     }
@@ -131,10 +137,15 @@ class OrdersDialogFragment: DialogFragment() {
     fun onComponentSelection() {
         val orderParameters = CommandUtilities.orderComponentsToMap(orderComponents)
         orderComponents.forEach {it.setAllOrderParameters(orderParameters)}
+        updatePositiveBtn()
     }
 
     private fun updatePositiveBtn() {
+        positiveBtn.isEnabled = allComponentsSelected()
+    }
 
+    private fun allComponentsSelected(): Boolean {
+        return orderComponents.all { orderComponent -> orderComponent.getSelectedValue()!=null }
     }
 
 }

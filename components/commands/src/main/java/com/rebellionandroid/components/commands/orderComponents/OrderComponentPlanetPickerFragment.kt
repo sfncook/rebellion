@@ -62,6 +62,7 @@ class OrderComponentPlanetPickerFragment(): OrderComponent() {
         sectorsAndPlanetsExpandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, planetId ->
             selectedPlanetId = planetId
             updateList()
+            notifyParentOfSelection()
             true
         }
 

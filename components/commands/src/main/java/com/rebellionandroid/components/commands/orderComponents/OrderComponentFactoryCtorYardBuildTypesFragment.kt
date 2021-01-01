@@ -53,6 +53,7 @@ class OrderComponentFactoryCtorYardBuildTypesFragment(): OrderComponent() {
     private fun setSelectedBuildType(buildTargetType: FactoryBuildTargetType?) {
         selectedBuildType = buildTargetType
         updateBtns()
+        notifyParentOfSelection()
     }
 
     private fun updateBtns() {
