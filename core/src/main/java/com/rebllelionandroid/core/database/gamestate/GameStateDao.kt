@@ -57,6 +57,9 @@ interface GameStateDao {
     @Query("SELECT * FROM factories WHERE id = :factoryId")
     fun getFactory(factoryId: Long): Factory
 
+    @Query("SELECT * FROM defense_structures WHERE id = :structureId")
+    fun getDefenseStructure(structureId: Long): DefenseStructure
+
 
 
     // Inserts
@@ -123,5 +126,8 @@ interface GameStateDao {
 
     @Query("UPDATE units SET missionType=:missionType, missionTargetType=:missionTargetType, missionTargetId=:missionTargetId, dayMissionComplete=:dayMissionComplete WHERE id = :personnelId")
     fun assignOrder(personnelId: Long, missionType: MissionType, missionTargetType: MissionTargetType, missionTargetId: Long, dayMissionComplete: Long): Int
+
+    @Query("UPDATE units SET missionType=null, missionTargetType=null, missionTargetId=null, dayMissionComplete=null WHERE id = :personnelId")
+    fun cancelMission(personnelId: Long): Int
 
 }

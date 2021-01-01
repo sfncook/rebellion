@@ -83,6 +83,12 @@ class GameStateViewModel @Inject constructor(
         }
     }
     fun getShip(shipId: Long) = gameStateRepository.getShip(shipId)
+    fun getShip(shipId: Long, callback: (ship: Ship) -> kotlin.Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val ship = gameStateRepository.getShip(shipId)
+            callback(ship)
+        }
+    }
     fun getShipWithUnits(shipId: Long, callback: (shipWithUnits: ShipWithUnits) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val shipWithUnits = gameStateRepository.getShipWithUnits(shipId)
@@ -108,6 +114,18 @@ class GameStateViewModel @Inject constructor(
         }
     }
     fun getFactory(factoryId: Long) = gameStateRepository.getFactory(factoryId)
+    fun getFactory(factoryId: Long, callback: (factory: Factory) -> kotlin.Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val factory = gameStateRepository.getFactory(factoryId)
+            callback(factory)
+        }
+    }
+    fun getDefenseStructure(structureId: Long, callback: (defenseStructure: DefenseStructure) -> kotlin.Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val defenseStructure = gameStateRepository.getDefenseStructure(structureId)
+            callback(defenseStructure)
+        }
+    }
 
 
     // **** Updates *****
@@ -170,6 +188,12 @@ class GameStateViewModel @Inject constructor(
             val gameState = getGameState(gameStateId)
             val dayMissionComplete = gameState.gameTime + 3
             gameStateRepository.assignMission(personnelId, missionType, missionTargetType, missionTargetId, dayMissionComplete)
+            postUpdate(gameStateId)
+        }
+    }
+    fun cancelMission(gameStateId: Long, personnelId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            gameStateRepository.cancelMission(personnelId)
             postUpdate(gameStateId)
         }
     }

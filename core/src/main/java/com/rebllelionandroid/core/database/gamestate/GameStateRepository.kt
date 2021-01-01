@@ -21,6 +21,7 @@ class GameStateRepository @Inject constructor(
     fun getPersonnel(personnelId: Long) = gameStateDao.getPersonnel(personnelId)
     fun getAllPlanets() = gameStateDao.getAllPlanets()
     fun getFactory(factoryId: Long) = gameStateDao.getFactory(factoryId)
+    fun getDefenseStructure(structureId: Long) = gameStateDao.getDefenseStructure(structureId)
 
 
     // Inserts
@@ -51,5 +52,6 @@ class GameStateRepository @Inject constructor(
         = gameStateDao.setFactoryBuildOrder(factoryId, dayBuildComplete, buildTargetType, destPlanetId)
     fun assignMission(personnelId: Long, missionType: MissionType, missionTargetType: MissionTargetType, missionTargetId: Long, dayMissionComplete: Long)
         = gameStateDao.assignOrder(personnelId, missionType, missionTargetType, missionTargetId, dayMissionComplete)
+    fun cancelMission(personnelId: Long) = gameStateDao.cancelMission(personnelId)
 
 }
