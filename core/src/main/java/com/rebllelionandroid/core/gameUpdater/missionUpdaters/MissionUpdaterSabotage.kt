@@ -6,6 +6,8 @@ import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
+import com.rebllelionandroid.core.gameUpdater.events.MissionFailureEvent
+import com.rebllelionandroid.core.gameUpdater.events.MissionSuccessEvent
 import com.rebllelionandroid.core.gameUpdater.events.UpdateEvent
 import kotlin.random.Random
 
@@ -64,31 +66,39 @@ class MissionUpdaterSabotage: MissionUpdater() {
         planetWithUnits: PlanetWithUnits,
         personnel: Personnel
     ) {
-        println("Mission success")
+        var targetTypeName: String = ""
         when(personnel.missionTargetType) {
             MissionTargetType.Unit -> {
                 val target = planetWithUnits.personnels.find { it.id==personnel.missionTargetId!! }
                 if(target!=null) {
                     target.destroyed = true
+                    targetTypeName = target.unitType.value
                 }
             }
             MissionTargetType.Factory -> {
                 val target = planetWithUnits.factories.find { it.id==personnel.missionTargetId!! }
                 if(target!=null) {
                     target.destroyed = true
-                }}
+                    targetTypeName = target.factoryType.value
+                }
+            }
             MissionTargetType.Ship -> {
                 val target = planetWithUnits.shipsWithUnits.find { it.ship.id==personnel.missionTargetId!! }
                 if(target!=null) {
                     target.ship.destroyed = true
-                }}
+                    targetTypeName = target.ship.shipType.value
+                }
+            }
             MissionTargetType.DefenseStructure -> {
                 val target = planetWithUnits.defenseStructures.find { it.id==personnel.missionTargetId!! }
                 if(target!=null) {
                     target.destroyed = true
-                }}
+                    targetTypeName = target.defenseStructureType.value
+                }
+            }
             else -> {}
         }
+        updateEvents.add(MissionSuccessEvent("SpecOps unit successfully destroyed target $targetTypeName"))
     }
 
     private fun onMissionFailure(
@@ -96,26 +106,34 @@ class MissionUpdaterSabotage: MissionUpdater() {
         planetWithUnits: PlanetWithUnits,
         personnel: Personnel
     ) {
-        println("Mission failed")
+        var targetTypeName: String = ""
         when(personnel.missionTargetType) {
             MissionTargetType.Unit -> {
                 val target = planetWithUnits.personnels.find { it.id==personnel.missionTargetId!! }
                 if(target!=null) {
+                    targetTypeName = target.unitType.value
                 }
             }
             MissionTargetType.Factory -> {
                 val target = planetWithUnits.factories.find { it.id==personnel.missionTargetId!! }
                 if(target!=null) {
-                }}
+                    targetTypeName = target.factoryType.value
+                }
+            }
             MissionTargetType.Ship -> {
                 val target = planetWithUnits.shipsWithUnits.find { it.ship.id==personnel.missionTargetId!! }
                 if(target!=null) {
-                }}
+                    targetTypeName = target.ship.shipType.value
+                }
+            }
             MissionTargetType.DefenseStructure -> {
                 val target = planetWithUnits.defenseStructures.find { it.id==personnel.missionTargetId!! }
                 if(target!=null) {
-                }}
+                    targetTypeName = target.defenseStructureType.value
+                }
+            }
             else -> {}
         }
+        updateEvents.add(MissionFailureEvent("SpecOps unit failed to destroy target $targetTypeName"))
     }
 }
