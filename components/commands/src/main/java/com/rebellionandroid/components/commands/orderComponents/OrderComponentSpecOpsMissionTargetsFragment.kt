@@ -21,6 +21,7 @@ import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
@@ -124,6 +125,18 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
         }
     }
 
+    private fun addTargetBtnsForIntelligence(targetPlanetWithUnits: PlanetWithUnits) {
+        addButton("Planet:${targetPlanetWithUnits.planet.name}", targetPlanetWithUnits.planet.id, MissionTargetType.Planet)
+    }
+
+    private fun addTargetBtnsForInsurrection(targetPlanetWithUnits: PlanetWithUnits) {
+        addButton("Planet:${targetPlanetWithUnits.planet.name}", targetPlanetWithUnits.planet.id, MissionTargetType.Planet)
+    }
+
+    private fun addTargetBtnsForDiplomacy(targetPlanetWithUnits: PlanetWithUnits) {
+        addButton("Planet:${targetPlanetWithUnits.planet.name}", targetPlanetWithUnits.planet.id, MissionTargetType.Planet)
+    }
+
     override fun getSelectedValue(): Map<String, String?> {
         val pair = missionTargetIdsToBtns[selectedMissionTargetId]
         return mapOf(
@@ -134,24 +147,39 @@ class OrderComponentSpecOpsMissionTargetsFragment(): OrderComponent() {
 
     override fun setAllOrderParameters(orderParameters: Map<String, String?>) {
         if(!suppressUpdate) {
-            missionTargetBtnsList.removeAllViews()
-            val selectedMissionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
-            if (selectedMissionTypeStr != null) {
-                val selectedMissionType = MissionType.valueOf(selectedMissionTypeStr)
-                gameStateViewModel.getPersonnel(personnelId!!) { personnel ->
-                    gameStateViewModel.getPlanetWithUnits(personnel.locationPlanetId!!) { targetPlanetWithUnits ->
-                        if(currentGameStateId!=null) {
-                            val gameState = gameStateViewModel.getGameState(currentGameStateId!!)
-                            viewLifecycleOwner.lifecycleScope.launch {
-                                when (selectedMissionType) {
-                                    MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits, gameState.myTeam)
-                                    else -> println("unsupported mission type")
-                                }
-                                updateBtns()
-                            }
+            if(currentGameStateId!=null) {
+                missionTargetBtnsList.removeAllViews()
+                val selectedMissionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
+                if (selectedMissionTypeStr != null) {
+                    val selectedMissionType = MissionType.valueOf(selectedMissionTypeStr)
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                        val personnel = gameStateViewModel.getPersonnel(personnelId!!)
+                        val targetPlanetWithUnits = if (personnel.locationPlanetId != null) {
+                            // Personnel is located on the planet surface
+                            gameStateViewModel.getPlanetWithUnits(personnel.locationPlanetId!!)
+                        } else {
+                            // Personnel is located on a ship orbiting the planet, move the unit to the planet
+                            val ship = gameStateViewModel.getShip(personnel.locationShip!!)
+                            personnel.locationPlanetId = ship.locationPlanetId
+                            personnel.locationShip = null
+                            personnel.updated = true
+                            gameStateViewModel.getPlanetWithUnits(ship.locationPlanetId)
                         }
-                    } // getPlanetWithUnits
-                } // getPersonnel
+
+                        val gameState = gameStateViewModel.getGameState(currentGameStateId!!)
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            when (selectedMissionType) {
+                                MissionType.Sabotage -> addTargetBtnsForSabotage(targetPlanetWithUnits, gameState.myTeam)
+                                MissionType.Intelligence -> addTargetBtnsForIntelligence(targetPlanetWithUnits)
+                                MissionType.Insurrection -> addTargetBtnsForInsurrection(targetPlanetWithUnits)
+                                MissionType.Diplomacy -> addTargetBtnsForDiplomacy(targetPlanetWithUnits)
+                            }
+                            updateBtns()
+                        }
+                    }
+                } else {
+                    println("ERROR setAllOrderParameters currentGameStateId is null")
+                }
             }
         }
         suppressUpdate = false
