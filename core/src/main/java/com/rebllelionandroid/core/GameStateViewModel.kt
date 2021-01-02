@@ -107,6 +107,7 @@ class GameStateViewModel @Inject constructor(
             callback(planets)
         }
     }
+    fun getPersonnel(personnelId: Long) = gameStateRepository.getPersonnel(personnelId)
     fun getPersonnel(personnelId: Long, callback: (personnel: Personnel) -> kotlin.Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val unit = gameStateRepository.getPersonnel(personnelId)
@@ -218,11 +219,13 @@ class GameStateViewModel @Inject constructor(
     }
 
     private fun startTimer(gameStateId: Long) {
+        val _this = this
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
                 val gameStateWithSectors = getGameStateWithSectors(gameStateId)
-                val (newGameStateWithSectors, updateEvents, newFactories, newShips, newUnits) = GameUpdater.updateGameState(gameStateWithSectors.deepCopy())
+                val (newGameStateWithSectors, updateEvents, newFactories, newShips, newUnits) =
+                    GameUpdater.updateGameState(gameStateWithSectors.deepCopy(), _this)
                 deepUpdateGameState(newGameStateWithSectors)
                 newFactories.forEach { gameStateRepository.insert(it) }
                 newShips.forEach { gameStateRepository.insert(it) }
@@ -265,9 +268,17 @@ class GameStateViewModel @Inject constructor(
                     }
                 }
                 planetWithUnits.factories.forEach { factory ->
-                    if(factory.updated) {
+                    if(factory.destroyed) gameStateRepository.delete(factory)
+                    else if(factory.updated) {
                         factory.updated = false
                         gameStateRepository.update(factory)
+                    }
+                }
+                planetWithUnits.personnels.forEach { personnel ->
+                    if(personnel.destroyed) gameStateRepository.delete(personnel)
+                    else if(personnel.updated) {
+                        personnel.updated = false
+                        gameStateRepository.update(personnel)
                     }
                 }
             }

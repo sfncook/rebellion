@@ -32,6 +32,7 @@ data class Factory(
     var isTraveling: Boolean = false,
     var dayArrival: Long = 0,
 
+    var destroyed: Boolean = false,
     @Ignore var updated: Boolean = false,
     @Ignore var created: Boolean = false
 )

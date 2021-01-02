@@ -1,0 +1,121 @@
+package com.rebllelionandroid.core.gameUpdater.missionUpdaters
+
+import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
+import com.rebllelionandroid.core.database.gamestate.Personnel
+import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
+import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.ShipType
+import com.rebllelionandroid.core.database.gamestate.enums.UnitType
+import com.rebllelionandroid.core.gameUpdater.events.UpdateEvent
+import kotlin.random.Random
+
+class MissionUpdaterSabotage: MissionUpdater() {
+    override fun update(
+        gameStateWithSectors: GameStateWithSectors,
+        updateEvents: MutableList<UpdateEvent>,
+        planetWithUnits: PlanetWithUnits,
+        personnel: Personnel
+    ) {
+        val successThreshold =  getSuccessThreshold(planetWithUnits, personnel)
+        val success = Random.nextInt(0, 100) <= successThreshold
+        if(success) {
+            onMissionSuccess(updateEvents, planetWithUnits, personnel)
+        } else {
+            onMissionFailure(updateEvents, planetWithUnits, personnel)
+        }
+        personnel.missionTargetType = null
+        personnel.missionType = null
+        personnel.missionTargetId = null
+        personnel.dayMissionComplete = null
+        personnel.updated = true
+    }
+
+    private fun getSuccessThreshold(planetWithUnits: PlanetWithUnits, personnel: Personnel): Int {
+        return when(personnel.missionTargetType) {
+            MissionTargetType.Unit -> {
+                val targetPersonnel = planetWithUnits.personnels.find { it.id==personnel.missionTargetId!! }
+                when(targetPersonnel?.unitType) {
+                    UnitType.SpecialForces -> 50
+                    UnitType.Garrison -> 30
+                    else -> NO_OP_SUCCESS_THRESHOLD
+                }
+            }
+            MissionTargetType.Factory -> 20
+            MissionTargetType.Ship -> {
+                val targetShip = planetWithUnits.shipsWithUnits.find { it.ship.id==personnel.missionTargetId!! }
+                when(targetShip?.ship?.shipType) {
+                    ShipType.Bireme -> 60
+                    ShipType.Trireme -> 50
+                    ShipType.Quadrireme -> 40
+                    ShipType.Quinquereme -> 35
+                    ShipType.Hexareme -> 30
+                    ShipType.Septireme -> 25
+                    ShipType.Octere -> 20
+                    else -> NO_OP_SUCCESS_THRESHOLD
+                }
+            }
+            MissionTargetType.DefenseStructure -> 30
+            else -> NO_OP_SUCCESS_THRESHOLD
+        }
+    }
+
+    private fun onMissionSuccess(
+        updateEvents: MutableList<UpdateEvent>,
+        planetWithUnits: PlanetWithUnits,
+        personnel: Personnel
+    ) {
+        println("Mission success")
+        when(personnel.missionTargetType) {
+            MissionTargetType.Unit -> {
+                val target = planetWithUnits.personnels.find { it.id==personnel.missionTargetId!! }
+                if(target!=null) {
+                    target.destroyed = true
+                }
+            }
+            MissionTargetType.Factory -> {
+                val target = planetWithUnits.factories.find { it.id==personnel.missionTargetId!! }
+                if(target!=null) {
+                    target.destroyed = true
+                }}
+            MissionTargetType.Ship -> {
+                val target = planetWithUnits.shipsWithUnits.find { it.ship.id==personnel.missionTargetId!! }
+                if(target!=null) {
+                    target.ship.destroyed = true
+                }}
+            MissionTargetType.DefenseStructure -> {
+                val target = planetWithUnits.defenseStructures.find { it.id==personnel.missionTargetId!! }
+                if(target!=null) {
+                    target.destroyed = true
+                }}
+            else -> {}
+        }
+    }
+
+    private fun onMissionFailure(
+        updateEvents: MutableList<UpdateEvent>,
+        planetWithUnits: PlanetWithUnits,
+        personnel: Personnel
+    ) {
+        println("Mission failed")
+        when(personnel.missionTargetType) {
+            MissionTargetType.Unit -> {
+                val target = planetWithUnits.personnels.find { it.id==personnel.missionTargetId!! }
+                if(target!=null) {
+                }
+            }
+            MissionTargetType.Factory -> {
+                val target = planetWithUnits.factories.find { it.id==personnel.missionTargetId!! }
+                if(target!=null) {
+                }}
+            MissionTargetType.Ship -> {
+                val target = planetWithUnits.shipsWithUnits.find { it.ship.id==personnel.missionTargetId!! }
+                if(target!=null) {
+                }}
+            MissionTargetType.DefenseStructure -> {
+                val target = planetWithUnits.defenseStructures.find { it.id==personnel.missionTargetId!! }
+                if(target!=null) {
+                }}
+            else -> {}
+        }
+    }
+}

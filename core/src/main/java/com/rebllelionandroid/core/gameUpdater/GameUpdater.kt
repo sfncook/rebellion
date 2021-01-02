@@ -1,21 +1,25 @@
 package com.rebllelionandroid.core.gameUpdater
 
+import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Personnel
-import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
-import com.rebllelionandroid.core.database.gamestate.enums.FactoryType
-import com.rebllelionandroid.core.database.gamestate.enums.ShipType
-import com.rebllelionandroid.core.database.gamestate.enums.UnitType
+import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.core.gameUpdater.events.*
+import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterSabotage
 import com.rebllelionandroid.core.gameUpdater.uprising.UprisingEval
 import kotlin.random.Random
 
 class GameUpdater {
 
     companion object {
-        fun updateGameState(gameStateWithSectors: GameStateWithSectors): GameUpdateResponse {
+        val missionUpdaterSabotage = MissionUpdaterSabotage()
+
+        fun updateGameState(
+            gameStateWithSectors: GameStateWithSectors,
+            gameStateViewModel: GameStateViewModel
+        ): GameUpdateResponse {
             val updateEvents = mutableListOf<UpdateEvent>()
             val newFactories = mutableListOf<Factory>()
             val newShips = mutableListOf<Ship>()
@@ -49,6 +53,9 @@ class GameUpdater {
             }// sectors
 
 
+            updateEntityMovement(gameStateWithSectors, updateEvents)
+
+
             // *** Update Loyalties ***
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
@@ -62,9 +69,7 @@ class GameUpdater {
                 }// planets
             }// sectors
 
-
-            updateEntityMovement(gameStateWithSectors, updateEvents)
-
+            updatePersonnelMissions(gameStateWithSectors, gameStateViewModel, updateEvents)
 
             // *** Check for conflict flags ***
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
@@ -101,6 +106,32 @@ class GameUpdater {
 
             return GameUpdateResponse(gameStateWithSectors, updateEvents, newFactories, newShips, newUnits)
         }// updateGameState
+
+        private fun updatePersonnelMissions(
+            gameStateWithSectors: GameStateWithSectors,
+            gameStateViewModel: GameStateViewModel,
+            updateEvents: MutableList<UpdateEvent>
+        ) {
+            val gameTime = gameStateWithSectors.gameState.gameTime
+            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+                // planets
+                sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    planetWithUnits.personnels.forEach { personnel ->
+                        if(personnel.missionType!=null && personnel.dayMissionComplete!! <= gameTime) {
+                            when(personnel.missionType) {
+                                MissionType.Sabotage -> missionUpdaterSabotage.update(
+                                    gameStateWithSectors,
+                                    updateEvents,
+                                    planetWithUnits,
+                                    personnel
+                                )
+                                else -> {}
+                            }
+                        }
+                    }
+                }// planets
+            }// sectors
+        }
 
         private fun applyDamage(offensiveShips: List<ShipWithUnits>, defensiveShips: List<ShipWithUnits>) {
             offensiveShips.forEach { shipWithUnits ->
@@ -159,7 +190,7 @@ class GameUpdater {
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
                     planetWithUnits.factories.forEach { factory ->
                         if(factory.buildTargetType != null && gameTime >= factory.dayBuildComplete!!) {
-                            val dstPlanetWithUnits = Utilities.getPlanetWithId(gameStateWithSectors, factory.deliverBuiltStructureToPlanetId!!)
+                            val dstPlanetWithUnits = Utilities.findPlanetWithId(gameStateWithSectors, factory.deliverBuiltStructureToPlanetId!!)
                             if(dstPlanetWithUnits!=null) {
                                 when(factory.buildTargetType) {
                                     FactoryBuildTargetType.ConstructionYard_ConstructionYard ->

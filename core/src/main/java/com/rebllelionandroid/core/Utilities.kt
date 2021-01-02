@@ -201,7 +201,7 @@ class Utilities {
             }
         }
 
-        fun getPlanetWithId(gameStateWithSectors: GameStateWithSectors, planetId: Long): PlanetWithUnits? {
+        fun findPlanetWithId(gameStateWithSectors: GameStateWithSectors, planetId: Long): PlanetWithUnits? {
             var respPlanetWithUnits: PlanetWithUnits? = null
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 sectorWithPlanets.planets.forEach { planetWithUnits ->

@@ -90,18 +90,22 @@ interface GameStateDao {
     // Updates
     @Update
     fun update(gameState: GameState)
-
     @Update
     fun update(planet: Planet)
-
     @Update
     fun update(ship: Ship)
-
     @Update
     fun update(factory: Factory)
+    @Update
+    fun update(personnel: Personnel)
+
 
     @Delete
     fun delete(ship: Ship)
+    @Delete
+    fun delete(factory: Factory)
+    @Delete
+    fun delete(personnel: Personnel)
 
     @Query("UPDATE game_state SET gameInProgress = :gameInProgress WHERE id = :id")
     fun setGameInProgress(id: Long, gameInProgress: Int): Int
