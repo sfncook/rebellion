@@ -44,6 +44,7 @@ class GameStateRepository @Inject constructor(
     fun delete(ship: Ship) = gameStateDao.delete(ship)
     fun delete(factory: Factory) = gameStateDao.delete(factory)
     fun delete(personnel: Personnel) = gameStateDao.delete(personnel)
+    fun delete(defenseStructure: DefenseStructure) = gameStateDao.delete(defenseStructure)
 
     // Game Play Updates
     fun stopAllGameStates() = gameStateDao.stopAllGameStates()

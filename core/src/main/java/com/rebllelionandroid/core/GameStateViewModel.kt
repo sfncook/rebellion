@@ -281,6 +281,9 @@ class GameStateViewModel @Inject constructor(
                         gameStateRepository.update(personnel)
                     }
                 }
+                planetWithUnits.defenseStructures.forEach { structure ->
+                    if(structure.destroyed) gameStateRepository.delete(structure)
+                }
             }
         }
     }

@@ -106,6 +106,8 @@ interface GameStateDao {
     fun delete(factory: Factory)
     @Delete
     fun delete(personnel: Personnel)
+    @Delete
+    fun delete(defenseStructure: DefenseStructure)
 
     @Query("UPDATE game_state SET gameInProgress = :gameInProgress WHERE id = :id")
     fun setGameInProgress(id: Long, gameInProgress: Int): Int
