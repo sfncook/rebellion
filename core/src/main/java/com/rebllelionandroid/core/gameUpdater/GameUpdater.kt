@@ -3,7 +3,6 @@ package com.rebllelionandroid.core.gameUpdater
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.*
-import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.core.gameUpdater.events.*
@@ -112,21 +111,15 @@ class GameUpdater {
             gameStateViewModel: GameStateViewModel,
             updateEvents: MutableList<UpdateEvent>
         ) {
-            val gameTime = gameStateWithSectors.gameState.gameTime
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
                     planetWithUnits.personnels.forEach { personnel ->
-                        if(personnel.missionType!=null && personnel.dayMissionComplete!! <= gameTime) {
-                            when(personnel.missionType) {
-                                MissionType.Sabotage -> missionUpdaterSabotage.update(
-                                    gameStateWithSectors,
-                                    updateEvents,
-                                    planetWithUnits,
-                                    personnel
-                                )
-                                else -> {}
-                            }
+                        when(personnel.missionType) {
+                            MissionType.Sabotage -> missionUpdaterSabotage.update(
+                                gameStateWithSectors, updateEvents, planetWithUnits, personnel
+                            )
+                            else -> {}// no mission, do nothing
                         }
                     }
                 }// planets

@@ -1,38 +1,22 @@
 package com.rebllelionandroid.core.gameUpdater.missionUpdaters
 
-import com.rebllelionandroid.core.database.gamestate.GameStateWithSectors
 import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.gameUpdater.events.MissionFailureEvent
 import com.rebllelionandroid.core.gameUpdater.events.MissionSuccessEvent
 import com.rebllelionandroid.core.gameUpdater.events.UpdateEvent
-import kotlin.random.Random
 
 class MissionUpdaterSabotage: MissionUpdater() {
-    override fun update(
-        gameStateWithSectors: GameStateWithSectors,
-        updateEvents: MutableList<UpdateEvent>,
-        planetWithUnits: PlanetWithUnits,
-        personnel: Personnel
-    ) {
-        val successThreshold =  getSuccessThreshold(planetWithUnits, personnel)
-        val success = Random.nextInt(0, 100) <= successThreshold
-        if(success) {
-            onMissionSuccess(updateEvents, planetWithUnits, personnel)
-        } else {
-            onMissionFailure(updateEvents, planetWithUnits, personnel)
-        }
-        personnel.missionTargetType = null
-        personnel.missionType = null
-        personnel.missionTargetId = null
-        personnel.dayMissionComplete = null
-        personnel.updated = true
+
+    override fun handleMission(personnel: Personnel): Boolean {
+        return personnel.missionType == MissionType.Sabotage
     }
 
-    private fun getSuccessThreshold(planetWithUnits: PlanetWithUnits, personnel: Personnel): Int {
+    override fun getSuccessThreshold(planetWithUnits: PlanetWithUnits, personnel: Personnel): Int {
         return when(personnel.missionTargetType) {
             MissionTargetType.Unit -> {
                 val targetPersonnel = planetWithUnits.personnels.find { it.id==personnel.missionTargetId!! }
@@ -61,7 +45,7 @@ class MissionUpdaterSabotage: MissionUpdater() {
         }
     }
 
-    private fun onMissionSuccess(
+    override fun onMissionSuccess(
         updateEvents: MutableList<UpdateEvent>,
         planetWithUnits: PlanetWithUnits,
         personnel: Personnel
@@ -101,7 +85,7 @@ class MissionUpdaterSabotage: MissionUpdater() {
         updateEvents.add(MissionSuccessEvent("SpecOps unit successfully destroyed target $targetTypeName"))
     }
 
-    private fun onMissionFailure(
+    override fun onMissionFailure(
         updateEvents: MutableList<UpdateEvent>,
         planetWithUnits: PlanetWithUnits,
         personnel: Personnel
