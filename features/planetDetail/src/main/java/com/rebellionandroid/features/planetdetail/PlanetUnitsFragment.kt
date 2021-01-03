@@ -2,7 +2,6 @@ package com.rebellionandroid.features.planetdetail
 
 import android.content.ClipData
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -13,7 +12,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -24,9 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rebellionandroid.components.commands.CommandUtilities
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
-import com.rebllelionandroid.core.Utilities
-import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.Personnel
+import com.rebllelionandroid.core.database.gamestate.ShipWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import kotlinx.coroutines.launch
@@ -35,10 +32,6 @@ class PlanetUnitsFragment : Fragment() {
     private var currentGameStateId: Long = 0
     private var selectedPlanetId: Long = 0
     private lateinit var gameStateViewModel: GameStateViewModel
-    private lateinit var textLoyaltyPercTeamA: TextView
-    private lateinit var textLoyaltyPercTeamB: TextView
-    private lateinit var planetLoyaltyImg: ImageView
-    private lateinit var inConflictText: TextView
     private lateinit var listUnitsOnPlanetSurface: RecyclerView
     private lateinit var listShipsWithUnits: RecyclerView
     private lateinit var listEnemyShips: RecyclerView
@@ -47,7 +40,6 @@ class PlanetUnitsFragment : Fragment() {
     private lateinit var manyEnemyUnitsSpecOpsTxt: TextView
     private lateinit var enemyUnitsGarisonImg: ImageView
     private lateinit var manyEnemyUnitsGarisonTxt: TextView
-    private lateinit var energyList: LinearLayout
 
     @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     override fun onCreateView(
@@ -58,10 +50,6 @@ class PlanetUnitsFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_planet_units, container, false)
         selectedPlanetId = arguments?.getLong("planetId")!!
 
-        textLoyaltyPercTeamA = root.findViewById(R.id.units_text_loyalty_perc_team_a)
-        textLoyaltyPercTeamB = root.findViewById(R.id.units_text_loyalty_perc_team_b)
-        planetLoyaltyImg = root.findViewById(R.id.units_planet_loyalty)
-        inConflictText = root.findViewById(R.id.units_inconflict_text)
         listUnitsOnPlanetSurface = root.findViewById(R.id.list_units_on_planet_surface)
         listShipsWithUnits = root.findViewById(R.id.list_ships_with_units)
         listEnemyShips = root.findViewById(R.id.list_enemy_ships)
@@ -70,8 +58,6 @@ class PlanetUnitsFragment : Fragment() {
         manyEnemyUnitsSpecOpsTxt = root.findViewById(R.id.many_enemy_units_specops_on_planet)
         enemyUnitsGarisonImg = root.findViewById(R.id.enemy_units_garison_on_planet_img)
         manyEnemyUnitsGarisonTxt = root.findViewById(R.id.many_enemy_units_garison_on_planet)
-
-        energyList = root.findViewById(R.id.planet_energy_imgs_list)
 
         gameStateViewModel = (activity as BaseActivity).gameStateViewModel
 
@@ -121,17 +107,7 @@ class PlanetUnitsFragment : Fragment() {
         gameStateViewModel.gameState.observe(viewLifecycleOwner , { gameStateWithSectors ->
             val myTeam = gameStateWithSectors.gameState.myTeam
             gameStateViewModel.getPlanetWithUnits(selectedPlanetId) { planetWithUnits ->
-                val planet = planetWithUnits.planet
                 viewLifecycleOwner.lifecycleScope.launch {
-                    textLoyaltyPercTeamA.text = "${planet.teamALoyalty.toString()}%"
-                    textLoyaltyPercTeamB.text = "${planet.teamBLoyalty.toString()}%"
-                    inConflictText.visibility = if(planet.inConflict) VISIBLE else GONE
-                    val (imgId, colorId) = Utilities.getLoyaltyIconForPlanet(planet)
-                    planetLoyaltyImg.setImageResource(imgId)
-                    planetLoyaltyImg.setColorFilter(
-                        ContextCompat.getColor(view.context, colorId), android.graphics.PorterDuff.Mode.MULTIPLY
-                    )
-
                     // **** Enemy Units ****
                     var manyEnemyUnitsSpecOps = 0
                     var manyEnemyUnitsGarison = 0
@@ -163,8 +139,6 @@ class PlanetUnitsFragment : Fragment() {
                         ContextCompat.getColor(requireContext(), enemyColor), android.graphics.PorterDuff.Mode.MULTIPLY
                     )
                     // **** Enemy Units ****
-
-                    Utilities.populateEnergiesUi(view.context, energyList, planetWithUnits)
                 }
                 updateUnitsOnShips(planetWithUnits.shipsWithUnits, gameStateWithSectors.gameState.myTeam)
             }
@@ -202,12 +176,6 @@ class PlanetUnitsFragment : Fragment() {
         } else {
             println("ERROR No current game ID found in shared preferences")
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-        val fooValue = data?.getStringExtra("FOO")
-        println(fooValue)
     }
 
     private fun updateUnitsOnPlanetSurface(personnels: List<Personnel>) {

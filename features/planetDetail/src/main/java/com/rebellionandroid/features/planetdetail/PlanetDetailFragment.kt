@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.rebellionandroid.components.entityUi.PlanetStatusComponentFragment
 
 
 class PlanetDetailFragment: Fragment() {
@@ -19,6 +20,12 @@ class PlanetDetailFragment: Fragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_planet_detail, container, false)
         selectedPlanetId = arguments?.getLong("planetId")!!
+
+        val planetStatusFrag = PlanetStatusComponentFragment.newInstance(selectedPlanetId)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.planet_status, planetStatusFrag, "PlanetStatusComponentFragment")
+            .addToBackStack(null)
+            .commit()
 
         val planetUnitsFragment = PlanetUnitsFragment()
         val planetFactoriesFragment = PlanetFactoriesFragment()
