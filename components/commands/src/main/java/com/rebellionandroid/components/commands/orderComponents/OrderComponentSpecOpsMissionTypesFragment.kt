@@ -8,13 +8,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getColor
-import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.R
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebllelionandroid.core.BaseActivity
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
-import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.Planet
 import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 
@@ -76,7 +74,7 @@ class OrderComponentSpecOpsMissionTypesFragment(): OrderComponent() {
                 } else {
                     buildBtnSabotage.visibility = View.VISIBLE
                     buildBtnInsurrection.visibility = View.VISIBLE
-                    buildBtnDiplomacy.visibility = View.VISIBLE
+                    buildBtnDiplomacy.visibility = View.GONE
                     buildBtnIntel.visibility = View.VISIBLE
                 }
             }

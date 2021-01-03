@@ -1,5 +1,6 @@
 package com.rebllelionandroid.core.gameUpdater.missionUpdaters
 
+import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
 import com.rebllelionandroid.core.database.gamestate.enums.MissionType
@@ -42,6 +43,7 @@ class MissionUpdaterDiplomacy: MissionUpdater() {
         }
         planetWithUnits.planet.teamALoyalty = planetWithUnits.planet.teamALoyalty.coerceAtLeast(0).coerceAtMost(100)
         planetWithUnits.planet.teamBLoyalty = planetWithUnits.planet.teamBLoyalty.coerceAtLeast(0).coerceAtMost(100)
+        planetWithUnits.planet.uprisingRank = Utilities.decreaseUprisingRank(planetWithUnits.planet.uprisingRank)
         planetWithUnits.planet.updated = true
         updateEvents.add(MissionSuccessEvent("SpecOps unit successfully improved relations with Planet ${planetWithUnits.planet.name}"))
     }

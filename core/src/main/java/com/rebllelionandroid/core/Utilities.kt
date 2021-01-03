@@ -8,11 +8,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.rebllelionandroid.core.database.gamestate.*
-import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
+import com.rebllelionandroid.core.gameUpdater.uprising.UprisingRank
 
 class Utilities {
     companion object {
@@ -304,6 +304,24 @@ class Utilities {
                 factoryBuildTargetType==FactoryBuildTargetType.ConstructionYard_OrbitalBattery ||
                 factoryBuildTargetType==FactoryBuildTargetType.ConstructionYard_PlanetaryShield
                 )
+        }
+
+        fun increaseUprisingRank(uprisingRank: UprisingRank): UprisingRank {
+            return when(uprisingRank) {
+                UprisingRank.Civil -> UprisingRank.Unrest
+                UprisingRank.Unrest -> UprisingRank.Uprising
+                UprisingRank.Uprising -> UprisingRank.Rebellion
+                UprisingRank.Rebellion -> UprisingRank.Rebellion
+            }
+        }
+
+        fun decreaseUprisingRank(uprisingRank: UprisingRank): UprisingRank {
+            return when(uprisingRank) {
+                UprisingRank.Civil -> UprisingRank.Civil
+                UprisingRank.Unrest -> UprisingRank.Civil
+                UprisingRank.Uprising -> UprisingRank.Unrest
+                UprisingRank.Rebellion -> UprisingRank.Uprising
+            }
         }
     }
 }

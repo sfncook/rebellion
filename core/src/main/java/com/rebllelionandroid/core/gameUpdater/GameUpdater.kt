@@ -10,8 +10,6 @@ import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterDipl
 import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterInsurrection
 import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterIntelligence
 import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterSabotage
-import com.rebllelionandroid.core.gameUpdater.uprising.UprisingEval
-import com.rebllelionandroid.core.gameUpdater.uprising.UprisingRank
 import kotlin.random.Random
 
 class GameUpdater {
@@ -84,21 +82,11 @@ class GameUpdater {
                         val increaseUprisingRank = dominantTeamLoyalty<=25 && UPRISING_INC_THRESHOLD_PERC >= Random.nextInt(0,99)
                         val decreaseUprisingRank = dominantTeamLoyalty>=75 && UPRISING_INC_THRESHOLD_PERC >= Random.nextInt(0,99)
                         if(increaseUprisingRank) {
-                            when(planet.uprisingRank) {
-                                UprisingRank.Civil -> planet.uprisingRank = UprisingRank.Unrest
-                                UprisingRank.Unrest -> planet.uprisingRank = UprisingRank.Uprising
-                                UprisingRank.Uprising -> planet.uprisingRank = UprisingRank.Rebellion
-                                UprisingRank.Rebellion -> {}
-                            }
+                            planet.uprisingRank = Utilities.increaseUprisingRank(planet.uprisingRank)
                             planet.updated = true
                         }
                         if(decreaseUprisingRank) {
-                            when(planet.uprisingRank) {
-                                UprisingRank.Civil -> { }
-                                UprisingRank.Unrest -> planet.uprisingRank = UprisingRank.Civil
-                                UprisingRank.Uprising -> planet.uprisingRank = UprisingRank.Unrest
-                                UprisingRank.Rebellion -> planet.uprisingRank = UprisingRank.Uprising
-                            }
+                            planet.uprisingRank = Utilities.decreaseUprisingRank(planet.uprisingRank)
                             planet.updated = true
                         }
                     }

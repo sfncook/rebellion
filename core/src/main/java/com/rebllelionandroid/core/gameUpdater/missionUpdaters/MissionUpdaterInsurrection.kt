@@ -1,11 +1,9 @@
 package com.rebllelionandroid.core.gameUpdater.missionUpdaters
 
+import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.PlanetWithUnits
-import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.MissionType
-import com.rebllelionandroid.core.database.gamestate.enums.ShipType
-import com.rebllelionandroid.core.database.gamestate.enums.UnitType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.core.gameUpdater.events.MissionFailureEvent
 import com.rebllelionandroid.core.gameUpdater.events.MissionSuccessEvent
@@ -44,6 +42,7 @@ class MissionUpdaterInsurrection: MissionUpdater() {
         }
         planetWithUnits.planet.teamALoyalty = planetWithUnits.planet.teamALoyalty.coerceAtLeast(0).coerceAtMost(100)
         planetWithUnits.planet.teamBLoyalty = planetWithUnits.planet.teamBLoyalty.coerceAtLeast(0).coerceAtMost(100)
+        planetWithUnits.planet.uprisingRank = Utilities.increaseUprisingRank(planetWithUnits.planet.uprisingRank)
         planetWithUnits.planet.updated = true
         updateEvents.add(MissionSuccessEvent("SpecOps unit successfully provoked insurrection on Planet ${planetWithUnits.planet.name}"))
     }
