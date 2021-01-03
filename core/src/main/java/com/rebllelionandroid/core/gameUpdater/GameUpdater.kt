@@ -6,6 +6,9 @@ import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 import com.rebllelionandroid.core.gameUpdater.events.*
+import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterDiplomacy
+import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterInsurrection
+import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterIntelligence
 import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterSabotage
 import com.rebllelionandroid.core.gameUpdater.uprising.UprisingEval
 import kotlin.random.Random
@@ -14,6 +17,9 @@ class GameUpdater {
 
     companion object {
         val missionUpdaterSabotage = MissionUpdaterSabotage()
+        val missionUpdaterInsurrection = MissionUpdaterInsurrection()
+        val missionUpdaterIntelligence = MissionUpdaterIntelligence()
+        val missionUpdaterDiplomacy = MissionUpdaterDiplomacy()
 
         fun updateGameState(
             gameStateWithSectors: GameStateWithSectors,
@@ -119,7 +125,16 @@ class GameUpdater {
                             MissionType.Sabotage -> missionUpdaterSabotage.update(
                                 gameStateWithSectors, updateEvents, planetWithUnits, personnel
                             )
-                            else -> {}// no mission, do nothing
+                            MissionType.Insurrection -> missionUpdaterInsurrection.update(
+                                gameStateWithSectors, updateEvents, planetWithUnits, personnel
+                            )
+                            MissionType.Diplomacy -> missionUpdaterDiplomacy.update(
+                                gameStateWithSectors, updateEvents, planetWithUnits, personnel
+                            )
+                            MissionType.Intelligence -> missionUpdaterIntelligence.update(
+                                gameStateWithSectors, updateEvents, planetWithUnits, personnel
+                            )
+                            else -> {}// null mission, do nothing
                         }
                     }
                 }// planets
