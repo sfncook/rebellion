@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.rebllelionandroid.core.database.gamestate.*
+import com.rebllelionandroid.core.database.gamestate.enums.DefenseStructureType
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
 import com.rebllelionandroid.core.database.gamestate.enums.ShipType
 import com.rebllelionandroid.core.database.gamestate.enums.UnitType
@@ -275,6 +276,21 @@ class Utilities {
                     personnel.attackStrength = 2
                     personnel.defenseStrength = 2
                     personnel.healthPoints = 2
+                }
+            }
+        }
+
+        fun setStructureStrengthValues(structure: DefenseStructure) {
+            when(structure.defenseStructureType) {
+                DefenseStructureType.OrbitalBattery -> {
+                    structure.attackStrength = 5
+                    structure.defenseStrength = 5
+                    structure.healthPoints = 5
+                }
+                DefenseStructureType.PlanetaryShield -> {
+                    structure.attackStrength = 0
+                    structure.defenseStrength = 10
+                    structure.healthPoints = 5
                 }
             }
         }

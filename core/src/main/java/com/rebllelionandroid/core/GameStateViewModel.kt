@@ -219,17 +219,17 @@ class GameStateViewModel @Inject constructor(
     }
 
     private fun startTimer(gameStateId: Long) {
-        val _this = this
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
                 val gameStateWithSectors = getGameStateWithSectors(gameStateId)
-                val (newGameStateWithSectors, updateEvents, newFactories, newShips, newUnits) =
-                    GameUpdater.updateGameState(gameStateWithSectors.deepCopy(), _this)
+                val (newGameStateWithSectors, updateEvents, newFactories, newShips, newUnits, newStructures) =
+                    GameUpdater.updateGameState(gameStateWithSectors.deepCopy())
                 deepUpdateGameState(newGameStateWithSectors)
                 newFactories.forEach { gameStateRepository.insert(it) }
                 newShips.forEach { gameStateRepository.insert(it) }
                 newUnits.forEach { gameStateRepository.insert(it) }
+                newStructures.forEach { gameStateRepository.insert(it) }
                 postUpdate(gameStateId)
                 updateEvents.forEach { println(it.getEventMessage()) }
                 delay(1500)
@@ -283,6 +283,10 @@ class GameStateViewModel @Inject constructor(
                 }
                 planetWithUnits.defenseStructures.forEach { structure ->
                     if(structure.destroyed) gameStateRepository.delete(structure)
+                    else if(structure.updated) {
+                        structure.updated = false
+                        gameStateRepository.update(structure)
+                    }
                 }
             }
         }
@@ -299,6 +303,10 @@ class GameStateViewModel @Inject constructor(
             )
 
             val allShipTypes = staticTypesRepository.getAllShipTypes()
+            val allStructureTypes = staticTypesRepository.getAllStructureTypes()
+
+            val orbitalBatteryStaticType = allStructureTypes.find { it.structureType==DefenseStructureType.OrbitalBattery }
+            val planetaryShieldStaticType = allStructureTypes.find { it.structureType==DefenseStructureType.PlanetaryShield }
 
             val allSectorTypes = staticTypesRepository.getAllSectorTypes()
             for (sectorType in allSectorTypes) {
@@ -336,7 +344,7 @@ class GameStateViewModel @Inject constructor(
 
             // Setup Team Head Quarters
             arrayListOf(TeamLoyalty.TeamA, TeamLoyalty.TeamB).forEach { teamLoyalty ->
-                val planetsForTeam = teamsToPlanets[teamLoyalty]
+                val planetsForTeam = teamsToPlanets[teamLoyalty]!!.filter { it.energyCap>=3 }
                 val planetForTeam = planetsForTeam?.get(Random.nextInt(planetsForTeam.size))
 
                 if(planetForTeam != null) {
@@ -352,6 +360,7 @@ class GameStateViewModel @Inject constructor(
                         isTraveling = false,
                         dayArrival = 0
                     )
+                    Utilities.setStructureStrengthValues(orbitalBattery)
                     gameStateRepository.insert(orbitalBattery)
 
                     // Planetary shield
@@ -362,23 +371,20 @@ class GameStateViewModel @Inject constructor(
                         isTraveling = false,
                         dayArrival = 0
                     )
+                    Utilities.setStructureStrengthValues(planetaryShield)
                     gameStateRepository.insert(planetaryShield)
 
-                    val manyInitFactories = planetForTeam.energyCap.coerceAtMost(3)
-                    for (u in 1..manyInitFactories) {
-                        val planetId = planetForTeam.id
-                        val factory = Factory(
-                            id = Random.nextLong(),
-                            factoryType = FactoryType.values().random(),
-                            planetId,
-                            team = teamLoyalty,
-                            buildTargetType = null,
-                            dayBuildComplete = 0,
-                            isTraveling = false,
-                            dayArrival = 0
-                        )
-                        gameStateRepository.insert(factory)
-                    }
+                    val factory = Factory(
+                        id = Random.nextLong(),
+                        factoryType = FactoryType.ConstructionYard,
+                        planetForTeam.id,
+                        team = teamLoyalty,
+                        buildTargetType = null,
+                        dayBuildComplete = 0,
+                        isTraveling = false,
+                        dayArrival = 0
+                    )
+                    gameStateRepository.insert(factory)
 
                     val manyInitShips = 5
                     for (s in 1..manyInitShips) {

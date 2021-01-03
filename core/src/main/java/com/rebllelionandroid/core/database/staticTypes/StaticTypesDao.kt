@@ -13,4 +13,7 @@ interface StaticTypesDao {
 
     @Query("SELECT * FROM ship_types")
     fun getAllShipTypes(): List<StaticShipType>
+
+    @Query("SELECT * FROM structure_types")
+    fun getAllStructureTypes(): List<StaticStructureType>
 }

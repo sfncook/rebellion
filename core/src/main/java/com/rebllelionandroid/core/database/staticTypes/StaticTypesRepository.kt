@@ -9,4 +9,5 @@ class StaticTypesRepository @Inject constructor(
     fun getAllPlanetTypesForSector(sectorTypeId: Long): List<PlanetType> =
         staticTypesDao.getAllPlanetTypesForSector(sectorTypeId)
     fun getAllShipTypes(): List<StaticShipType> = staticTypesDao.getAllShipTypes()
+    fun getAllStructureTypes(): List<StaticStructureType> = staticTypesDao.getAllStructureTypes()
 }

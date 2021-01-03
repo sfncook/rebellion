@@ -93,6 +93,8 @@ interface GameStateDao {
     @Update
     fun update(planet: Planet)
     @Update
+    fun update(defenseStructure: DefenseStructure)
+    @Update
     fun update(ship: Ship)
     @Update
     fun update(factory: Factory)
