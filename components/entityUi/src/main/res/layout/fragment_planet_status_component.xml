@@ -45,15 +45,44 @@
         app:layout_constraintStart_toEndOf="@+id/planet_status_text_loyalty_perc_team_a"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/planet_status_inconflict_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:text="In-Conflict"
-        android:textAlignment="center"
-        android:textColor="#FF0000"
-        android:textSize="16sp"
+    <ImageView
+        android:id="@+id/planet_status_insurrection_civil_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/insurrection_rating_civil"
+        app:layout_constraintEnd_toStartOf="@+id/planet_status_inconflict_img"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <ImageView
+        android:id="@+id/planet_status_insurrection_unrest_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/insurrection_rating_unrest"
+        app:layout_constraintEnd_toStartOf="@+id/planet_status_inconflict_img"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <ImageView
+        android:id="@+id/planet_status_insurrection_uprising_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/insurrection_rating_uprising"
+        app:layout_constraintEnd_toStartOf="@+id/planet_status_inconflict_img"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <ImageView
+        android:id="@+id/planet_status_insurrection_rebellion_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/insurrection_rating_rebellion"
+        app:layout_constraintEnd_toStartOf="@+id/planet_status_inconflict_img"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <ImageView
+        android:id="@+id/planet_status_inconflict_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/conflict"
+        app:tint="@color/insurrection_rating_rebellion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />

@@ -15,4 +15,9 @@
 
     <color name="list_item_bg">#FFF5BF</color>
     <color name="unit_travelling">#65CFFF</color>
+
+    <color name="insurrection_rating_civil">#00FF00</color>
+    <color name="insurrection_rating_unrest">#FFEB3B</color>
+    <color name="insurrection_rating_uprising">#FF9800</color>
+    <color name="insurrection_rating_rebellion">#FF0000</color>
 </resources>
