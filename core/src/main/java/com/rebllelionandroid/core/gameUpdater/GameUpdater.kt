@@ -11,11 +11,13 @@ import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterInsu
 import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterIntelligence
 import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterSabotage
 import com.rebllelionandroid.core.gameUpdater.uprising.UprisingEval
+import com.rebllelionandroid.core.gameUpdater.uprising.UprisingRank
 import kotlin.random.Random
 
 class GameUpdater {
 
     companion object {
+        private const val UPRISING_INC_THRESHOLD_PERC = 5
         val missionUpdaterSabotage = MissionUpdaterSabotage()
         val missionUpdaterInsurrection = MissionUpdaterInsurrection()
         val missionUpdaterIntelligence = MissionUpdaterIntelligence()
@@ -66,11 +68,40 @@ class GameUpdater {
                 // planets
                 sectorWithPlanets.planets.forEach { planetWithUnits ->
                     val planet = planetWithUnits.planet
-
-                    val uprisingRank = UprisingEval.getUprisingRank(
-                        planet.teamALoyalty,
+                    val planetTeamLoyalty = Utilities.getPlanetLoyalty(planet)
+                    val manyUnitsAffectedByUprisings = (
+                        planetWithUnits.defenseStructures.size +
+                        planetWithUnits.factories.size +
                         planetWithUnits.personnels.size
-                    )
+                        )
+                    if(manyUnitsAffectedByUprisings>0) {
+                        val dominantTeamLoyalty: Int =
+                            if(planetTeamLoyalty==TeamLoyalty.TeamA) {
+                                planet.teamALoyalty
+                            } else {
+                                planet.teamBLoyalty
+                            }
+                        val increaseUprisingRank = dominantTeamLoyalty<=25 && UPRISING_INC_THRESHOLD_PERC >= Random.nextInt(0,99)
+                        val decreaseUprisingRank = dominantTeamLoyalty>=75 && UPRISING_INC_THRESHOLD_PERC >= Random.nextInt(0,99)
+                        if(increaseUprisingRank) {
+                            when(planet.uprisingRank) {
+                                UprisingRank.Civil -> planet.uprisingRank = UprisingRank.Unrest
+                                UprisingRank.Unrest -> planet.uprisingRank = UprisingRank.Uprising
+                                UprisingRank.Uprising -> planet.uprisingRank = UprisingRank.Rebellion
+                                UprisingRank.Rebellion -> {}
+                            }
+                            planet.updated = true
+                        }
+                        if(decreaseUprisingRank) {
+                            when(planet.uprisingRank) {
+                                UprisingRank.Civil -> { }
+                                UprisingRank.Unrest -> planet.uprisingRank = UprisingRank.Civil
+                                UprisingRank.Uprising -> planet.uprisingRank = UprisingRank.Unrest
+                                UprisingRank.Rebellion -> planet.uprisingRank = UprisingRank.Uprising
+                            }
+                            planet.updated = true
+                        }
+                    }
                 }// planets
             }// sectors
 

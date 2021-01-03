@@ -1,6 +1,7 @@
 package com.rebllelionandroid.core.database.gamestate
 
 import androidx.room.*
+import com.rebllelionandroid.core.gameUpdater.uprising.UprisingRank
 
 @Entity(
         tableName = "planets",
@@ -15,6 +16,7 @@ data class Planet(
     var locationIndex: Int = 0,
     var teamALoyalty: Int = 0,
     var teamBLoyalty: Int = 0,
+    var uprisingRank: UprisingRank = UprisingRank.Civil,
 
     var isExplored: Boolean = false,
     var energyCap: Int = 0,

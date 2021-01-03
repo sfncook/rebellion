@@ -38,14 +38,5 @@ class UprisingEval {
             *Array(25) { garrToUpris_50_74 },
             *Array(26) { garrToUpris_75_100 }
         )
-
-
-        fun getUprisingRank(loyalty: Int, manyGarrisonUnits: Int): UprisingRank {
-            return loytaltyToGarrisonToUprisingRank[loyalty][manyGarrisonUnits]?.first ?: UprisingRank.Rebellion
-        }
-
-        fun getSuppressionUnits(loyalty: Int, manyGarrisonUnits: Int): Int {
-            return loytaltyToGarrisonToUprisingRank[loyalty][manyGarrisonUnits]?.second ?: 8
-        }
     }
 }
