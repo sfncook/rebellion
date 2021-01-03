@@ -172,6 +172,7 @@ class CommandUtilities {
                 }
 
                 OrderProcedures.AssignMission -> {
+                    //TODO: Move unit to planet if on ship
                     val personnelId = bundle.getLong(OrderDlgArgumentKeys.PersonnelId.value)
                     val missionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
                     val missionTargetTypeStr = orderParameters[OrderDlgArgumentKeys.MissionTargetType.value]

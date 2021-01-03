@@ -124,7 +124,7 @@ class OrdersDialogFragment: DialogFragment() {
                     "OrderComponentPlanetPickerFragment"
                 )
                 OrderDlgComponentTypes.SpecOpsMissionTypes.value -> loadComponent(
-                    OrderComponentSpecOpsMissionTypesFragment.newInstance(),
+                    OrderComponentSpecOpsMissionTypesFragment.newInstance(arguments),
                     "OrderComponentSpecOpsMissionTypesFragment"
                 )
                 OrderDlgComponentTypes.SpecOpsMissionTargets.value -> loadComponent(
