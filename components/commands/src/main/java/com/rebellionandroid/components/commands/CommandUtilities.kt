@@ -172,7 +172,6 @@ class CommandUtilities {
                 }
 
                 OrderProcedures.AssignMission -> {
-                    //TODO: Move unit to planet if on ship
                     val personnelId = bundle.getLong(OrderDlgArgumentKeys.PersonnelId.value)
                     val missionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
                     val missionTargetTypeStr = orderParameters[OrderDlgArgumentKeys.MissionTargetType.value]
@@ -180,6 +179,19 @@ class CommandUtilities {
                     if(missionTypeStr!=null && missionTargetTypeStr!=null && missionTargetId!=null) {
                         val missionType = MissionType.valueOf(missionTypeStr)
                         val missionTargetType = MissionTargetType.valueOf(missionTargetTypeStr)
+                        // Move unit to planet if currently on a ship
+                        gameStateViewModel.getPersonnel(personnelId) { personnel ->
+                            if(personnel.locationPlanetId==null) {
+                                gameStateViewModel.getShip(personnel.locationShip!!) { ship ->
+                                    moveUnitToPlanetSurface(
+                                        gameStateViewModel,
+                                        personnelId,
+                                        ship.locationPlanetId,
+                                        currentGameStateId
+                                    )
+                                }
+                            }
+                        }
                         gameStateViewModel.assignMission(
                             currentGameStateId,
                             personnelId,

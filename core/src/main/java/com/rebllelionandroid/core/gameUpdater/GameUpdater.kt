@@ -74,7 +74,7 @@ class GameUpdater {
                 }// planets
             }// sectors
 
-            updatePersonnelMissions(gameStateWithSectors, gameStateViewModel, updateEvents)
+            updatePersonnelMissions(gameStateWithSectors, updateEvents)
 
             // *** Check for conflict flags ***
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
@@ -114,7 +114,6 @@ class GameUpdater {
 
         private fun updatePersonnelMissions(
             gameStateWithSectors: GameStateWithSectors,
-            gameStateViewModel: GameStateViewModel,
             updateEvents: MutableList<UpdateEvent>
         ) {
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->

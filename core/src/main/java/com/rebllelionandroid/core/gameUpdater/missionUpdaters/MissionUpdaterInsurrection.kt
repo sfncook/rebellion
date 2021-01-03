@@ -42,8 +42,9 @@ class MissionUpdaterInsurrection: MissionUpdater() {
 
             planetWithUnits.planet.teamALoyalty -= 25
         }
-        planetWithUnits.planet.teamALoyalty.coerceAtLeast(0).coerceAtMost(100)
-        planetWithUnits.planet.teamBLoyalty.coerceAtLeast(0).coerceAtMost(100)
+        planetWithUnits.planet.teamALoyalty = planetWithUnits.planet.teamALoyalty.coerceAtLeast(0).coerceAtMost(100)
+        planetWithUnits.planet.teamBLoyalty = planetWithUnits.planet.teamBLoyalty.coerceAtLeast(0).coerceAtMost(100)
+        planetWithUnits.planet.updated = true
         updateEvents.add(MissionSuccessEvent("SpecOps unit successfully provoked insurrection on Planet ${planetWithUnits.planet.name}"))
     }
 

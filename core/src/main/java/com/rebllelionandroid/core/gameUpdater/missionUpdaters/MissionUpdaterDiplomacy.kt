@@ -40,8 +40,9 @@ class MissionUpdaterDiplomacy: MissionUpdater() {
             planetWithUnits.planet.teamALoyalty -= 10
             planetWithUnits.planet.teamBLoyalty += 10
         }
-        planetWithUnits.planet.teamALoyalty.coerceAtLeast(0).coerceAtMost(100)
-        planetWithUnits.planet.teamBLoyalty.coerceAtLeast(0).coerceAtMost(100)
+        planetWithUnits.planet.teamALoyalty = planetWithUnits.planet.teamALoyalty.coerceAtLeast(0).coerceAtMost(100)
+        planetWithUnits.planet.teamBLoyalty = planetWithUnits.planet.teamBLoyalty.coerceAtLeast(0).coerceAtMost(100)
+        planetWithUnits.planet.updated = true
         updateEvents.add(MissionSuccessEvent("SpecOps unit successfully improved relations with Planet ${planetWithUnits.planet.name}"))
     }
 
