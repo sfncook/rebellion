@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.rebellionandroid.components.entityUi.R
 import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentParamKeys
 import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentPersonnelDetailsFragment
+import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentStructureRetireFragment
 import com.rebellionandroid.components.entityUi.dialog.components.DialogComponentTypes
 
 class DialogModalFragment: DialogFragment() {
@@ -63,6 +64,10 @@ class DialogModalFragment: DialogFragment() {
         )
     }
 
+    fun onDimiss() {
+        dismiss()
+    }
+
     private fun loadComponents() {
         val componentsToShow = arguments?.getStringArrayList(DialogComponentParamKeys.ComponentsToShow.value)!!
         componentsToShow.forEach { componentToShow ->
@@ -70,6 +75,10 @@ class DialogModalFragment: DialogFragment() {
                 DialogComponentTypes.PersonnelDetails.value -> loadComponent(
                     DialogComponentPersonnelDetailsFragment.newInstance(requireArguments()),
                     "DialogComponentPersonnelDetailsFragment"
+                )
+                DialogComponentTypes.RetireStructure.value -> loadComponent(
+                    DialogComponentStructureRetireFragment.newInstance(requireArguments()),
+                    "DialogComponentStructureRetireFragment"
                 )
             }
         }

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.rebellionandroid.features.planetdetail.viewHolders.DefenseStructureViewHolder
 import com.rebellionandroid.features.planetdetail.viewHolders.FactoryViewHolder
 import com.rebllelionandroid.core.database.gamestate.DefenseStructure
 import com.rebllelionandroid.core.database.gamestate.Factory
@@ -40,11 +41,6 @@ class StructureListAdapter(
         }
     }
 
-    class DefenseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val label: TextView = view.findViewById(R.id.label)
-        val img: ImageView = view.findViewById(R.id.img)
-    }
-
     class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     override fun getItemViewType(position: Int): Int {
@@ -67,7 +63,7 @@ class StructureListAdapter(
 
         return when(viewType) {
             StructureType.Factory.value -> FactoryViewHolder(view, structuresList, planetWithUnits, myTeam)
-            StructureType.Defense.value -> DefenseViewHolder(view)
+            StructureType.Defense.value -> DefenseStructureViewHolder(view, structuresList, planetWithUnits, myTeam)
             else -> EmptyViewHolder(view)
         }
     }
@@ -82,14 +78,9 @@ class StructureListAdapter(
                 factoryViewHolder.bindViewHolder(factory, planetIdsToPlanets[factory.deliverBuiltStructureToPlanetId])
             }
             DefenseStructure::class -> {
-                val defenseStructure = structure as DefenseStructure
-                val defenseViewHolder = viewHolder as DefenseViewHolder
-                defenseViewHolder.label.text = defenseStructure.defenseStructureType.value
-                val imgSrc  = when(defenseStructure.defenseStructureType) {
-                    DefenseStructureType.PlanetaryShield -> R.drawable.planetary_shield
-                    DefenseStructureType.OrbitalBattery -> R.drawable.orbital_battery
-                }
-                defenseViewHolder.img.setImageResource(imgSrc)
+                val structure = structure as DefenseStructure
+                val defenseViewHolder = viewHolder as DefenseStructureViewHolder
+                defenseViewHolder.bindViewHolder(structure)
             }
             EMPTY_ENERGY::class -> {}
             else -> {}

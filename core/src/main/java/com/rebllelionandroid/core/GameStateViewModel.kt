@@ -127,6 +127,7 @@ class GameStateViewModel @Inject constructor(
             callback(defenseStructure)
         }
     }
+    fun getDefenseStructure(structureId: Long) = gameStateRepository.getDefenseStructure(structureId)
 
 
     // **** Updates *****
@@ -195,6 +196,13 @@ class GameStateViewModel @Inject constructor(
     fun cancelMission(gameStateId: Long, personnelId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.cancelMission(personnelId)
+            postUpdate(gameStateId)
+        }
+    }
+    fun retireStructure(gameStateId: Long, structureId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val structure = getDefenseStructure(structureId)
+            gameStateRepository.delete(structure)
             postUpdate(gameStateId)
         }
     }
