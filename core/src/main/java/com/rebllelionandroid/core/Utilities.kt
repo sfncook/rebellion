@@ -223,42 +223,49 @@ class Utilities {
                 ShipType.Bireme -> {
                     ship.attackStrength = 2
                     ship.defenseStrength = 2
+                    ship.maxHealthPoints = 2
                     ship.healthPoints = 2
                     ship.unitCapacity = 2
                 }
                 ShipType.Trireme -> {
                     ship.attackStrength = 3
                     ship.defenseStrength = 3
+                    ship.maxHealthPoints = 3
                     ship.healthPoints = 3
                     ship.unitCapacity = 3
                 }
                 ShipType.Quadrireme -> {
                     ship.attackStrength = 4
                     ship.defenseStrength = 4
+                    ship.maxHealthPoints = 4
                     ship.healthPoints = 4
                     ship.unitCapacity = 4
                 }
                 ShipType.Quinquereme -> {
                     ship.attackStrength = 5
                     ship.defenseStrength = 5
+                    ship.maxHealthPoints = 5
                     ship.healthPoints = 5
                     ship.unitCapacity = 5
                 }
                 ShipType.Hexareme -> {
                     ship.attackStrength = 6
                     ship.defenseStrength = 6
+                    ship.maxHealthPoints = 6
                     ship.healthPoints = 6
                     ship.unitCapacity = 6
                 }
                 ShipType.Septireme -> {
                     ship.attackStrength = 7
                     ship.defenseStrength = 7
+                    ship.maxHealthPoints = 7
                     ship.healthPoints = 7
                     ship.unitCapacity = 7
                 }
                 ShipType.Octere -> {
                     ship.attackStrength = 8
                     ship.defenseStrength = 8
+                    ship.maxHealthPoints = 8
                     ship.healthPoints = 8
                     ship.unitCapacity = 8
                 }
@@ -270,11 +277,13 @@ class Utilities {
                 UnitType.Garrison -> {
                     personnel.attackStrength = 10
                     personnel.defenseStrength = 10
+                    personnel.maxHealthPoints = 10
                     personnel.healthPoints = 10
                 }
                 UnitType.SpecialForces -> {
                     personnel.attackStrength = 2
                     personnel.defenseStrength = 2
+                    personnel.maxHealthPoints = 2
                     personnel.healthPoints = 2
                 }
             }
@@ -285,11 +294,13 @@ class Utilities {
                 DefenseStructureType.OrbitalBattery -> {
                     structure.attackStrength = 5
                     structure.defenseStrength = 5
+                    structure.maxHealthPoints = 5
                     structure.healthPoints = 5
                 }
                 DefenseStructureType.PlanetaryShield -> {
                     structure.attackStrength = 0
                     structure.defenseStrength = 10
+                    structure.maxHealthPoints = 5
                     structure.healthPoints = 5
                 }
             }

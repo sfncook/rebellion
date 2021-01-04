@@ -41,6 +41,7 @@ data class Personnel(
         var attackStrength: Int = 0,
         var defenseStrength: Int = 0,
         var destroyed: Boolean = false,
+        var maxHealthPoints: Int = 0,
         var healthPoints: Int = 0,
 
         var isTraveling: Boolean = false,

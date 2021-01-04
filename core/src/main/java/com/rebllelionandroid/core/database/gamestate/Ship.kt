@@ -22,6 +22,7 @@ data class Ship(
         var isTraveling: Boolean = false,
         var dayArrival: Long? = null,
         var destroyed: Boolean = false,
+        var maxHealthPoints: Int = 0,
         var healthPoints: Int = 0,
 
         @Ignore var updated: Boolean = false,

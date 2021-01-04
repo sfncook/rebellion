@@ -23,6 +23,7 @@ data class DefenseStructure(
         var isTraveling: Boolean = false, // Travelling for delivery
         var dayArrival: Long? = null,
         var destroyed: Boolean = false,
+        var maxHealthPoints: Int = 0,
         var healthPoints: Int = 0,
 
         @Ignore var updated: Boolean = false,

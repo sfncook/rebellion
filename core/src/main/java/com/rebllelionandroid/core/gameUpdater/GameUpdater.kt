@@ -131,6 +131,32 @@ class GameUpdater {
                 }// planets
             }// sectors
 
+
+            // Update Health Points when planet not in conflict
+            gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
+                sectorWithPlanets.planets.forEach { planetWithUnits ->
+                    val planet = planetWithUnits.planet
+                    if(!planet.inConflict) {
+                        planetWithUnits.shipsWithUnits.forEach { shipWithUnits ->
+                            val ship = shipWithUnits.ship
+                            if(ship.healthPoints != ship.maxHealthPoints) {
+                                ship.healthPoints += 1
+                                ship.healthPoints.coerceAtMost(ship.maxHealthPoints)
+                                ship.updated = true
+                            }
+                        }
+
+                        planetWithUnits.defenseStructures.forEach { structure ->
+                            if(structure.healthPoints != structure.maxHealthPoints) {
+                                structure.healthPoints += 1
+                                structure.healthPoints.coerceAtMost(structure.maxHealthPoints)
+                                structure.updated = true
+                            }
+                        }
+                    }
+                }
+            }
+
             updateFactoryBuildOrders(gameStateWithSectors, updateEvents, newFactories, newShips, newUnits, newStructures)
 
             return GameUpdateResponse(gameStateWithSectors, updateEvents, newFactories, newShips, newUnits, newStructures)
@@ -189,22 +215,26 @@ class GameUpdater {
         }
 
         private fun applyDamageToShip(defensiveShips: List<ShipWithUnits>, attackStrength: Int) {
-            val defShipWithUnits = defensiveShips.random()
-            val defShip = defShipWithUnits.ship
-            val attackPoints = Random.nextInt(1, attackStrength)
-            defShip.healthPoints = defShip.healthPoints - attackPoints
-            println("Ship takes damage: ${defShip.team} damage:${attackPoints} healthPoints:${defShip.healthPoints}")
-            if(defShip.healthPoints<=0) defShip.destroyed = true
-            defShip.updated = true
+            if(defensiveShips.isNotEmpty()) {
+                val defShipWithUnits = defensiveShips.random()
+                val defShip = defShipWithUnits.ship
+                val attackPoints = Random.nextInt(1, attackStrength)
+                defShip.healthPoints = defShip.healthPoints - attackPoints
+                println("Ship takes damage: ${defShip.team} damage:${attackPoints} healthPoints:${defShip.healthPoints}")
+                if (defShip.healthPoints <= 0) defShip.destroyed = true
+                defShip.updated = true
+            }
         }
 
         private fun applyDamageToStructure(defensiveStructures: List<DefenseStructure>, attackStrength: Int) {
-            val defenseStructure = defensiveStructures.random()
-            val attackPoints = Random.nextInt(1, attackStrength)
-            defenseStructure.healthPoints = defenseStructure.healthPoints - attackPoints
-            println("Structure takes damage:${attackPoints} healthPoints:${defenseStructure.healthPoints}")
-            if(defenseStructure.healthPoints<=0) defenseStructure.destroyed = true
-            defenseStructure.updated = true
+            if(defensiveStructures.isNotEmpty()) {
+                val defenseStructure = defensiveStructures.random()
+                val attackPoints = Random.nextInt(1, attackStrength)
+                defenseStructure.healthPoints = defenseStructure.healthPoints - attackPoints
+                println("Structure takes damage:${attackPoints} healthPoints:${defenseStructure.healthPoints}")
+                if (defenseStructure.healthPoints <= 0) defenseStructure.destroyed = true
+                defenseStructure.updated = true
+            }
         }
 
         private fun updateEntityMovement(gameStateWithSectors: GameStateWithSectors, updateEvents: MutableList<UpdateEvent>) {
