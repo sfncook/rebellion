@@ -41,21 +41,38 @@ class GameUpdater {
                         val teamsToShips = Utilities.getTeamsToShipsForList(planetWithUnits.shipsWithUnits)
                         val teamAShips = teamsToShips[TeamLoyalty.TeamA]
                         val teamBShips = teamsToShips[TeamLoyalty.TeamB]
+
+                        val teamsToPersonnels = Utilities.getTeamsToPersonnelOnPlanetSurface(planetWithUnits)
+                        val teamAPersonnels = teamsToPersonnels[TeamLoyalty.TeamA] ?: listOf()
+                        val teamBPersonnels = teamsToPersonnels[TeamLoyalty.TeamB] ?: listOf()
+
                         val planetTeamLoyalty = Utilities.getPlanetLoyalty(planet)
                         val teamADefStructures = if(planetTeamLoyalty==TeamLoyalty.TeamA) planetWithUnits.defenseStructures else listOf()
                         val teamBDefStructures = if(planetTeamLoyalty==TeamLoyalty.TeamB) planetWithUnits.defenseStructures else listOf()
+
+                        val teamAOffensiveStructures =
+                            if(planetTeamLoyalty==TeamLoyalty.TeamA)
+                                planetWithUnits.defenseStructures.filter { it.defenseStructureType==DefenseStructureType.OrbitalBattery }
+                            else listOf()
+                        val teamBOffensiveStructures =
+                            if(planetTeamLoyalty==TeamLoyalty.TeamB)
+                                planetWithUnits.defenseStructures.filter { it.defenseStructureType==DefenseStructureType.OrbitalBattery }
+                            else listOf()
+
                         if(teamAShips!=null && teamBShips!=null) {
                             applyDamage(
                                 offensiveShips = teamAShips,
-                                offensiveStructures = teamADefStructures,
+                                offensiveStructures = teamAOffensiveStructures,
                                 defensiveShips = teamBShips,
-                                defensiveStructures = teamBDefStructures
+                                defensiveStructures = teamBDefStructures,
+                                defensivePersonnels = teamBPersonnels
                             )
                             applyDamage(
                                 offensiveShips = teamBShips,
-                                offensiveStructures = teamBDefStructures,
+                                offensiveStructures = teamBOffensiveStructures,
                                 defensiveShips = teamAShips,
-                                defensiveStructures = teamADefStructures
+                                defensiveStructures = teamADefStructures,
+                                defensivePersonnels = teamAPersonnels
                             )
                         }
                     }
@@ -194,47 +211,49 @@ class GameUpdater {
             offensiveShips: List<ShipWithUnits>,
             offensiveStructures: List<DefenseStructure>,
             defensiveShips: List<ShipWithUnits>,
-            defensiveStructures: List<DefenseStructure>
+            defensiveStructures: List<DefenseStructure>,
+            defensivePersonnels: List<Personnel>
         ) {
+            val planetHasShield = defensiveStructures.any { it.defenseStructureType==DefenseStructureType.PlanetaryShield }
+            val potentialTargets = mutableListOf<Any?>()
+            potentialTargets.addAll(defensiveShips)
+            if(!planetHasShield) {
+                potentialTargets.addAll(defensiveStructures)
+                potentialTargets.addAll(defensivePersonnels)
+            }
+
+
             offensiveShips.forEach { shipWithUnits ->
                 val ofShip = shipWithUnits.ship
                 if(Random.nextBoolean()) {
-                    applyDamageToShip(defensiveShips, ofShip.attackStrength)
-                } else if(Random.nextBoolean()) {
-                    applyDamageToStructure(defensiveStructures, ofShip.attackStrength)
+                    val target = potentialTargets.random()
+                    when(target!!::class) {
+                        ShipWithUnits::class -> applyDamageToEntity(target as ShipWithUnits, ofShip.attackStrength)
+                        DefenseStructure::class -> applyDamageToEntity(target as DefenseStructure, ofShip.attackStrength)
+                    }
                 }
             }
 
             offensiveStructures.forEach { structure ->
                 if(Random.nextBoolean()) {
-                    applyDamageToShip(defensiveShips, structure.attackStrength)
-                } else if(Random.nextBoolean()) {
-                    applyDamageToStructure(defensiveStructures, structure.attackStrength)
+                    applyDamageToEntity(defensiveShips.random(), structure.attackStrength)
                 }
             }
         }
 
-        private fun applyDamageToShip(defensiveShips: List<ShipWithUnits>, attackStrength: Int) {
-            if(defensiveShips.isNotEmpty()) {
-                val defShipWithUnits = defensiveShips.random()
-                val defShip = defShipWithUnits.ship
-                val attackPoints = Random.nextInt(1, attackStrength)
-                defShip.healthPoints = defShip.healthPoints - attackPoints
-                println("Ship takes damage: ${defShip.team} damage:${attackPoints} healthPoints:${defShip.healthPoints}")
-                if (defShip.healthPoints <= 0) defShip.destroyed = true
-                defShip.updated = true
-            }
+        private fun applyDamageToEntity(shipWithUnits: ShipWithUnits, attackStrength: Int) {
+            val defShip = shipWithUnits.ship
+            val attackPoints = Random.nextInt(1, attackStrength)
+            defShip.healthPoints = defShip.healthPoints - attackPoints
+            println("Ship takes damage: ${defShip.team} damage:${attackPoints} healthPoints:${defShip.healthPoints}")
+            if (defShip.healthPoints <= 0) defShip.destroyed = true else defShip.updated = true
         }
 
-        private fun applyDamageToStructure(defensiveStructures: List<DefenseStructure>, attackStrength: Int) {
-            if(defensiveStructures.isNotEmpty()) {
-                val defenseStructure = defensiveStructures.random()
-                val attackPoints = Random.nextInt(1, attackStrength)
-                defenseStructure.healthPoints = defenseStructure.healthPoints - attackPoints
-                println("Structure takes damage:${attackPoints} healthPoints:${defenseStructure.healthPoints}")
-                if (defenseStructure.healthPoints <= 0) defenseStructure.destroyed = true
-                defenseStructure.updated = true
-            }
+        private fun applyDamageToEntity(structure: DefenseStructure, attackStrength: Int) {
+            val attackPoints = Random.nextInt(1, attackStrength)
+            structure.healthPoints = structure.healthPoints - attackPoints
+            println("Structure takes damage:${attackPoints} healthPoints:${structure.healthPoints}")
+            if (structure.healthPoints <= 0) structure.destroyed = true else structure.updated = true
         }
 
         private fun updateEntityMovement(gameStateWithSectors: GameStateWithSectors, updateEvents: MutableList<UpdateEvent>) {

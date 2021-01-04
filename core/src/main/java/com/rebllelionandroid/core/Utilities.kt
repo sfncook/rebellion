@@ -72,6 +72,10 @@ class Utilities {
             return shipsWithUnits.groupBy { it.ship.team }
         }
 
+        fun getTeamsToPersonnelOnPlanetSurface(planetWithUnit: PlanetWithUnits): Map<TeamLoyalty, List<Personnel>> {
+            return planetWithUnit.personnels.groupBy { it.team }
+        }
+
         fun getPlanetEnergiesFull(planetWithUnit: PlanetWithUnits): Int {
             val manyFactories = planetWithUnit.factories.size
             val manyDefStructure = planetWithUnit.defenseStructures.size
