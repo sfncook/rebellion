@@ -1,6 +1,8 @@
 include(
     ":core",
     ":app",
+    ":gamePlay:gameUpdater",
+    ":gamePlay:ai",
     ":features:sectorsList",
     ":features:newgameactivity",
     ":features:sectordetail",
