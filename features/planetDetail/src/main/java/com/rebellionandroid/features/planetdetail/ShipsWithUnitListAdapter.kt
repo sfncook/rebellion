@@ -17,7 +17,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.rebellionandroid.components.commands.CommandUtilities
+import com.rebllelionandroid.core.commands.CommandUtilities
 import com.rebellionandroid.components.commands.OrdersDialogFragment
 import com.rebellionandroid.components.commands.enums.OrderDlgArgumentKeys
 import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes

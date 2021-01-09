@@ -15,7 +15,12 @@ import com.rebellionandroid.components.commands.enums.OrderDlgComponentTypes
 import com.rebellionandroid.components.commands.enums.OrderProcedures
 import com.rebellionandroid.components.commands.orderComponents.*
 import com.rebllelionandroid.core.BaseActivity
+import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
+import com.rebllelionandroid.core.commands.CommandUtilities
+import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 
 
 class OrdersDialogFragment: DialogFragment() {
@@ -62,8 +67,8 @@ class OrdersDialogFragment: DialogFragment() {
             if(allComponentsSelected()) {
                 val gameStateViewModel = (activity as BaseActivity).gameStateViewModel
                 if(currentGameStateId!=null && arguments!=null) {
-                    val orderParameters = CommandUtilities.orderComponentsToMap(orderComponents)
-                    CommandUtilities.conductOrderProcedures(
+                    val orderParameters = orderComponentsToMap(orderComponents)
+                    conductOrderProcedures(
                         gameStateViewModel,
                         requireArguments(),
                         orderParameters,
@@ -145,7 +150,7 @@ class OrdersDialogFragment: DialogFragment() {
     }
 
     fun onComponentSelection() {
-        val orderParameters = CommandUtilities.orderComponentsToMap(orderComponents)
+        val orderParameters = orderComponentsToMap(orderComponents)
         orderComponents.forEach {it.setAllOrderParameters(orderParameters)}
         updatePositiveBtn()
     }
@@ -158,6 +163,93 @@ class OrdersDialogFragment: DialogFragment() {
         return orderComponents.all { orderComponent ->
             orderComponent.getSelectedValue().values.all { it!=null }
         }
+    }
+
+    private fun conductOrderProcedures(
+        gameStateViewModel: GameStateViewModel,
+        bundle: Bundle,
+        orderParameters: Map<String, String?>,
+        currentGameStateId: Long
+    ) {
+        when(bundle.get(OrderDlgArgumentKeys.OrderProcedure.value) as OrderProcedures) {
+            OrderProcedures.MoveShip -> {
+                val shipId = bundle.getLong(OrderDlgArgumentKeys.MoveShipId.value)
+                val destPlanetId = orderParameters[OrderDlgArgumentKeys.SelectedPlanetId.value]
+                if (destPlanetId != null) {
+                    CommandUtilities.moveShipToPlanet(
+                        gameStateViewModel,
+                        shipId,
+                        destPlanetId.toLong(),
+                        currentGameStateId
+                    )
+                } else {
+                    println("ERROR: MoveShip missing parameters")
+                }
+            }
+
+            OrderProcedures.FactoryBuild -> {
+                val factoryId = bundle.getLong(OrderDlgArgumentKeys.FactoryId.value)
+                val destPlanetId = orderParameters[OrderDlgArgumentKeys.SelectedPlanetId.value]
+                val buildTargetTypeStr = orderParameters[OrderDlgArgumentKeys.BuildTargetType.value]
+                if(buildTargetTypeStr != null) {
+                    val buildTargetType = FactoryBuildTargetType.valueOf(buildTargetTypeStr)
+                    if (destPlanetId != null) {
+                        CommandUtilities.factoryBuild(
+                            gameStateViewModel,
+                            factoryId,
+                            destPlanetId.toLong(),
+                            buildTargetType,
+                            currentGameStateId
+                        )
+                    } else {
+                        println("ERROR: MoveShip missing parameters")
+                    }
+                }
+            }
+
+            OrderProcedures.AssignMission -> {
+                val personnelId = bundle.getLong(OrderDlgArgumentKeys.PersonnelId.value)
+                val missionTypeStr = orderParameters[OrderDlgArgumentKeys.MissionType.value]
+                val missionTargetTypeStr = orderParameters[OrderDlgArgumentKeys.MissionTargetType.value]
+                val missionTargetId = orderParameters[OrderDlgArgumentKeys.MissionTargetId.value]
+                if(missionTypeStr!=null && missionTargetTypeStr!=null && missionTargetId!=null) {
+                    val missionType = MissionType.valueOf(missionTypeStr)
+                    val missionTargetType = MissionTargetType.valueOf(missionTargetTypeStr)
+                    // Move unit to planet if currently on a ship
+                    gameStateViewModel.getPersonnel(personnelId) { personnel ->
+                        if(personnel.locationPlanetId==null) {
+                            gameStateViewModel.getShip(personnel.locationShip!!) { ship ->
+                                CommandUtilities.moveUnitToPlanetSurface(
+                                    gameStateViewModel,
+                                    personnelId,
+                                    ship.locationPlanetId,
+                                    currentGameStateId
+                                )
+                            }
+                        }
+                    }
+                    gameStateViewModel.assignMission(
+                        currentGameStateId,
+                        personnelId,
+                        missionType,
+                        missionTargetType,
+                        missionTargetId.toLong()
+                    )
+                } else {
+                    println("ERROR: assign mission missing parameters")
+                }
+            }
+
+            else -> {}
+        }// when orderProcedure
+    }//conductOrderProcedures
+
+    private fun orderComponentsToMap(orderComponents: List<OrderComponent>): Map<String, String?> {
+        val orderParameters = mutableMapOf<String, String?>()
+        orderComponents.forEach { orderComponent ->
+            orderParameters.putAll(orderComponent.getSelectedValue())
+        }
+        return orderParameters
     }
 
 }
