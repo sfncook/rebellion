@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rebllelionandroid.core.ai.AiUpdater
 import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.Personnel
 import com.rebllelionandroid.core.database.gamestate.enums.*
@@ -227,9 +228,14 @@ class GameStateViewModel @Inject constructor(
     }
 
     private fun startTimer(gameStateId: Long) {
+        val gameStateViewModelThis = this
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             gameStateRepository.setGameInProgress(gameStateId, 1)
             while (true) {
+                // Allow AI decision matrix to write updates to DB
+                AiUpdater.update(gameStateViewModelThis, gameStateId)
+
+                // Process and update game state
                 val gameStateWithSectors = getGameStateWithSectors(gameStateId)
                 val (newGameStateWithSectors, updateEvents, newFactories, newShips, newUnits, newStructures) =
                     GameUpdater.updateGameState(gameStateWithSectors.deepCopy())

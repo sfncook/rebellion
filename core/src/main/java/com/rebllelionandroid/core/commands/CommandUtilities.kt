@@ -133,7 +133,7 @@ class CommandUtilities {
             gameStateViewModel.getPersonnel(personnelId) { personnel ->
                 if(personnel.locationPlanetId==null) {
                     gameStateViewModel.getShip(personnel.locationShip!!) { ship ->
-                        CommandUtilities.moveUnitToPlanetSurface(
+                        moveUnitToPlanetSurface(
                             gameStateViewModel,
                             personnelId,
                             ship.locationPlanetId,

@@ -4,7 +4,6 @@ import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.*
 import com.rebllelionandroid.core.database.gamestate.enums.*
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
-import com.rebllelionandroid.core.gameUpdater.ai.AiUpdater
 import com.rebllelionandroid.core.gameUpdater.events.*
 import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterDiplomacy
 import com.rebllelionandroid.core.gameUpdater.missionUpdaters.MissionUpdaterInsurrection
@@ -20,7 +19,6 @@ class GameUpdater {
         val missionUpdaterInsurrection = MissionUpdaterInsurrection()
         val missionUpdaterIntelligence = MissionUpdaterIntelligence()
         val missionUpdaterDiplomacy = MissionUpdaterDiplomacy()
-        val aiUpdater = AiUpdater()
 
         fun updateGameState(gameStateWithSectors: GameStateWithSectors): GameUpdateResponse {
             val updateEvents = mutableListOf<UpdateEvent>()
@@ -30,8 +28,6 @@ class GameUpdater {
             val newStructures = mutableListOf<DefenseStructure>()
 
             gameStateWithSectors.gameState.gameTime = gameStateWithSectors.gameState.gameTime.plus(1)
-
-            aiUpdater.update(gameStateWithSectors)
 
             // *** Update Conflict Results ***
             gameStateWithSectors.sectors.forEach { sectorWithPlanets ->
