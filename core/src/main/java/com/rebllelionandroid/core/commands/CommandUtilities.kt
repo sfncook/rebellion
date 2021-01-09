@@ -3,6 +3,8 @@ package com.rebllelionandroid.core.commands
 import com.rebllelionandroid.core.GameStateViewModel
 import com.rebllelionandroid.core.Utilities
 import com.rebllelionandroid.core.database.gamestate.enums.FactoryBuildTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionTargetType
+import com.rebllelionandroid.core.database.gamestate.enums.MissionType
 import com.rebllelionandroid.core.database.staticTypes.enums.TeamLoyalty
 
 class CommandUtilities {
@@ -117,6 +119,36 @@ class CommandUtilities {
                     println("ERROR: Build order for factory and dest planet that aren't on the same team")
                 }
             }
+        }
+
+        fun assignMission(
+            gameStateViewModel: GameStateViewModel,
+            personnelId: Long,
+            currentGameStateId: Long,
+            missionType: MissionType,
+            missionTargetType: MissionTargetType,
+            missionTargetId: Long
+        ) {
+            // Move unit to planet if currently on a ship
+            gameStateViewModel.getPersonnel(personnelId) { personnel ->
+                if(personnel.locationPlanetId==null) {
+                    gameStateViewModel.getShip(personnel.locationShip!!) { ship ->
+                        CommandUtilities.moveUnitToPlanetSurface(
+                            gameStateViewModel,
+                            personnelId,
+                            ship.locationPlanetId,
+                            currentGameStateId
+                        )
+                    }
+                }
+            }
+            gameStateViewModel.assignMission(
+                currentGameStateId,
+                personnelId,
+                missionType,
+                missionTargetType,
+                missionTargetId
+            )
         }
     }
 }

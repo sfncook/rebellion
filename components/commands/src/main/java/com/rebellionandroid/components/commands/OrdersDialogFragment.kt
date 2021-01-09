@@ -215,22 +215,10 @@ class OrdersDialogFragment: DialogFragment() {
                 if(missionTypeStr!=null && missionTargetTypeStr!=null && missionTargetId!=null) {
                     val missionType = MissionType.valueOf(missionTypeStr)
                     val missionTargetType = MissionTargetType.valueOf(missionTargetTypeStr)
-                    // Move unit to planet if currently on a ship
-                    gameStateViewModel.getPersonnel(personnelId) { personnel ->
-                        if(personnel.locationPlanetId==null) {
-                            gameStateViewModel.getShip(personnel.locationShip!!) { ship ->
-                                CommandUtilities.moveUnitToPlanetSurface(
-                                    gameStateViewModel,
-                                    personnelId,
-                                    ship.locationPlanetId,
-                                    currentGameStateId
-                                )
-                            }
-                        }
-                    }
-                    gameStateViewModel.assignMission(
-                        currentGameStateId,
+                    CommandUtilities.assignMission(
+                        gameStateViewModel,
                         personnelId,
+                        currentGameStateId,
                         missionType,
                         missionTargetType,
                         missionTargetId.toLong()
